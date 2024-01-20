@@ -1,0 +1,23 @@
+PODS:
+  - shared (1.0):
+    - YandexMapsMobile (= 4.4.0-lite)
+  - YandexMapsMobile (4.4.0-lite)
+
+DEPENDENCIES:
+  - shared (from `../shared`)
+
+SPEC REPOS:
+  trunk:
+    - YandexMapsMobile
+
+EXTERNAL SOURCES:
+  shared:
+    :path: "../shared"
+
+SPEC CHECKSUMS:
+  shared: 6c5d90ebd40cd8c2556431e1df8bcdddc0f83469
+  YandexMapsMobile: 74934971bbd3716e6daecfebed696c07b83b6b22
+
+PODFILE CHECKSUM: 78d6cc1b71b232202c48a29d4e6c34972c534c73
+
+COCOAPODS: 1.14.3
