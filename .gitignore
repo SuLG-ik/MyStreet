@@ -9,4 +9,3 @@ captures
 local.properties
 xcuserdata
 *.secret.kt
-gradle-wrapper.jar
