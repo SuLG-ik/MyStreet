@@ -16,6 +16,7 @@ moko-permissions = "0.17.0"
 koin = "3.5.3"
 buildKonfig = "0.15.1"
 moko-resources = "0.24.0-alpha-2"
+gms-location = "21.1.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -36,6 +37,7 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 moko-permissions = { module = "dev.icerock.moko:permissions", version.ref="moko-permissions" }
 moko-resources = { module = "dev.icerock.moko:resources", version.ref="moko-resources" }
+gms-location = { module = "com.google.android.gms:play-services-location", version.ref="gms-location" }
 
 
 [plugins]
