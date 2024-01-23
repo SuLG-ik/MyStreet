@@ -30,7 +30,6 @@ private fun Modifier.offsetYFactor(factor: Float): Modifier =
     }
 
 private fun mapFactor(factor: Float): Float {
-    println("fdaskfoisd $factor")
     return if (factor > 0)
         -factor
     else

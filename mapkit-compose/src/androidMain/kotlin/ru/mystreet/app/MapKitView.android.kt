@@ -47,7 +47,6 @@ actual fun MapView(
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
-        Log.d("aaaaa", "fweqr")
         mapController.bindAnchor(Map(context, mapView.mapWindow.map, MapKitFactory.getInstance().createUserLocationLayer(mapView.mapWindow)))
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(observer)
