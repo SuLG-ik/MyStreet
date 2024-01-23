@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import ru.mystreet.app.resources.IconPack
 import ru.mystreet.app.resources.iconpack.Follow
@@ -28,7 +29,7 @@ fun MapOverlay(
             onFollowLocation = onFollowLocation,
             onZoomInPress = onZoomInPress,
             onZoomOutPress = onZoomOutPress,
-            modifier = Modifier.align(Alignment.CenterEnd),
+            modifier = Modifier.align(Alignment.CenterEnd).graphicsLayer(alpha = 0.9f),
         )
     }
 }

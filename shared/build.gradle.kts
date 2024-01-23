@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.buildKonfig)
+    alias(libs.plugins.moko.resources)
 }
 
 kotlin {
@@ -35,6 +36,7 @@ kotlin {
 
             export(libs.decompose.core)
             export(libs.essenty.lifecycle)
+            export(libs.moko.resources)
             export(project(":mapkit-compose"))
             export(project(":mapkit"))
         }
@@ -57,6 +59,7 @@ kotlin {
             api(libs.essenty.lifecycle)
             implementation(libs.kotlinx.serialization)
             implementation(libs.kotlinx.coroutines)
+            implementation(libs.moko.resources)
             implementation(libs.haze)
             api(libs.koin.core)
             api(project(":mapkit-compose"))
@@ -82,4 +85,7 @@ buildkonfig {
     defaultConfigs{
         this.buildConfigField(FieldSpec.Type.STRING, "API_KEY", SecretMapVariables.API_KEY, const = true)
     }
+}
+multiplatformResources {
+    resourcesPackage = "ru.mystreet.app"
 }

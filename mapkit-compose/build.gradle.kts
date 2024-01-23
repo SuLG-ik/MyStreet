@@ -42,6 +42,7 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
+            api(libs.moko.resources)
             api(project(":mapkit"))
         }
         commonTest.dependencies {

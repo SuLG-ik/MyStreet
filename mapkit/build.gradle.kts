@@ -32,6 +32,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            api(libs.moko.resources)
             implementation(libs.kotlinx.coroutines)
         }
         androidMain.dependencies {

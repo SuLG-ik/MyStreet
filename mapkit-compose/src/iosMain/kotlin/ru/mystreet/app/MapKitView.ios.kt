@@ -2,26 +2,18 @@
 
 package ru.mystreet.app
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.safeContent
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.interop.UIKitView
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalLayoutDirection
-import cocoapods.YandexMapsMobile.YMKLogoPadding.Companion.paddingWithHorizontalPadding
+import cocoapods.YandexMapsMobile.YMKMapKit
 import cocoapods.YandexMapsMobile.YMKMapView
+import cocoapods.YandexMapsMobile.mapKit
 import kotlinx.cinterop.ExperimentalForeignApi
-import platform.darwin.NSInteger
-import platform.darwin.NSUInteger
 import ru.mystreet.map.Map
 
+@OptIn(ExperimentalForeignApi::class)
 @Composable
 actual fun MapView(
     mapController: MapController,
@@ -31,7 +23,12 @@ actual fun MapView(
     DisposableEffect(mapView, mapController) {
         val map = mapView.mapWindow?.map
         if (map != null)
-            mapController.bindAnchor(Map(map))
+            mapController.bindAnchor(
+                Map(
+                    map = map,
+                    userLocationLayer = YMKMapKit.mapKit().createUserLocationLayerWithMapWindow(mapView.mapWindow!!)
+                )
+            )
         onDispose {
             mapController.unbindAnchor()
         }

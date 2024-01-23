@@ -15,6 +15,7 @@ haze = "0.4.1"
 moko-permissions = "0.17.0"
 koin = "3.5.3"
 buildKonfig = "0.15.1"
+moko-resources = "0.24.0-alpha-2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -34,6 +35,8 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
 moko-permissions = { module = "dev.icerock.moko:permissions", version.ref="moko-permissions" }
+moko-resources = { module = "dev.icerock.moko:resources", version.ref="moko-resources" }
+
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
@@ -44,3 +47,4 @@ kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 buildKonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildKonfig" }
+moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref="moko-resources" }

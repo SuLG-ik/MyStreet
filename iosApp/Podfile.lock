@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
     :path: "../shared"
 
 SPEC CHECKSUMS:
-  shared: 6c5d90ebd40cd8c2556431e1df8bcdddc0f83469
+  shared: 570e4fa4bddb00aa7e0e5ca456ac68ad370dd524
   YandexMapsMobile: 74934971bbd3716e6daecfebed696c07b83b6b22
 
 PODFILE CHECKSUM: 78d6cc1b71b232202c48a29d4e6c34972c534c73

@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.stack.Children
@@ -54,7 +55,7 @@ fun AppScreen(
                         ScaffoldDefaults.contentWindowInsets.asPaddingValues(),
                         PaddingValues(bottom = 20.dp)
                     )
-                ),
+                ).graphicsLayer(alpha = 0.9f),
             )
         },
         modifier = modifier,

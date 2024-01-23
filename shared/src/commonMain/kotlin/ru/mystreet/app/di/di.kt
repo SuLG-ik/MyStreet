@@ -12,7 +12,7 @@ interface ModuleHost {
 class AppModule: ModuleHost {
 
     override val module = module {
-        includes(PlatformYandexMapModule().module)
+        includes(PlatformYandexMapModule().module, MokoAssetsModule().module)
     }
 
 }
