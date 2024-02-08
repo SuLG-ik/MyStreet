@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Моя улица</string>
+    <string name="general_map_title">Карта благоустройства</string>
+    <string name="parks_map_title">Карта парков</string>
+    <string name="trash_map_title">Карта урн для мусора</string>
+    <string name="bower">Беседки</string>
+    <string name="bench">Лавочки</string>
+    <string name="fountain">Фонтаны</string>
+    <string name="green-zone">Растения</string>
+    <string name="monument">Памятники</string>
+    <string name="playground">Площадки</string>
+    <string name="public-wc">Туалеты</string>
+    <string name="streetlight">Освещение</string>
+</resources>

@@ -9,6 +9,7 @@ import cocoapods.YandexMapsMobile.YMKCameraPosition
 import cocoapods.YandexMapsMobile.YMKCameraPosition.Companion.cameraPositionWithTarget
 import cocoapods.YandexMapsMobile.YMKMap
 import cocoapods.YandexMapsMobile.YMKMapCameraCallback
+import cocoapods.YandexMapsMobile.YMKMapView
 import cocoapods.YandexMapsMobile.YMKObjectEvent
 import cocoapods.YandexMapsMobile.YMKPlacemarkMapObject
 import cocoapods.YandexMapsMobile.YMKPoint
@@ -46,11 +47,16 @@ class UserLocationImage(
     }
 
     override fun onObjectUpdatedWithView(view: YMKUserLocationView, event: YMKObjectEvent) {
+
     }
 
 }
 
-actual class Map(private val map: YMKMap, private val userLocationLayer: YMKUserLocationLayer) {
+actual class Map(
+    private val mapView: YMKMapView,
+    private val map: YMKMap,
+    private val userLocationLayer: YMKUserLocationLayer
+) {
     private var userLocationObjectListener: UserLocationImage? = null
 
     actual val cameraPosition: CameraPosition
@@ -93,7 +99,12 @@ actual class Map(private val map: YMKMap, private val userLocationLayer: YMKUser
     }
 
     actual fun followUserLocation() {
-        userLocationLayer.setAnchorWithAnchorNormal(CGPointMake(0.5, 0.5), CGPointMake(0.5, 0.5))
+        userLocationLayer.setAutoZoomEnabled(true)
+
+        userLocationLayer.setAnchorWithAnchorNormal(
+            CGPointMake(mapView.mapWindow!!.width() / 2.0, mapView.mapWindow!!.height() / 2.0),
+            CGPointMake(mapView.mapWindow!!.width() / 2.0, mapView.mapWindow!!.height() / 2.0),
+        )
     }
 
     actual fun unfollowUserLocation() {

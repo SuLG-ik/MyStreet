@@ -1,22 +1,24 @@
 [versions]
-compose = "1.5.4"
-compose-plugin = "1.6.0-alpha01"
-compose-compiler = "1.5.6"
-agp = "8.2.1"
-kotlin = "1.9.21"
+compose = "1.6.0"
+compose-plugin = "1.6.0-beta02"
+compose-compiler = "1.5.8"
+agp = "8.2.2"
+kotlin = "1.9.22"
 kotlinx-serialization = "1.6.2"
-kotlinx-coroutines = "1.7.3"
-compose-material3 = "1.1.2"
+kotlinx-coroutines = "1.8.0-RC2"
+compose-material3 = "1.2.0-rc01"
 androidx-activityCompose = "1.8.2"
-yandex-mapkit = "4.4.0-lite"
-decompose = "3.0.0-alpha04"
-essenty = "2.0.0-alpha02"
-haze = "0.4.1"
+yandex-mapkit = "4.5.0-lite"
+decompose = "3.0.0-alpha05"
+essenty = "2.0.0-alpha04"
+haze = "0.4.5"
 moko-permissions = "0.17.0"
 koin = "3.5.3"
 buildKonfig = "0.15.1"
-moko-resources = "0.24.0-alpha-2"
+moko-resources = "0.24.0-alpha-3"
 gms-location = "21.1.0"
+mvikotlin = "4.0.0-alpha02"
+datastore = "1.1.0-beta01"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -30,15 +32,23 @@ yandex-mapkit = { module = "com.yandex.android:maps.mobile", version.ref = "yand
 decompose-core = { module = "com.arkivanov.decompose:decompose", version.ref = "decompose" }
 decompose-ui = { module = "com.arkivanov.decompose:extensions-compose", version.ref = "decompose" }
 essenty-lifecycle = { module = "com.arkivanov.essenty:lifecycle", version.ref = "essenty" }
+essenty-coroutines = { module = "com.arkivanov.essenty:lifecycle-coroutines", version.ref = "essenty" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-test = { module = "io.insert-koin:koin-test", version.ref = "koin" }
+koin-test-junit4 = { module = "io.insert-koin:koin-test", version.ref = "koin" }
 haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
-moko-permissions = { module = "dev.icerock.moko:permissions", version.ref="moko-permissions" }
-moko-resources = { module = "dev.icerock.moko:resources", version.ref="moko-resources" }
-gms-location = { module = "com.google.android.gms:play-services-location", version.ref="gms-location" }
-
+haze-android = { module = "dev.chrisbanes.haze:haze-jetpack-compose", version.ref = "haze" }
+moko-permissions = { module = "dev.icerock.moko:permissions", version.ref = "moko-permissions" }
+moko-resources = { module = "dev.icerock.moko:resources", version.ref = "moko-resources" }
+moko-resources-compose = { module = "dev.icerock.moko:resources-compose", version.ref = "moko-resources" }
+gms-location = { module = "com.google.android.gms:play-services-location", version.ref = "gms-location" }
+mvikotlin-core = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref = "mvikotlin" }
+mvikotlin-main = { module = "com.arkivanov.mvikotlin:mvikotlin-main", version.ref = "mvikotlin" }
+mvikotlin-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines", version.ref = "mvikotlin" }
+datastore-preferences = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
@@ -49,4 +59,7 @@ kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 buildKonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildKonfig" }
-moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref="moko-resources" }
+moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }
+
+[bundles]
+koin-test = ["koin-test", "koin-test-junit4"]

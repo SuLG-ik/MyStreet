@@ -2,19 +2,19 @@ package ru.mystreet.app.di
 
 import org.koin.core.module.Module
 import org.koin.dsl.module
+import ru.mystreet.app.store.mviModule
+import ru.mystreet.core.datastore.platformDataStoreModule
+import ru.mystreet.root.rootModule
 
-interface ModuleHost {
+val appModule = module {
+    includes(
+        platformYandexMapModule,
+        platformMokoAssetsStore,
+        platformDataStoreModule,
+        mviModule,
 
-    val module: Module
-
+        rootModule,
+    )
 }
 
-class AppModule: ModuleHost {
-
-    override val module = module {
-        includes(PlatformYandexMapModule().module, MokoAssetsModule().module)
-    }
-
-}
-
-expect class PlatformYandexMapModule(): ModuleHost
+expect val platformYandexMapModule: Module

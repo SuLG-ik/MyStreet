@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">My Street</string>
+    <string name="general_map_title">Landscaping map</string>
+    <string name="parks_map_title">Parks map</string>
+    <string name="trash_map_title">Recycler bins map</string>
+    <string name="bower">Bower</string>
+    <string name="bench">Bench</string>
+    <string name="fountain">Fountain</string>
+    <string name="green-zone">Plants</string>
+    <string name="monument">Monument</string>
+    <string name="playground">Playground</string>
+    <string name="public-wc">WC</string>
+    <string name="streetlight">light</string>
+</resources>

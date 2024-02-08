@@ -1,5 +1,8 @@
 package ru.mystreet.app
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import dev.icerock.moko.resources.ImageResource
 import kotlinx.coroutines.flow.MutableStateFlow
 import ru.mystreet.map.Map
@@ -11,24 +14,18 @@ class MapController {
 
     private val anchor: MutableStateFlow<Map?> = MutableStateFlow(null)
 
-    private var isMapInitialized = false
-
     private var userImage: ImageResource? = null
+
+    var isFollowLocation by mutableStateOf(false)
 
     private inline fun <T : Any> withAnchor(block: Map.() -> T): T? {
         return anchor.value?.run(block)
     }
 
-    private fun initializeMapController() {
-        if (isMapInitialized) return
-
-        isMapInitialized = true
-    }
-
     internal fun bindAnchor(map: Map) {
         anchor.value = map
         userImage?.let { map.setUserLocation(it) }
-        initializeMapController()
+        isFollowLocation = map.isFollowLocation
     }
 
     internal fun unbindAnchor() {
@@ -73,12 +70,14 @@ class MapController {
     fun followUserLocation() {
         withAnchor {
             followUserLocation()
+            this@MapController.isFollowLocation = isFollowLocation
         }
     }
 
     fun unfollowUserLocation() {
         withAnchor {
             unfollowUserLocation()
+            this@MapController.isFollowLocation = isFollowLocation
         }
     }
 

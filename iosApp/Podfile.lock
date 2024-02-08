@@ -1,7 +1,7 @@
 PODS:
   - shared (1.0):
-    - YandexMapsMobile (= 4.4.0-lite)
-  - YandexMapsMobile (4.4.0-lite)
+    - YandexMapsMobile (= 4.5.0-lite)
+  - YandexMapsMobile (4.5.0-lite)
 
 DEPENDENCIES:
   - shared (from `../shared`)
@@ -15,8 +15,8 @@ EXTERNAL SOURCES:
     :path: "../shared"
 
 SPEC CHECKSUMS:
-  shared: 570e4fa4bddb00aa7e0e5ca456ac68ad370dd524
-  YandexMapsMobile: 74934971bbd3716e6daecfebed696c07b83b6b22
+  shared: b851243d4b66f42c9368f59750977e726ac15a2e
+  YandexMapsMobile: 905ad1db0933f670e016f1f075f3b0a40ad86ef2
 
 PODFILE CHECKSUM: 78d6cc1b71b232202c48a29d4e6c34972c534c73
 

@@ -32,6 +32,8 @@ class UserLocationImage(
     }
 
     override fun onObjectUpdated(p0: UserLocationView, p1: ObjectEvent) {
+        println("PISOSSSSSS ${p0.pin.geometry.latitude} ${p0.pin.geometry.longitude} ${p1}")
+        println("PISOSSSSSS2 ${p0.arrow.geometry.latitude} ${p0.arrow.geometry.longitude} ${p1}")
         p0.arrow.setIcon(image.toImageProvider(context))
         p0.pin.setIcon(image.toImageProvider(context))
         p0.accuracyCircle.fillColor = RGBA(108, 176, 244, 50)
@@ -87,6 +89,7 @@ actual class Map(
     }
 
     actual fun followUserLocation() {
+        userLocationLayer.isAutoZoomEnabled = true
         userLocationLayer.setAnchor(PointF(0.5f, 0.5f), PointF(0.5f, 0.5f))
     }
 

@@ -2,6 +2,7 @@
 
 package ru.mystreet.app
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
@@ -19,16 +20,21 @@ actual fun MapView(
     mapController: MapController,
     modifier: Modifier
 ) {
+    val isDarkMode = isSystemInDarkTheme()
     val mapView = remember { YMKMapView() }
     DisposableEffect(mapView, mapController) {
         val map = mapView.mapWindow?.map
-        if (map != null)
+        if (map != null) {
+            map.nightModeEnabled = isDarkMode
             mapController.bindAnchor(
                 Map(
+                    mapView = mapView,
                     map = map,
-                    userLocationLayer = YMKMapKit.mapKit().createUserLocationLayerWithMapWindow(mapView.mapWindow!!)
+                    userLocationLayer = YMKMapKit.mapKit()
+                        .createUserLocationLayerWithMapWindow(mapView.mapWindow!!)
                 )
             )
+        }
         onDispose {
             mapController.unbindAnchor()
         }

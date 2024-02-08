@@ -1,9 +1,9 @@
 package ru.mystreet.app
 
-import ru.mystreet.app.component.MyStreetAppComponent
-import ru.mystreet.app.context.DIComponentContext
-import ru.mystreet.app.context.RootComponent
+import ru.mystreet.core.component.DIComponentContext
+import ru.mystreet.root.component.AppRoot
+import ru.mystreet.root.component.AppRootComponent
 
-fun appComponent(componentContext: DIComponentContext): RootComponent {
-    return MyStreetAppComponent(componentContext)
+fun appComponent(componentContext: DIComponentContext): AppRoot {
+    return AppRootComponent(componentContext)
 }

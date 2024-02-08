@@ -8,7 +8,6 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.buildKonfig)
-    alias(libs.plugins.moko.resources)
 }
 
 kotlin {
@@ -42,7 +41,7 @@ kotlin {
         }
         pod("YandexMapsMobile", libs.versions.yandex.mapkit.get())
     }
-    
+
     sourceSets {
         androidMain.dependencies {
             implementation(libs.koin.android)
@@ -54,18 +53,28 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
             api(libs.moko.permissions)
+            api(libs.mvikotlin.core)
+            api(libs.mvikotlin.main)
+            api(libs.mvikotlin.coroutines)
             api(libs.decompose.core)
             implementation(libs.decompose.ui)
             api(libs.essenty.lifecycle)
             implementation(libs.kotlinx.serialization)
             implementation(libs.kotlinx.coroutines)
+            api(libs.datastore.preferences)
             implementation(libs.moko.resources)
-            implementation(libs.haze)
+            implementation(libs.moko.resources.compose)
             api(libs.koin.core)
-            api(project(":mapkit-compose"))
+            api(projects.mapkitCompose)
+
+            api(projects.core.datastore)
+
+            api(projects.root)
+            api(projects.uikit)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.koin.test)
         }
     }
 }
@@ -82,10 +91,12 @@ buildkonfig {
     packageName = "ru.mystreet.app"
     // objectName = 'YourAwesomeConfig'
     // exposeObjectWithName = 'YourAwesomePublicConfig'
-    defaultConfigs{
-        this.buildConfigField(FieldSpec.Type.STRING, "API_KEY", SecretMapVariables.API_KEY, const = true)
+    defaultConfigs {
+        this.buildConfigField(
+            FieldSpec.Type.STRING,
+            "API_KEY",
+            System.getenv("map_api_key"),
+            const = true
+        )
     }
-}
-multiplatformResources {
-    resourcesPackage = "ru.mystreet.app"
 }

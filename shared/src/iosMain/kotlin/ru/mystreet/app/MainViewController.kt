@@ -1,8 +1,7 @@
 package ru.mystreet.app
 
 import androidx.compose.ui.window.ComposeUIViewController
-import platform.UIKit.UIApplicationDelegateProtocol
-import platform.darwin.NSObject
-import ru.mystreet.app.context.RootComponent
+import ru.mystreet.root.component.AppRoot
+import ru.mystreet.root.ui.AppRootUI
 
-fun MainViewController(root: RootComponent) = ComposeUIViewController { root.RootContent() }
+fun MainViewController(root: AppRoot) = ComposeUIViewController { AppRootUI(root) }
