@@ -13,6 +13,7 @@ private class MapUserLocationProvider(
     private val mapController: MapController,
     private val assetsStore: AssetsStore
 ) : UserLocationProvider {
+
     override fun start() {
         mapController.setUserLocation(assetsStore.userLocationAsset)
     }

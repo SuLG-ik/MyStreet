@@ -35,6 +35,7 @@ kotlin {
         commonMain.dependencies {
             api(libs.mvikotlin.core)
             api(libs.decompose.core)
+            api(libs.kotlinx.serialization)
             implementation(libs.decompose.ui)
             api(libs.essenty.lifecycle)
             api(libs.koin.core)

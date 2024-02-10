@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalForeignApi::class)
+@file:OptIn(ExperimentalForeignApi::class, ExperimentalForeignApi::class)
 
 package ru.mystreet.map
 
@@ -9,17 +9,14 @@ import cocoapods.YandexMapsMobile.YMKCameraPosition
 import cocoapods.YandexMapsMobile.YMKCameraPosition.Companion.cameraPositionWithTarget
 import cocoapods.YandexMapsMobile.YMKMap
 import cocoapods.YandexMapsMobile.YMKMapCameraCallback
-import cocoapods.YandexMapsMobile.YMKMapView
 import cocoapods.YandexMapsMobile.YMKObjectEvent
 import cocoapods.YandexMapsMobile.YMKPlacemarkMapObject
 import cocoapods.YandexMapsMobile.YMKPoint
 import cocoapods.YandexMapsMobile.YMKPoint.Companion.pointWithLatitude
-import cocoapods.YandexMapsMobile.YMKUserLocationLayer
 import cocoapods.YandexMapsMobile.YMKUserLocationObjectListenerProtocol
 import cocoapods.YandexMapsMobile.YMKUserLocationView
 import dev.icerock.moko.resources.ImageResource
 import kotlinx.cinterop.ExperimentalForeignApi
-import platform.CoreGraphics.CGPointMake
 import platform.UIKit.UIColor
 import platform.darwin.NSObject
 import ru.mystreet.map.geomety.Point
@@ -34,9 +31,11 @@ fun RGBA(r: Int, g: Int, b: Int, a: Int): UIColor {
     )
 }
 
+@OptIn(ExperimentalForeignApi::class)
 class UserLocationImage(
     private val image: ImageResource,
 ) : NSObject(), YMKUserLocationObjectListenerProtocol {
+
     override fun onObjectAddedWithView(view: YMKUserLocationView) {
         view.arrow.setIconWithImage(image.toUIImage()!!)
         view.pin.setIconWithImage(image.toUIImage()!!)
@@ -53,11 +52,8 @@ class UserLocationImage(
 }
 
 actual class Map(
-    private val mapView: YMKMapView,
-    private val map: YMKMap,
-    private val userLocationLayer: YMKUserLocationLayer
+    private val map: YMKMap
 ) {
-    private var userLocationObjectListener: UserLocationImage? = null
 
     actual val cameraPosition: CameraPosition
         get() = map.cameraPosition.toData()
@@ -81,39 +77,7 @@ actual class Map(
             )
     }
 
-    actual fun addPlacemark(
-        point: Point,
-        image: ImageResource
-    ): Placemark {
-        val placemark = map.mapObjects.addPlacemark()
-        placemark.geometry = point.toNative()
-        placemark.setIconWithImage(image.toUIImage()!!)
-        return placemark.toData()
-    }
-
-    actual fun setUserLocation(image: ImageResource) {
-        userLocationObjectListener = UserLocationImage(image)
-        userLocationLayer.setObjectListenerWithObjectListener(userLocationObjectListener)
-        userLocationLayer.setDefaultSource()
-        userLocationLayer.setVisibleWithOn(true)
-    }
-
-    actual fun followUserLocation() {
-        userLocationLayer.setAutoZoomEnabled(true)
-
-        userLocationLayer.setAnchorWithAnchorNormal(
-            CGPointMake(mapView.mapWindow!!.width() / 2.0, mapView.mapWindow!!.height() / 2.0),
-            CGPointMake(mapView.mapWindow!!.width() / 2.0, mapView.mapWindow!!.height() / 2.0),
-        )
-    }
-
-    actual fun unfollowUserLocation() {
-        userLocationLayer.resetAnchor()
-    }
-
-    actual val isFollowLocation: Boolean
-        get() = userLocationLayer.isAnchorEnabled()
-
+    actual val mapObjects: MapObjects = MapObjects(map.mapObjects)
 
 }
 

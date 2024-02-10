@@ -25,6 +25,7 @@ kotlin {
             api(libs.decompose.core)
             api(libs.decompose.ui)
             api(libs.moko.resources)
+            api(libs.moko.resources.compose)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

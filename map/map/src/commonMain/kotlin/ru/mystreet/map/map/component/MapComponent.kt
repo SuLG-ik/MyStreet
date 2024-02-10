@@ -11,6 +11,7 @@ import ru.mystreet.app.UserLocationProvider
 import ru.mystreet.app.locationProvider
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
+import ru.mystreet.uikit.MR
 
 class MapComponent(
     componentContext: DIComponentContext,

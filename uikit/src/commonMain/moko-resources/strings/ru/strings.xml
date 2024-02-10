@@ -11,4 +11,13 @@
     <string name="playground">Площадки</string>
     <string name="public-wc">Туалеты</string>
     <string name="streetlight">Освещение</string>
+    <string name="bower_full">Беседки, совместный отдых, столы</string>
+    <string name="bench_full">Лавочки, места для сиденья</string>
+    <string name="fountain_full">Фонтаны, сооружения с водой (todo)</string>
+    <string name="green-zone_full">Зелёные зоны, клумбы, деревья</string>
+    <string name="monument_full">Памятники, архитектурные объекты</string>
+    <string name="playground_full">Площадки, спортинвентарь, игровые зоны</string>
+    <string name="public-wc_full">Общественные туалеты</string>
+    <string name="streetlight_full">Освещение, фонари, светильники</string>
+    <string name="trash_full">Урны для мусора, точки сбора мусора</string>
 </resources>

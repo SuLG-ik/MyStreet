@@ -1,12 +1,10 @@
 package ru.mystreet.map
 
 import android.content.Context
-import android.graphics.PointF
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.layers.ObjectEvent
 import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.map.PlacemarkMapObject
-import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
 import dev.icerock.moko.resources.ImageResource
@@ -43,14 +41,9 @@ class UserLocationImage(
 
 
 actual class Map(
-    private val context: Context,
     private val map: Map,
-    private val userLocationLayer: UserLocationLayer,
+    context: Context,
 ) {
-    private var userLocationObjectListener: UserLocationObjectListener? = null
-
-    init {
-    }
 
     actual fun move(
         cameraPosition: CameraPosition,
@@ -68,42 +61,15 @@ actual class Map(
     actual val cameraPosition: CameraPosition
         get() = map.cameraPosition.toData()
 
-    actual val isFollowLocation: Boolean
-        get() = userLocationLayer.isAnchorEnabled
+    actual val mapObjects: MapObjects = MapObjects(map.mapObjects, context)
 
-    actual fun addPlacemark(
-        point: Point,
-        image: ImageResource
-    ): Placemark {
-        val placemark = map.mapObjects.addPlacemark()
-        placemark.setIcon(image.toImageProvider(context))
-        placemark.geometry = point.toNative()
-        return placemark.toData()
-    }
-
-    actual fun setUserLocation(image: ImageResource) {
-        userLocationObjectListener = UserLocationImage(image, context)
-        userLocationLayer.setObjectListener(userLocationObjectListener)
-        userLocationLayer.setDefaultSource()
-        userLocationLayer.isVisible = true
-    }
-
-    actual fun followUserLocation() {
-        userLocationLayer.isAutoZoomEnabled = true
-        userLocationLayer.setAnchor(PointF(0.5f, 0.5f), PointF(0.5f, 0.5f))
-    }
-
-    actual fun unfollowUserLocation() {
-        userLocationLayer.resetAnchor()
+    actual fun addCameraListener(listener: CameraListener) {
+        map.addCameraListener(MappingCameraListener(this, listener))
     }
 
 }
 
-private fun PlacemarkMapObject.toData(): Placemark {
-    return Placemark(this)
-}
-
-private fun com.yandex.mapkit.map.CameraPosition.toData(): CameraPosition {
+fun com.yandex.mapkit.map.CameraPosition.toData(): CameraPosition {
     return CameraPosition(target.toData(), zoom, azimuth, tilt)
 }
 

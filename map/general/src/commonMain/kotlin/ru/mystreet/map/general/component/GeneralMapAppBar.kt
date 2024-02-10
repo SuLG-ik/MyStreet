@@ -7,6 +7,12 @@ interface GeneralMapAppBar {
 
     val layers: Value<List<GeneralLayer>>
 
-    fun onToggleEnabled(layer: GeneralLayer)
+    val isInEditMode: Value<Boolean>
+
+    fun onLayerToggle(layer: GeneralLayer)
+
+    fun onEditModeToggle()
+
+
 
 }

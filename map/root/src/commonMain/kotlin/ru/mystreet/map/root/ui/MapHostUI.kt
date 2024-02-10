@@ -1,10 +1,12 @@
 package ru.mystreet.map.root.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.stack.animation.plus
@@ -15,6 +17,9 @@ import ru.mystreet.map.map.ui.MapUI
 import ru.mystreet.map.parks.ui.ParksMapAppBarUI
 import ru.mystreet.map.root.component.MapHost
 import ru.mystreet.map.trash.ui.TrashMapAppBarUI
+import ru.mystreet.map.ui.EditMapBottomBarUI
+import ru.mystreet.map.ui.EditMapOverlayUI
+import ru.mystreet.uikit.DefaultMapAlpha
 import ru.mystreet.uikit.animation.topBarSlide
 import ru.mystreet.uikit.paddingHorizontalInsets
 import ru.mystreet.uikit.paddingVerticalInsets
@@ -25,7 +30,9 @@ fun MapHostUI(
     modifier: Modifier = Modifier,
 ) {
     val currentChild by component.childStack.subscribeAsState()
+    val uiConfig by component.uiConfig.subscribeAsState()
     MapHostScreen(
+        isBottomBarVisible = uiConfig.isBottomBarVisible,
         currentConfig = currentChild.active.configuration,
         onNavigate = component::onNavigate,
         modifier = modifier,
@@ -37,11 +44,25 @@ fun MapHostUI(
                 )
             }
         },
-        map = {
-            MapUI(
-                component.map,
-                modifier = Modifier.fillMaxSize().paddingVerticalInsets().paddingHorizontalInsets()
+        bottomBarOverlay = {
+            EditMapBottomBarUI(
+                component = component.editMap.bottomBar,
+                modifier = Modifier.fillMaxWidth().paddingVerticalInsets().paddingHorizontalInsets()
+                    .alpha(DefaultMapAlpha)
             )
+        },
+        map = {
+            Box {
+                MapUI(
+                    component.map,
+                    modifier = Modifier.fillMaxSize().paddingVerticalInsets()
+                        .paddingHorizontalInsets()
+                )
+                EditMapOverlayUI(
+                    component.editMap,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
         }
     )
 }

@@ -5,3 +5,5 @@ data class GeneralLayer(
     val position: Int,
     val type: GeneralLayerType,
 )
+
+

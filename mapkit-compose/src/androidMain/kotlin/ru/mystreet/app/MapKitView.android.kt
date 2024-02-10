@@ -12,6 +12,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.mapview.MapView
 import ru.mystreet.map.Map
+import ru.mystreet.map.MapWindow
 
 @Composable
 actual fun MapView(
@@ -43,10 +44,9 @@ actual fun MapView(
         }
         lifecycleOwner.lifecycle.addObserver(observer)
         mapController.bindAnchor(
-            Map(
+            MapWindow(
+                mapView.mapWindow,
                 context,
-                mapView.mapWindow.map,
-                MapKitFactory.getInstance().createUserLocationLayer(mapView.mapWindow)
             )
         )
         onDispose {

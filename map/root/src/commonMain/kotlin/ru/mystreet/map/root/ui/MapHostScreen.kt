@@ -1,11 +1,17 @@
 package ru.mystreet.map.root.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -34,24 +40,35 @@ enum class MapHostNavItem(
 
 @Composable
 fun MapHostScreen(
+    isBottomBarVisible: Boolean,
     currentConfig: MapHost.Config,
     onNavigate: (MapHost.Config) -> Unit,
     childTopBar: @Composable () -> Unit,
     map: @Composable () -> Unit,
+    bottomBarOverlay: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
         topBar = childTopBar,
         bottomBar = {
             Box(
-                modifier = Modifier.clickable(false) {}
+                modifier = Modifier.clickable(false) {},
+                contentAlignment = Alignment.BottomCenter
             ) {
-                Navigation(
-                    currentItem = currentConfig.toUI(),
-                    allItems = enumValues<MapHostNavItem>(),
-                    onNavigate = { onNavigate(it.config) },
-                    modifier = Modifier.paddingVerticalInsets().graphicsLayer(alpha = DefaultMapAlpha),
-                )
+                AnimatedVisibility(
+                    isBottomBarVisible,
+                    enter = fadeIn() + slideInVertically { it },
+                    exit = fadeOut() + slideOutVertically { it }
+                ) {
+                    Navigation(
+                        currentItem = currentConfig.toUI(),
+                        allItems = enumValues<MapHostNavItem>(),
+                        onNavigate = { onNavigate(it.config) },
+                        modifier = Modifier.paddingVerticalInsets()
+                            .graphicsLayer(alpha = DefaultMapAlpha),
+                    )
+                }
+                bottomBarOverlay()
             }
         },
         modifier = modifier,
