@@ -14,7 +14,7 @@ fun EditMapSelectCategoryUI(
     val categories by component.selectedCategory.subscribeAsState()
     EditMapSelectCategoryScreen(
         categories = categories,
-        onSelect = {},
+        onSelect = component::onSelect,
         modifier = modifier,
     )
 }

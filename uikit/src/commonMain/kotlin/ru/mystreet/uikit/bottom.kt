@@ -32,7 +32,7 @@ fun Modifier.whiteBottom(
     scrollState: ScrollState,
     color: Color = MaterialTheme.colorScheme.surface,
 ): Modifier {
-    val animatedColorAlpha by animateFloatAsState(if (scrollState.canScrollForward) 1f else 0f, tween(250))
+    val animatedColorAlpha by animateFloatAsState(if (scrollState.canScrollForward) 0.99f else 0f, tween(250))
     val animatedAlpha by animateFloatAsState(if (scrollState.canScrollForward) 0.2f else 0f, tween(250))
     return this then drawWithContent {
         drawContent()

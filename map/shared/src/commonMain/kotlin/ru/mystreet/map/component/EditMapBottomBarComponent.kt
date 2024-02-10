@@ -21,8 +21,7 @@ class EditMapBottomBarComponent(
         }
     }
 
-    val navigation = StackNavigation<Config>()
-
+    private val navigation = StackNavigation<Config>()
 
     override val childStack: Value<ChildStack<*, EditMapBottomBar.Child>> = diChildStack(
         source = navigation,
@@ -36,7 +35,7 @@ class EditMapBottomBarComponent(
         diComponentContext: DIComponentContext
     ): EditMapBottomBar.Child {
         return when(config) {
-            Config.SelectCategory -> EditMapBottomBar.Child.SelectCategory(EditMapSelectCategoryComponent())
+            Config.SelectCategory -> EditMapBottomBar.Child.SelectCategory(EditMapSelectCategoryComponent(diComponentContext))
         }
     }
 

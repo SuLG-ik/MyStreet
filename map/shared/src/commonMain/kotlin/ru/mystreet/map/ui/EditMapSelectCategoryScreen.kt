@@ -51,12 +51,12 @@ enum class SelectableCategoryInfo(
 @Composable
 fun EditMapSelectCategoryScreen(
     categories: List<SelectableCategory>,
-    onSelect: (SelectableCategory) -> Unit,
+    onSelect: (SelectableCategoryType) -> Unit,
     modifier: Modifier
 ) {
     val scrollState = rememberScrollState()
     Surface(
-        modifier = modifier.height(350.dp),
+        modifier = modifier.height(200.dp),
         shape = MaterialTheme.shapes.large,
     ) {
         Column(
@@ -68,7 +68,7 @@ fun EditMapSelectCategoryScreen(
                 SelectableCategory(
                     isSelected = it.isSelected,
                     category = it.type.toUI(),
-                    onSelect = { onSelect(it) },
+                    onSelect = { onSelect(it.type) },
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -96,8 +96,8 @@ fun SelectableCategory(
         UIKitSelectableTonalIconButton(
             selected = isSelected,
             onClick = {},
-            selectedColor = MaterialTheme.colorScheme.primary,
-            unselectedColor = MaterialTheme.colorScheme.primaryContainer,
+            shape = MaterialTheme.shapes.medium,
+            unselectedColor = MaterialTheme.colorScheme.secondaryContainer,
             interactionSource = interactionSource,
         ) {
             Icon(

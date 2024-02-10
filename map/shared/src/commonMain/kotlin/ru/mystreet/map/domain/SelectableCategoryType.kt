@@ -1,5 +1,8 @@
 package ru.mystreet.map.domain
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 enum class SelectableCategoryType(
     val id: String
 ) {
