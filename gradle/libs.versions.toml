@@ -6,7 +6,7 @@ agp = "8.2.2"
 kotlin = "1.9.22"
 kotlinx-serialization = "1.6.2"
 kotlinx-coroutines = "1.8.0-RC2"
-compose-material3 = "1.2.0-rc01"
+compose-material3 = "1.2.0"
 androidx-activityCompose = "1.8.2"
 yandex-mapkit = "4.5.0-lite"
 decompose = "3.0.0-alpha05"
@@ -19,6 +19,7 @@ moko-resources = "0.24.0-alpha-3"
 gms-location = "21.1.0"
 mvikotlin = "4.0.0-alpha02"
 datastore = "1.1.0-beta01"
+apollo = "4.0.0-beta.4"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -49,6 +50,7 @@ mvikotlin-core = { module = "com.arkivanov.mvikotlin:mvikotlin", version.ref = "
 mvikotlin-main = { module = "com.arkivanov.mvikotlin:mvikotlin-main", version.ref = "mvikotlin" }
 mvikotlin-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-coroutines", version.ref = "mvikotlin" }
 datastore-preferences = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
+apollo = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
@@ -60,6 +62,7 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = "kotlin" }
 buildKonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildKonfig" }
 moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }
+apollo = { id = "com.apollographql.apollo3", version.ref = "apollo" }
 
 [bundles]
 koin-test = ["koin-test", "koin-test-junit4"]

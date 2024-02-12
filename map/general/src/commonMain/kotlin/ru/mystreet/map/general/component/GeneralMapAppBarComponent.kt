@@ -6,7 +6,7 @@ import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.getStore
 import ru.mystreet.core.component.values
-import ru.mystreet.map.domain.GeneralLayer
+import ru.mystreet.map.domain.entity.GeneralLayer
 import ru.mystreet.map.general.presentation.LayersConfigStore
 
 class GeneralMapAppBarComponent(

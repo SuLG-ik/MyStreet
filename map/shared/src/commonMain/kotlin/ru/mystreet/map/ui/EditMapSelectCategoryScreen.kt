@@ -26,8 +26,8 @@ import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import ru.mystreet.map.domain.SelectableCategory
-import ru.mystreet.map.domain.SelectableCategoryType
+import ru.mystreet.map.domain.entity.SelectableCategory
+import ru.mystreet.map.domain.entity.SelectableCategoryType
 import ru.mystreet.uikit.MR
 import ru.mystreet.uikit.UIKitSelectableTonalIconButton
 import ru.mystreet.uikit.tokens.UIKitSizeTokens

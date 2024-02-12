@@ -5,8 +5,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import kotlinx.coroutines.flow.map
 import ru.mystreet.core.datastore.DatastoreFactory
-import ru.mystreet.map.domain.GeneralLayer
-import ru.mystreet.map.domain.GeneralLayerType
+import ru.mystreet.map.domain.entity.GeneralLayer
+import ru.mystreet.map.domain.entity.GeneralLayerType
 import ru.mystreet.map.general.domain.repository.LayersConfigRepository
 
 class DataStoreLayersConfigRepositoryImpl(

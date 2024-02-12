@@ -2,8 +2,14 @@ package ru.mystreet.map.map.component
 
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.subscribe
+import com.arkivanov.mvikotlin.core.rx.Observer
+import com.arkivanov.mvikotlin.extensions.coroutines.labels
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.core.component.get
 import ru.mystreet.app.MapController
@@ -11,6 +17,9 @@ import ru.mystreet.app.UserLocationProvider
 import ru.mystreet.app.locationProvider
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
+import ru.mystreet.core.component.getStore
+import ru.mystreet.map.geomety.Point
+import ru.mystreet.map.map.presentation.MapObjectsStore
 import ru.mystreet.uikit.MR
 
 class MapComponent(
@@ -18,6 +27,28 @@ class MapComponent(
 ) : AppComponentContext(componentContext), Map {
 
     private val coroutineScope = coroutineScope()
+
+    private val store: MapObjectsStore = getStore()
+
+    init {
+        store.labels(object : Observer<MapObjectsStore.Label> {
+            override fun onComplete() {
+            }
+
+            override fun onNext(value: MapObjectsStore.Label) {
+                when (value) {
+                    is MapObjectsStore.Label.OnMapObjectsLoaded -> value.loadedMapObjects.forEach {
+                        mapController.addPlacemark(Point(it.latitude, it.longitude), MR.images.user_location)
+                    }
+                }
+            }
+
+        })
+        store.labels.onEach {
+            println(it.toString())
+        }.flowOn(Dispatchers.Main)
+            .launchIn(coroutineScope)
+    }
 
     override val mapController: MapController = MapController()
 

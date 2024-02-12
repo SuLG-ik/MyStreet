@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import dev.icerock.moko.resources.ImageResource
 import kotlinx.coroutines.flow.MutableStateFlow
 import ru.mystreet.map.CameraPosition
+import ru.mystreet.map.IconStyle
 import ru.mystreet.map.MapAnimation
 import ru.mystreet.map.MapWindow
 import ru.mystreet.map.Placemark
@@ -95,6 +96,12 @@ class MapController {
     }
 
     fun unfollowUserLocation() {
+    }
+
+    fun addPlacemarks(points: List<Point>, icon: ImageResource) {
+        withAnchor {
+            map.mapObjects.addClusterizedPlacemark().addPlacemarks(points, icon, IconStyle())
+        }
     }
 
     private fun setMapSizeChangedListener(

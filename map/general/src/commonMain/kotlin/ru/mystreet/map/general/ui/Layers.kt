@@ -1,6 +1,5 @@
 package ru.mystreet.map.general.ui
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import ru.mystreet.map.domain.GeneralLayer
+import ru.mystreet.map.domain.entity.GeneralLayer
 import ru.mystreet.uikit.DefaultMapAlpha
 import ru.mystreet.uikit.MR
 import ru.mystreet.uikit.UIKitSelectableTonalIconButton

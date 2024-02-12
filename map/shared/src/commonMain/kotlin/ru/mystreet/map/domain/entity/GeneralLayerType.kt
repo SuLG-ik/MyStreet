@@ -1,4 +1,4 @@
-package ru.mystreet.map.domain
+package ru.mystreet.map.domain.entity
 
 enum class GeneralLayerType(val id: String, val isEnabledByDefault: Boolean) {
     Bench("bench", true),

@@ -71,6 +71,7 @@ kotlin {
 
             api(projects.root)
             api(projects.uikit)
+            api(projects.core.graphql)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

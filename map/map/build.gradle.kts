@@ -41,7 +41,9 @@ kotlin {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
+            implementation(libs.kotlinx.coroutines)
             api(libs.mvikotlin.core)
+            api(libs.mvikotlin.coroutines)
             api(libs.decompose.core)
             implementation(projects.uikit)
             implementation(libs.decompose.ui)
@@ -50,6 +52,7 @@ kotlin {
             api(libs.koin.core)
             api(projects.core.component)
             api(projects.mapkitCompose)
+            api(projects.map.shared)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

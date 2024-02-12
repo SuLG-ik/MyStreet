@@ -15,7 +15,6 @@ fun MapScreen(
     onFollowLocation: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
     Box {
         MapView(
             mapController = mapController,

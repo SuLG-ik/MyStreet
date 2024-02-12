@@ -1,4 +1,4 @@
-package ru.mystreet.map.domain
+package ru.mystreet.map.domain.entity
 
 data class GeneralLayer(
     val isEnabled: Boolean,

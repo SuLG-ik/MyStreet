@@ -27,7 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
-import ru.mystreet.map.domain.GeneralLayer
+import ru.mystreet.map.domain.entity.GeneralLayer
 import ru.mystreet.uikit.DefaultMapAlpha
 import ru.mystreet.uikit.MR
 import ru.mystreet.uikit.UIKitAppBar

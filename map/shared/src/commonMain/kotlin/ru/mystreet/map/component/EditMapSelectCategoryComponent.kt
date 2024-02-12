@@ -7,8 +7,8 @@ import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.getSavedStateStore
 import ru.mystreet.core.component.values
-import ru.mystreet.map.domain.SelectableCategory
-import ru.mystreet.map.domain.SelectableCategoryType
+import ru.mystreet.map.domain.entity.SelectableCategory
+import ru.mystreet.map.domain.entity.SelectableCategoryType
 import ru.mystreet.map.presentation.EditMapSelectCategoryStore
 
 class EditMapSelectCategoryComponent(

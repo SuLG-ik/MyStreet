@@ -6,8 +6,8 @@ import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import kotlinx.coroutines.CoroutineDispatcher
-import ru.mystreet.map.domain.SelectableCategory
-import ru.mystreet.map.domain.SelectableCategoryType
+import ru.mystreet.map.domain.entity.SelectableCategory
+import ru.mystreet.map.domain.entity.SelectableCategoryType
 
 @OptIn(ExperimentalMviKotlinApi::class)
 class EditMapSelectCategoryStoreImpl(

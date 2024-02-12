@@ -1,8 +1,8 @@
 package ru.mystreet.map.component
 
 import com.arkivanov.decompose.value.Value
-import ru.mystreet.map.domain.SelectableCategory
-import ru.mystreet.map.domain.SelectableCategoryType
+import ru.mystreet.map.domain.entity.SelectableCategory
+import ru.mystreet.map.domain.entity.SelectableCategoryType
 
 interface EditMapSelectCategory {
 

@@ -1,8 +1,8 @@
 package ru.mystreet.map.general.presentation
 
 import com.arkivanov.mvikotlin.core.store.Store
-import ru.mystreet.map.domain.GeneralLayer
-import ru.mystreet.map.domain.GeneralLayerType
+import ru.mystreet.map.domain.entity.GeneralLayer
+import ru.mystreet.map.domain.entity.GeneralLayerType
 
 interface LayersConfigStore :
     Store<LayersConfigStore.Intent, LayersConfigStore.State, LayersConfigStore.Label> {

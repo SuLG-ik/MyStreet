@@ -1,4 +1,4 @@
-package ru.mystreet.map.domain
+package ru.mystreet.map.domain.entity
 
 import kotlinx.serialization.Serializable
 

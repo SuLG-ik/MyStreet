@@ -1,8 +1,8 @@
 package ru.mystreet.map.general.domain.repository
 
 import kotlinx.coroutines.flow.Flow
-import ru.mystreet.map.domain.GeneralLayer
-import ru.mystreet.map.domain.GeneralLayerType
+import ru.mystreet.map.domain.entity.GeneralLayer
+import ru.mystreet.map.domain.entity.GeneralLayerType
 
 interface LayersConfigRepository {
 
