@@ -33,11 +33,13 @@ kotlin {
         androidMain.dependencies {
         }
         commonMain.dependencies {
+            implementation(libs.kotlinx.coroutines)
             api(libs.mvikotlin.core)
             api(libs.decompose.core)
             api(libs.kotlinx.serialization)
             implementation(libs.decompose.ui)
             api(libs.essenty.lifecycle)
+            api(libs.essenty.coroutines)
             api(libs.koin.core)
         }
         commonTest.dependencies {

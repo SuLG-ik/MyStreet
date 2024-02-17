@@ -19,6 +19,8 @@ import dev.icerock.moko.resources.ImageResource
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.UIKit.UIColor
 import platform.darwin.NSObject
+import ru.mystreet.map.geomety.Latitude
+import ru.mystreet.map.geomety.Longitude
 import ru.mystreet.map.geomety.Point
 
 
@@ -90,7 +92,7 @@ private fun YMKCameraPosition.toData(): CameraPosition {
 }
 
 fun YMKPoint.toData(): Point {
-    return Point(latitude, longitude)
+    return Point(Latitude(latitude), Longitude(longitude))
 }
 
 class DelegatingYMKMapCameraCallback(private val callback: CameraCallback) : YMKMapCameraCallback {
@@ -120,5 +122,5 @@ private fun CameraPosition.toNative(): YMKCameraPosition {
 }
 
 fun Point.toNative(): YMKPoint {
-    return pointWithLatitude(latitude, longitude)
+    return pointWithLatitude(latitude.value, longitude.value)
 }

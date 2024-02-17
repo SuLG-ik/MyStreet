@@ -9,11 +9,13 @@ interface EditMapBottomBar {
 
     val isVisible: Value<Boolean>
 
-    fun onContinue()
-
     sealed interface Child {
 
-        data class SelectCategory(val component: EditMapSelectCategory): Child
+        data class SelectCategory(val component: EditMapSelectCategory) : Child
+
+        data class EditInfo(val component: EditMapNewObjectInfo) : Child
+
+        data class Loading(val component: EditMapNewObjectLoading) : Child
 
     }
 

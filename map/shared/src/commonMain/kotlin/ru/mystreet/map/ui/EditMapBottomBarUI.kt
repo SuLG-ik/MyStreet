@@ -5,17 +5,16 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.stack.Children
+import com.arkivanov.decompose.extensions.compose.stack.animation.slide
+import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ru.mystreet.map.component.EditMapBottomBar
+import ru.mystreet.uikit.paddingBottomInsets
+import ru.mystreet.uikit.paddingHorizontalInsets
 
 @Composable
 fun EditMapBottomBarUI(
@@ -25,23 +24,16 @@ fun EditMapBottomBarUI(
     AnimatedVisibility(
         component.isVisible.subscribeAsState().value,
         enter = fadeIn() + slideInVertically { it },
-        exit = fadeOut() + slideOutVertically { it }) {
-        Column(
-            modifier = modifier,
-            verticalArrangement = Arrangement.spacedBy(15.dp),
+        exit = fadeOut() + slideOutVertically { it },
+        modifier = modifier.paddingBottomInsets(),
+    ) {
+        Children(
+            component.childStack,
+            animation = stackAnimation(slide()),
         ) {
-            Children(component.childStack) {
-                EditMapBottomBarNavHost(
-                    child = it.instance,
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-            FilledTonalButton(
-                onClick = component::onContinue,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                Text("Сохранить")
-            }
+            EditMapBottomBarNavHost(
+                child = it.instance, modifier = Modifier.fillMaxWidth().paddingHorizontalInsets()
+            )
         }
     }
 }
@@ -49,7 +41,18 @@ fun EditMapBottomBarUI(
 @Composable
 fun EditMapBottomBarNavHost(child: EditMapBottomBar.Child, modifier: Modifier) {
     when (child) {
-        is EditMapBottomBar.Child.SelectCategory ->
-            EditMapSelectCategoryUI(child.component, modifier = modifier)
+        is EditMapBottomBar.Child.SelectCategory -> EditMapSelectCategoryUI(
+            component = child.component,
+            modifier = modifier
+        )
+
+        is EditMapBottomBar.Child.EditInfo -> EditMapNewObjectInfoUI(
+            component = child.component,
+            modifier = modifier
+        )
+
+        is EditMapBottomBar.Child.Loading -> EditMapNewObjectLoadingUI(
+            component = child.component, modifier = modifier
+        )
     }
 }

@@ -7,12 +7,13 @@ import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.getSavedStateStore
 import ru.mystreet.core.component.values
+import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.domain.entity.SelectableCategory
-import ru.mystreet.map.domain.entity.SelectableCategoryType
 import ru.mystreet.map.presentation.EditMapSelectCategoryStore
 
 class EditMapSelectCategoryComponent(
-    componentContext: DIComponentContext
+    componentContext: DIComponentContext,
+    private val onContinue: (MapObjectCategory) -> Unit,
 ) : AppComponentContext(componentContext), EditMapSelectCategory {
 
     private val store: EditMapSelectCategoryStore = getSavedStateStore(
@@ -21,11 +22,20 @@ class EditMapSelectCategoryComponent(
 
     override val isContinueAvailable: Value<Boolean> = MutableValue(true)
 
-    override val selectedCategory: Value<List<SelectableCategory>> =
-        store.values(this).map { it.categories }
+    private val state = store.values(this)
 
-    override fun onSelect(categoryType: SelectableCategoryType) {
+    override val selectedCategories: Value<List<SelectableCategory>> =
+        state.map { it.categories }
+
+    override val selectedCategory: Value<MapObjectCategory> =
+        state.map { it.selectedCategory }
+
+    override fun onSelect(categoryType: MapObjectCategory) {
         store.accept(EditMapSelectCategoryStore.Intent.SelectCategory(categoryType))
+    }
+
+    override fun onContinue() {
+        onContinue.invoke(store.state.selectedCategory)
     }
 
 }

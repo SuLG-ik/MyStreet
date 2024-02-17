@@ -8,6 +8,10 @@ import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.rx.Observer
 import com.arkivanov.mvikotlin.core.store.Store
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.core.component.get
 import org.koin.core.parameter.parametersOf
 
@@ -41,7 +45,7 @@ fun <T : Any, E : Any, M : Any> zip(
 }
 
 class ValueObserver<T : Any>(
-    private val mutableValue: MutableValue<T>
+    private val mutableValue: MutableValue<T>,
 ) : Observer<T> {
     override fun onComplete() {
     }

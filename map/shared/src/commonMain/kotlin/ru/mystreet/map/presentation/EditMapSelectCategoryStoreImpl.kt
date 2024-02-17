@@ -7,7 +7,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import ru.mystreet.map.domain.entity.SelectableCategory
-import ru.mystreet.map.domain.entity.SelectableCategoryType
+import ru.mystreet.map.domain.entity.MapObjectCategory
 
 @OptIn(ExperimentalMviKotlinApi::class)
 class EditMapSelectCategoryStoreImpl(
@@ -49,7 +49,7 @@ class EditMapSelectCategoryStoreImpl(
     sealed interface Message {
         data class SetSelectedCategories(
             val categories: List<SelectableCategory>,
-            val selectedCategory: SelectableCategoryType,
+            val selectedCategory: MapObjectCategory,
         ) : Message
     }
 
@@ -58,8 +58,8 @@ class EditMapSelectCategoryStoreImpl(
     }
 }
 
-private fun defaultSelectableCategories(selectedCategory: SelectableCategoryType): List<SelectableCategory> {
-    return SelectableCategoryType.entries.mapIndexed { index, type ->
+private fun defaultSelectableCategories(selectedCategory: MapObjectCategory): List<SelectableCategory> {
+    return MapObjectCategory.entries.mapIndexed { index, type ->
         SelectableCategory(
             isSelected = type == selectedCategory,
             position = index + 1,

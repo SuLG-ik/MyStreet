@@ -3,13 +3,8 @@ package ru.mystreet.map.map.component
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.subscribe
 import com.arkivanov.mvikotlin.core.rx.Observer
-import com.arkivanov.mvikotlin.extensions.coroutines.labels
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.core.component.get
 import ru.mystreet.app.MapController
@@ -44,10 +39,6 @@ class MapComponent(
             }
 
         })
-        store.labels.onEach {
-            println(it.toString())
-        }.flowOn(Dispatchers.Main)
-            .launchIn(coroutineScope)
     }
 
     override val mapController: MapController = MapController()

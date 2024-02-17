@@ -7,6 +7,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -68,12 +69,17 @@ fun MapHostScreen(
                             .graphicsLayer(alpha = DefaultMapAlpha),
                     )
                 }
-                bottomBarOverlay()
             }
         },
         modifier = modifier,
     ) {
-        map()
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter,
+        ) {
+            map()
+            bottomBarOverlay()
+        }
     }
 }
 

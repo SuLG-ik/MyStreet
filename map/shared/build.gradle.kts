@@ -34,7 +34,7 @@ kotlin {
             implementation(projects.core.component)
             implementation(projects.mapkitCompose)
             implementation(projects.uikit)
-            implementation(projects.core.graphql)
+            api(projects.core.graphql)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

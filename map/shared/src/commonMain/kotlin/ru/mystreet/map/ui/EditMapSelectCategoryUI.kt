@@ -11,10 +11,11 @@ fun EditMapSelectCategoryUI(
     component: EditMapSelectCategory,
     modifier: Modifier,
 ) {
-    val categories by component.selectedCategory.subscribeAsState()
+    val categories by component.selectedCategories.subscribeAsState()
     EditMapSelectCategoryScreen(
         categories = categories,
         onSelect = component::onSelect,
+        onContinue = component::onContinue,
         modifier = modifier,
     )
 }

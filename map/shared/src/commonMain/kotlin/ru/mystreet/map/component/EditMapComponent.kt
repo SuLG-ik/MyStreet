@@ -12,7 +12,7 @@ import ru.mystreet.map.presentation.EditMapStore
 
 class EditMapComponent(
     componentContext: DIComponentContext,
-    private val mapController: MapController,
+    mapController: MapController,
 ) : AppComponentContext(componentContext), EditMap {
 
     private val store: EditMapStore =
@@ -29,10 +29,17 @@ class EditMapComponent(
         EditMapBottomBarComponent(
             componentContext = diChildContext(key = "edit_map_bottom_bar"),
             isVisible = isEnabled,
+            currentTarget = mapController.currentTarget,
+            onObjectAdded = this::onToggleDisabled,
         )
 
     override fun onToggleEnabled() {
-        store.accept(EditMapStore.Intent.ToggleEnabled)
+        store.accept(EditMapStore.Intent.Toggle(!state.value.isEnabled))
+    }
+
+
+    private fun onToggleDisabled() {
+        store.accept(EditMapStore.Intent.Toggle(false))
     }
 
 }

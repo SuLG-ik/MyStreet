@@ -58,7 +58,7 @@ buildkonfig {
         this.buildConfigField(
             FieldSpec.Type.STRING,
             "MYSTREET_GRAPHQL_URL",
-            "http://10.0.2.2:8000/graphql",
+            System.getenv("MYSTREET_GRAPHQL_URL"),
             const = true,
         )
     }

@@ -1,8 +1,12 @@
 package ru.mystreet.map.root.ui
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -47,8 +51,9 @@ fun MapHostUI(
         bottomBarOverlay = {
             EditMapBottomBarUI(
                 component = component.editMap.bottomBar,
-                modifier = Modifier.fillMaxWidth().paddingVerticalInsets().paddingHorizontalInsets()
+                modifier = Modifier.fillMaxWidth()
                     .alpha(DefaultMapAlpha)
+                    .padding(WindowInsets.ime.asPaddingValues())
             )
         },
         map = {

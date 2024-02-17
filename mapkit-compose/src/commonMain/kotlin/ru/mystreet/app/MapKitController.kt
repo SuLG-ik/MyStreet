@@ -5,11 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import dev.icerock.moko.resources.ImageResource
 import kotlinx.coroutines.flow.MutableStateFlow
+import ru.mystreet.map.CameraListener
 import ru.mystreet.map.CameraPosition
 import ru.mystreet.map.IconStyle
 import ru.mystreet.map.MapAnimation
 import ru.mystreet.map.MapWindow
 import ru.mystreet.map.Placemark
+import ru.mystreet.map.SizeChangedListener
 import ru.mystreet.map.geomety.Point
 import ru.mystreet.map.geomety.ScreenPoint
 
@@ -18,6 +20,7 @@ class MapController {
     private val anchor: MutableStateFlow<MapWindow?> = MutableStateFlow(null)
 
     val cameraPosition: MutableStateFlow<CameraPosition?> = MutableStateFlow(null)
+    val currentTarget: MutableStateFlow<Point> = MutableStateFlow(Point())
 
     private var userImage: ImageResource? = null
 
@@ -29,6 +32,17 @@ class MapController {
         return anchor.value?.run(block)
     }
 
+    private val sizeChangedListener =
+        SizeChangedListener { window, _, _ ->
+            updatePinLocation(window.map.cameraPosition)
+            updateCameraPosition(window.map.cameraPosition)
+        }
+    private val cameraListener =
+        CameraListener { _, cameraPosition, _, _ ->
+            updatePinLocation(cameraPosition)
+            updateCameraPosition(cameraPosition)
+        }
+
     internal fun bindAnchor(map: MapWindow) {
         anchor.value = map
         setMapSizeChangedListener(map)
@@ -36,8 +50,11 @@ class MapController {
     }
 
     internal fun unbindAnchor() {
+        withAnchor {
+            removeCameraListener(this)
+            removeMapSizeChangedListener(this)
+        }
         anchor.value = null
-        removeCenterAlignedPin()
     }
 
     fun zoom(value: Float, animate: Boolean = false) {
@@ -85,10 +102,6 @@ class MapController {
         }
     }
 
-    fun removeCenterAlignedPin() {
-        pin = null
-    }
-
     fun setUserLocation(image: ImageResource) {
     }
 
@@ -107,19 +120,25 @@ class MapController {
     private fun setMapSizeChangedListener(
         anchor: MapWindow,
     ) {
-        anchor.addSizeChangedListener { _, _, _ ->
-            updatePinLocation(anchor)
-            updateCameraPosition(anchor.map.cameraPosition)
-        }
+        anchor.addSizeChangedListener(sizeChangedListener)
     }
 
     private fun setCameraListener(
         anchor: MapWindow,
     ) {
-        anchor.map.addCameraListener { _, position, _, _ ->
-            updatePinLocation(position)
-            updateCameraPosition(position)
-        }
+        anchor.map.addCameraListener(cameraListener)
+    }
+
+    private fun removeMapSizeChangedListener(
+        anchor: MapWindow,
+    ) {
+        anchor.addSizeChangedListener(sizeChangedListener)
+    }
+
+    private fun removeCameraListener(
+        anchor: MapWindow,
+    ) {
+        anchor.map.addCameraListener(cameraListener)
     }
 
     private fun updatePinLocation(anchor: MapWindow) {
@@ -138,6 +157,7 @@ class MapController {
 
     private fun updateCameraPosition(cameraPosition: CameraPosition) {
         this.cameraPosition.value = cameraPosition
+        this.currentTarget.value = cameraPosition.target
     }
 
 }

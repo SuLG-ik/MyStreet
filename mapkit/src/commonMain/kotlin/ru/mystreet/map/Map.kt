@@ -14,4 +14,6 @@ expect class Map {
 
     fun addCameraListener(listener: CameraListener)
 
+    fun removeCameraListener(listener: CameraListener)
+
 }

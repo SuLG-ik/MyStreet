@@ -4,5 +4,12 @@ query GetAllMapObjects{
         title
         latitude
         longitude
+        category {
+            id
+        }
+        tags {
+            id
+            title
+        }
     }
 }
