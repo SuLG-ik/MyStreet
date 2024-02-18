@@ -45,6 +45,7 @@ android {
 dependencies {
 //    implementation(libs.gms.location)
     implementation(projects.shared)
+    implementation(libs.splash)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
