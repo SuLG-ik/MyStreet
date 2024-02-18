@@ -21,6 +21,7 @@ gms-location = "21.1.0"
 mvikotlin = "4.0.0-alpha02"
 datastore = "1.1.0-beta01"
 apollo = "4.0.0-beta.4"
+splash = "1.0.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -56,6 +57,7 @@ mvikotlin-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-
 datastore-preferences = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
 datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore" }
 apollo = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
+splash = { module = "androidx.core:core-splashscreen", version.ref="splash" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
