@@ -45,7 +45,7 @@ class MapObjectsStoreImpl(
                     }
                 }
             }
-            onIntentWithCoolDown<MapObjectsStore.Intent.UpdateCameraPosition, _, _, _, _, _>(3.seconds) {
+            onIntentWithCoolDown<MapObjectsStore.Intent.UpdateCameraPosition, _, _, _, _, _>(1.seconds) {
                 launch {
                     saveMapInitialCameraPositionUseCase(it.cameraPosition)
                 }
