@@ -32,6 +32,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(libs.kotlinx.serialization)
             api(libs.moko.resources)
             implementation(libs.kotlinx.coroutines)
         }

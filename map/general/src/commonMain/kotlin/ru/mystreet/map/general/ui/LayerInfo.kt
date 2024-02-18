@@ -2,7 +2,7 @@ package ru.mystreet.map.general.ui
 
 import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.StringResource
-import ru.mystreet.map.domain.GeneralLayerType
+import ru.mystreet.map.domain.entity.GeneralLayerType
 import ru.mystreet.uikit.MR
 
 enum class LayerInfo(

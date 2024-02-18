@@ -1,17 +1,17 @@
 package ru.mystreet.map
 
 import android.content.Context
-import android.graphics.PointF
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.layers.ObjectEvent
 import com.yandex.mapkit.map.Map
-import com.yandex.mapkit.map.PlacemarkMapObject
-import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
 import dev.icerock.moko.resources.ImageResource
+import ru.mystreet.map.geomety.Latitude
+import ru.mystreet.map.geomety.Longitude
 import ru.mystreet.map.geomety.Point
 import ru.mystreet.map.location.toImageProvider
+import com.yandex.mapkit.map.CameraListener as NativeCameraListener
 
 
 fun RGBA(r: Int, g: Int, b: Int, a: Int): Int {
@@ -32,8 +32,6 @@ class UserLocationImage(
     }
 
     override fun onObjectUpdated(p0: UserLocationView, p1: ObjectEvent) {
-        println("PISOSSSSSS ${p0.pin.geometry.latitude} ${p0.pin.geometry.longitude} ${p1}")
-        println("PISOSSSSSS2 ${p0.arrow.geometry.latitude} ${p0.arrow.geometry.longitude} ${p1}")
         p0.arrow.setIcon(image.toImageProvider(context))
         p0.pin.setIcon(image.toImageProvider(context))
         p0.accuracyCircle.fillColor = RGBA(108, 176, 244, 50)
@@ -43,14 +41,11 @@ class UserLocationImage(
 
 
 actual class Map(
-    private val context: Context,
     private val map: Map,
-    private val userLocationLayer: UserLocationLayer,
+    context: Context,
 ) {
-    private var userLocationObjectListener: UserLocationObjectListener? = null
 
-    init {
-    }
+    private val cameraListeners = mutableMapOf<CameraListener, NativeCameraListener>()
 
     actual fun move(
         cameraPosition: CameraPosition,
@@ -68,47 +63,27 @@ actual class Map(
     actual val cameraPosition: CameraPosition
         get() = map.cameraPosition.toData()
 
-    actual val isFollowLocation: Boolean
-        get() = userLocationLayer.isAnchorEnabled
+    actual val mapObjects: MapObjects = MapObjects(map.mapObjects, context)
 
-    actual fun addPlacemark(
-        point: Point,
-        image: ImageResource
-    ): Placemark {
-        val placemark = map.mapObjects.addPlacemark()
-        placemark.setIcon(image.toImageProvider(context))
-        placemark.geometry = point.toNative()
-        return placemark.toData()
+    actual fun addCameraListener(listener: CameraListener) {
+        val nativeListener = MappingCameraListener(this, listener)
+        cameraListeners[listener] = nativeListener
+        map.addCameraListener(nativeListener)
     }
 
-    actual fun setUserLocation(image: ImageResource) {
-        userLocationObjectListener = UserLocationImage(image, context)
-        userLocationLayer.setObjectListener(userLocationObjectListener)
-        userLocationLayer.setDefaultSource()
-        userLocationLayer.isVisible = true
-    }
-
-    actual fun followUserLocation() {
-        userLocationLayer.isAutoZoomEnabled = true
-        userLocationLayer.setAnchor(PointF(0.5f, 0.5f), PointF(0.5f, 0.5f))
-    }
-
-    actual fun unfollowUserLocation() {
-        userLocationLayer.resetAnchor()
+    actual fun removeCameraListener(listener: CameraListener) {
+        val nativeListener = cameraListeners.remove(listener) ?: return
+        map.addCameraListener(nativeListener)
     }
 
 }
 
-private fun PlacemarkMapObject.toData(): Placemark {
-    return Placemark(this)
-}
-
-private fun com.yandex.mapkit.map.CameraPosition.toData(): CameraPosition {
+fun com.yandex.mapkit.map.CameraPosition.toData(): CameraPosition {
     return CameraPosition(target.toData(), zoom, azimuth, tilt)
 }
 
 fun com.yandex.mapkit.geometry.Point.toData(): Point {
-    return Point(latitude, longitude)
+    return Point(Latitude(latitude), Longitude(longitude))
 }
 
 class DelegatingCameraCallback(
@@ -140,5 +115,5 @@ private fun CameraPosition.toNative(): com.yandex.mapkit.map.CameraPosition {
 }
 
 fun Point.toNative(): com.yandex.mapkit.geometry.Point {
-    return com.yandex.mapkit.geometry.Point(latitude, longitude)
+    return com.yandex.mapkit.geometry.Point(latitude.value, longitude.value)
 }

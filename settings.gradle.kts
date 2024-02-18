@@ -31,4 +31,4 @@ include(":map:parks")
 
 include(":core:component")
 include(":core:datastore")
-//include(":ui")
+include(":core:graphql")

@@ -12,6 +12,8 @@ import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,15 +27,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.stringResource
-import ru.mystreet.map.domain.GeneralLayer
+import ru.mystreet.map.domain.entity.GeneralLayer
 import ru.mystreet.uikit.DefaultMapAlpha
 import ru.mystreet.uikit.MR
 import ru.mystreet.uikit.UIKitAppBar
+import ru.mystreet.uikit.UIKitSelectableTonalIconButton
+import ru.mystreet.uikit.iconpack.UIKitIconPack
+import ru.mystreet.uikit.iconpack.uikiticonpack.EditIcon
+import ru.mystreet.uikit.tokens.UIKitSizeTokens
 
 @Composable
 fun GeneralMapAppBarScreen(
+    isInEditMode: Boolean,
     layers: List<GeneralLayer>,
-    onToggle: (GeneralLayer) -> Unit,
+    onLayerToggle: (GeneralLayer) -> Unit,
+    onEditModeToggle: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var isExpanded by rememberSaveable { mutableStateOf(false) }
@@ -44,11 +52,20 @@ fun GeneralMapAppBarScreen(
         UIKitAppBar(
             title = stringResource(MR.strings.app_name),
             subtitle = stringResource(MR.strings.general_map_title),
+            startActions = {
+                EditButton(
+                    isInEditMode = isInEditMode,
+                    onToggleMode = onEditModeToggle,
+                    modifier = Modifier.alpha(DefaultMapAlpha)
+                        .size(UIKitSizeTokens.DefaultIconButtonSize),
+                )
+            },
             endActions = {
                 LayersButton(
                     isSelected = isExpanded,
                     toggleSelected = { isExpanded = !isExpanded },
                     modifier = Modifier.alpha(DefaultMapAlpha)
+                        .size(UIKitSizeTokens.DefaultIconButtonSize),
                 )
             },
             modifier = Modifier.fillMaxWidth(),
@@ -62,9 +79,29 @@ fun GeneralMapAppBarScreen(
         ) {
             LayersContent(
                 layers = layers,
-                onToggleEnabled = onToggle
+                onToggleEnabled = onLayerToggle
             )
         }
+    }
+}
+
+@Composable
+fun EditButton(
+    isInEditMode: Boolean,
+    onToggleMode: () -> Unit,
+    modifier: Modifier,
+) {
+    UIKitSelectableTonalIconButton(
+        selected = isInEditMode,
+        onClick = onToggleMode,
+        shape = MaterialTheme.shapes.medium,
+        modifier = modifier,
+    ) {
+        Icon(
+            UIKitIconPack.EditIcon,
+            contentDescription = null,
+            modifier = Modifier.size(UIKitSizeTokens.DefaultIconSize)
+        )
     }
 }
 

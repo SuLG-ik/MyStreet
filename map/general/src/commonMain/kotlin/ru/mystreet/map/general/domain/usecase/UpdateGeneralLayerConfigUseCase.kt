@@ -1,6 +1,6 @@
 package ru.mystreet.map.general.domain.usecase
 
-import ru.mystreet.map.domain.GeneralLayerType
+import ru.mystreet.map.domain.entity.GeneralLayerType
 import ru.mystreet.map.general.domain.repository.LayersConfigRepository
 
 class UpdateGeneralLayerConfigUseCase(

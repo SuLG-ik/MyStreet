@@ -12,4 +12,5 @@ interface Map {
 
     fun onZoomInPress(isStart: Boolean)
 
+
 }

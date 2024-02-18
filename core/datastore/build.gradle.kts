@@ -35,6 +35,8 @@ kotlin {
         commonMain.dependencies {
             api(libs.koin.core)
             api(libs.datastore.preferences)
+            api(libs.kotlinx.serialization.okio)
+            api(libs.datastore.core)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -1,0 +1,15 @@
+query GetAllMapObjects{
+    getMapObjects {
+        id
+        title
+        latitude
+        longitude
+        category {
+            id
+        }
+        tags {
+            id
+            title
+        }
+    }
+}

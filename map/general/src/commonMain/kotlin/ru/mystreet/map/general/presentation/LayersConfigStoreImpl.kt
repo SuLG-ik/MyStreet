@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import ru.mystreet.map.domain.GeneralLayer
+import ru.mystreet.map.domain.entity.GeneralLayer
 import ru.mystreet.map.general.domain.usecase.GeneralLayersConfigFlowUseCase
 import ru.mystreet.map.general.domain.usecase.UpdateGeneralLayerConfigUseCase
 

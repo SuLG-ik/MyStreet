@@ -24,6 +24,16 @@ fun Modifier.paddingVerticalInsets() =
             top = ScaffoldDefaults.contentWindowInsets.asPaddingValues().calculateTopPadding(),
         )
     )
+@Composable
+fun Modifier.paddingBottomInsets() =
+    this then Modifier.padding(
+        PaddingValues(
+            bottom = maxOf(
+                ScaffoldDefaults.contentWindowInsets.asPaddingValues().calculateBottomPadding(),
+                20.dp
+            ),
+        )
+    )
 
 @Composable
 fun Modifier.paddingHorizontalInsets() =
