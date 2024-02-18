@@ -8,12 +8,16 @@ import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.rx.Observer
 import com.arkivanov.mvikotlin.core.store.Store
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
+import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutorScope
+import com.arkivanov.mvikotlin.extensions.coroutines.ExecutorBuilder
+import kotlinx.datetime.Clock
+import kotlinx.datetime.asTimeSource
 import org.koin.core.component.get
 import org.koin.core.parameter.parametersOf
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.seconds
+import kotlin.time.ExperimentalTime
 
 inline fun <reified T : Store<*, *, *>> DIComponentContext.getStore(
     vararg params: Any,
@@ -54,4 +58,21 @@ class ValueObserver<T : Any>(
         mutableValue.value = value
     }
 
+}
+
+@OptIn(ExperimentalTime::class)
+val timeSource = Clock.System.asTimeSource()
+
+@OptIn(ExperimentalMviKotlinApi::class)
+inline fun <reified T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any> ExecutorBuilder<Intent, Action, State, Message, Label>.onIntentWithCoolDown(
+    time: Duration,
+    noinline handler: CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
+) {
+    var nextLaunchTime = timeSource.markNow()
+    onIntent<T> {
+        if (nextLaunchTime.hasPassedNow()) {
+            handler(it)
+            nextLaunchTime = timeSource.markNow() + time
+        }
+    }
 }

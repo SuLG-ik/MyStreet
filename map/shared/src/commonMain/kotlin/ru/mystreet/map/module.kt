@@ -5,10 +5,14 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import ru.mystreet.map.data.converter.GraphqlMapObjectsConverter
+import ru.mystreet.map.data.repository.DataStoreLocalMapConfigRepository
 import ru.mystreet.map.data.repository.GraphqlMapObjectsRepository
 import ru.mystreet.map.domain.entity.MapObject
+import ru.mystreet.map.domain.repository.LocalMapConfigRepository
 import ru.mystreet.map.domain.repository.MapObjectsRepository
 import ru.mystreet.map.domain.usecase.AddMapObjectUseCase
+import ru.mystreet.map.domain.usecase.LoadLocalMapConfigUseCase
+import ru.mystreet.map.domain.usecase.SaveMapInitialCameraPositionUseCase
 import ru.mystreet.map.presentation.EditMapNewObjectInfoStore
 import ru.mystreet.map.presentation.EditMapNewObjectInfoStoreImpl
 import ru.mystreet.map.presentation.EditMapNewObjectLoadingStore
@@ -24,6 +28,9 @@ val mapSharedModule = module {
     factoryOf(::EditMapNewObjectInfoStoreImpl) bind EditMapNewObjectInfoStore::class
     factoryOf(::EditMapNewObjectLoadingStoreImpl) bind EditMapNewObjectLoadingStore::class
     factoryOf(::AddMapObjectUseCase)
+    factoryOf(::LoadLocalMapConfigUseCase)
+    factoryOf(::SaveMapInitialCameraPositionUseCase)
     singleOf(::GraphqlMapObjectsConverter)
     singleOf(::GraphqlMapObjectsRepository) bind MapObjectsRepository::class
+    singleOf(::DataStoreLocalMapConfigRepository) bind LocalMapConfigRepository::class
 }

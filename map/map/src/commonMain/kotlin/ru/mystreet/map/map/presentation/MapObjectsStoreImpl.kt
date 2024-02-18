@@ -9,14 +9,18 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.mystreet.core.component.onIntentWithCoolDown
 import ru.mystreet.map.domain.entity.MapObject
+import ru.mystreet.map.domain.usecase.SaveMapInitialCameraPositionUseCase
 import ru.mystreet.map.map.domain.usecase.GetAllMapObjectsUseCase
+import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalMviKotlinApi::class)
 class MapObjectsStoreImpl(
     coroutineDispatcher: CoroutineDispatcher,
     storeFactory: StoreFactory,
     getAllMapObjectsUseCase: GetAllMapObjectsUseCase,
+    saveMapInitialCameraPositionUseCase: SaveMapInitialCameraPositionUseCase,
 ) : MapObjectsStore,
     Store<MapObjectsStore.Intent, MapObjectsStore.State, MapObjectsStore.Label> by storeFactory.create<_, Action, Message, _, _>(
         name = "MapObjectsStoreImpl",
@@ -39,6 +43,11 @@ class MapObjectsStoreImpl(
                         dispatch(Message.SetMapObjects(mapObjects))
                         publish(MapObjectsStore.Label.OnMapObjectsLoaded(mapObjects))
                     }
+                }
+            }
+            onIntentWithCoolDown<MapObjectsStore.Intent.UpdateCameraPosition, _, _, _, _, _>(3.seconds) {
+                launch {
+                    saveMapInitialCameraPositionUseCase(it.cameraPosition)
                 }
             }
         },

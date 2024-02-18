@@ -10,6 +10,7 @@ import ru.mystreet.core.component.diChildContext
 import ru.mystreet.core.component.diChildStack
 import ru.mystreet.map.component.EditMap
 import ru.mystreet.map.component.EditMapComponent
+import ru.mystreet.map.domain.entity.MapConfig
 import ru.mystreet.map.general.component.GeneralMapComponent
 import ru.mystreet.map.map.component.Map
 import ru.mystreet.map.map.component.MapComponent
@@ -18,10 +19,12 @@ import ru.mystreet.map.trash.component.TrashMapComponent
 
 class MapHostComponent(
     componentContext: DIComponentContext,
+    mapConfig: MapConfig,
 ) : AppComponentContext(componentContext), MapHost {
 
     override val map: Map = MapComponent(
         componentContext = diChildContext(key = "map_kit_component"),
+        mapConfig = mapConfig,
     )
 
     override val editMap: EditMap = EditMapComponent(diChildContext("edit_map"), map.mapController)
@@ -41,7 +44,7 @@ class MapHostComponent(
 
     private fun createChild(
         config: MapHost.Config,
-        componentContext: DIComponentContext
+        componentContext: DIComponentContext,
     ): MapHost.Child {
         return when (config) {
             MapHost.Config.General -> MapHost.Child.General(

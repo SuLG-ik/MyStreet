@@ -53,12 +53,12 @@ interface MapHost {
 
         @Serializable
         data class Parks(
-            val component: ParksMap
+            val component: ParksMap,
         ) : Child()
 
         @Serializable
         data class Trash(
-            val component: TrashMap
+            val component: TrashMap,
         ) : Child()
 
         @Serializable

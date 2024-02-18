@@ -12,7 +12,7 @@ interface EditMapStore :
     )
 
     sealed interface Intent {
-        data object ToggleEnabled : Intent
+        data class Toggle(val isEnabled: Boolean) : Intent
     }
 
     data class State(

@@ -13,7 +13,7 @@ class DataStoreLayersConfigRepositoryImpl(
     dataStoreFactory: DatastoreFactory,
 ) : LayersConfigRepository {
 
-    private val store = dataStoreFactory.create(name = "layers_config")
+    private val store = dataStoreFactory.createPreferences(name = "layers_config")
 
     override val layersConfig = store.data.map { it.toGeneralLayers() }
 

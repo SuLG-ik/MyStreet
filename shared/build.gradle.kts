@@ -55,6 +55,7 @@ kotlin {
             api(libs.moko.permissions)
             api(libs.mvikotlin.core)
             api(libs.mvikotlin.main)
+            api(libs.mvikotlin.logging)
             api(libs.mvikotlin.coroutines)
             api(libs.decompose.core)
             implementation(libs.decompose.ui)

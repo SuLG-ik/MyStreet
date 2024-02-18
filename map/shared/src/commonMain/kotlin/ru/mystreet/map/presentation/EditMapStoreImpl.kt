@@ -12,7 +12,7 @@ class EditMapStoreImpl(
     storeFactory: StoreFactory,
     savedState: EditMapStore.SavedState,
 ) : EditMapStore,
-    Store<EditMapStore.Intent, EditMapStore.State, EditMapStore.Label> by storeFactory.create<_, Action, Message, _, _>(
+    Store<EditMapStore.Intent, EditMapStore.State, EditMapStore.Label> by storeFactory.create<_, _, Message, _, _>(
         name = "EditMapStoreImpl",
         initialState = EditMapStore.State(
             isEnabled = savedState.isEnabled,
@@ -24,20 +24,13 @@ class EditMapStoreImpl(
                 )
             }
         },
-        bootstrapper = coroutineBootstrapper(coroutineDispatcher) { dispatch(Action.Setup) },
         executorFactory = coroutineExecutorFactory(coroutineDispatcher) {
-            onAction<Action.Setup> {
-
-            }
-            onIntent<EditMapStore.Intent.ToggleEnabled> {
-                dispatch(Message.SetEnabled(!state().isEnabled))
+            onIntent<EditMapStore.Intent.Toggle> {
+                println("fsadfsiwerisdfzxcij")
+                dispatch(Message.SetEnabled(it.isEnabled))
             }
         },
     ) {
-
-    sealed interface Action {
-        data object Setup : Action
-    }
 
     sealed interface Message {
         data class SetEnabled(val value: Boolean) : Message

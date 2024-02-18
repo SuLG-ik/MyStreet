@@ -15,7 +15,11 @@ import ru.mystreet.map.SizeChangedListener
 import ru.mystreet.map.geomety.Point
 import ru.mystreet.map.geomety.ScreenPoint
 
-class MapController {
+class MapController(
+    val initialCameraPosition: CameraPosition?,
+) {
+
+    private var isInitialized = false
 
     private val anchor: MutableStateFlow<MapWindow?> = MutableStateFlow(null)
 
@@ -37,6 +41,7 @@ class MapController {
             updatePinLocation(window.map.cameraPosition)
             updateCameraPosition(window.map.cameraPosition)
         }
+
     private val cameraListener =
         CameraListener { _, cameraPosition, _, _ ->
             updatePinLocation(cameraPosition)
@@ -45,6 +50,9 @@ class MapController {
 
     internal fun bindAnchor(map: MapWindow) {
         anchor.value = map
+        if (!isInitialized && initialCameraPosition != null) {
+            map.map.move(initialCameraPosition)
+        }
         setMapSizeChangedListener(map)
         setCameraListener(map)
     }
