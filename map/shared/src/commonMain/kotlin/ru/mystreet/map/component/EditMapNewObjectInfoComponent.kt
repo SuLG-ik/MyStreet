@@ -20,14 +20,18 @@ import ru.mystreet.map.presentation.EditMapNewObjectInfoStore
 class EditMapNewObjectInfoComponent(
     componentContext: DIComponentContext,
     category: MapObjectCategory,
+    field: AddMapObjectField?,
     currentTarget: StateFlow<Point>,
     private val onContinue: (AddMapObjectField) -> Unit,
+    private val onBack: (AddMapObjectField) -> Unit,
 ) : AppComponentContext(componentContext), EditMapNewObjectInfo {
 
     private val store: EditMapNewObjectInfoStore = getSavedStateStore(
         key = "edit_map_object_info",
         initialSavedState = {
             EditMapNewObjectInfoStore.SavedState(
+                title = field?.title ?: "",
+                description = field?.description ?: "",
                 point = currentTarget.value,
                 category = category,
             )
@@ -52,8 +56,26 @@ class EditMapNewObjectInfoComponent(
         store.accept(EditMapNewObjectInfoStore.Intent.DescriptionInput(value))
     }
 
+    override fun onTagInput(value: String) {
+        store.accept(EditMapNewObjectInfoStore.Intent.TagInput(value))
+    }
+
+    override fun onTagRemove(value: String) {
+        store.accept(EditMapNewObjectInfoStore.Intent.RemoveTag(value))
+    }
+
+
+    override fun onTagAdd() {
+        store.accept(EditMapNewObjectInfoStore.Intent.AddTag)
+    }
+
     override fun onContinue() {
         onContinue.invoke(field.value)
     }
+
+    override fun onBack() {
+        onBack.invoke(field.value)
+    }
+
 
 }

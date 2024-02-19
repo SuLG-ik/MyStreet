@@ -1,0 +1,8 @@
+<resources>
+    <string name="map_edit_add_title">Add map object</string>
+    <string name="map_edit_add_title_field">Title</string>
+    <string name="map_edit_add_description_field">Description</string>
+    <string name="map_edit_add_tags_field">Tags</string>
+    <string name="map_edit_add_tags_placeholder">Input tag here</string>
+    <string name="map_edit_add_continue_button">Add</string>
+</resources>

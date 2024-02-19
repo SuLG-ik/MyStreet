@@ -5,8 +5,11 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.slide
@@ -31,9 +34,15 @@ fun EditMapBottomBarUI(
             component.childStack,
             animation = stackAnimation(slide()),
         ) {
-            EditMapBottomBarNavHost(
-                child = it.instance, modifier = Modifier.fillMaxWidth().paddingHorizontalInsets()
-            )
+            Box(
+                contentAlignment = Alignment.BottomCenter,
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                EditMapBottomBarNavHost(
+                    child = it.instance,
+                    modifier = Modifier.fillMaxWidth().paddingHorizontalInsets()
+                )
+            }
         }
     }
 }

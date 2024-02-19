@@ -5,6 +5,7 @@ import androidx.compose.ui.unit.dp
 
 object UIKitSizeTokens {
     val DefaultIconSize = 24.dp
+    val SmallIconSize = 16.dp
     val DefaultIconButtonSize = 40.dp
     val HigherIconButtonSize = 45.dp
     val ButtonHorizontalPadding = 24.dp
