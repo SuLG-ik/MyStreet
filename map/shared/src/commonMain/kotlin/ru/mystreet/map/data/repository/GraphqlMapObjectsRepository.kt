@@ -28,6 +28,7 @@ class GraphqlMapObjectsRepository(
         category: MapObjectCategory,
         latitude: Latitude,
         longitude: Longitude,
+        tags: List<String>,
     ) {
         val response = apolloClient.mutation(
             AddMapObjectMutation(
@@ -36,7 +37,7 @@ class GraphqlMapObjectsRepository(
                 category = category.id,
                 latitude = latitude.value,
                 longitude = longitude.value,
-                tags = emptyList()
+                tags = tags
             )
         ).execute()
         if (response.exception != null)

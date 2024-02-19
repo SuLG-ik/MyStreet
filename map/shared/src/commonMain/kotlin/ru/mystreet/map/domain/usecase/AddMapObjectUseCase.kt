@@ -14,6 +14,7 @@ class AddMapObjectUseCase(
             category = field.category,
             latitude = field.point.latitude,
             longitude = field.point.longitude,
+            tags = field.tags.tags,
         )
     }
 

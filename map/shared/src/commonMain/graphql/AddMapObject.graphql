@@ -4,7 +4,7 @@ mutation AddMapObject(
     $latitude: Float!
     $longitude: Float!
     $category: String!
-    $tags: [Int!]!
+    $tags: [String!]!
 ){
     addMapObject(
         title: $title, description: $description, latitude: $latitude,

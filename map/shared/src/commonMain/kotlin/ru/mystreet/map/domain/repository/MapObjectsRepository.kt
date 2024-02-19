@@ -15,6 +15,7 @@ interface MapObjectsRepository {
         category: MapObjectCategory,
         latitude: Latitude,
         longitude: Longitude,
+        tags: List<String>,
     )
 
 }
