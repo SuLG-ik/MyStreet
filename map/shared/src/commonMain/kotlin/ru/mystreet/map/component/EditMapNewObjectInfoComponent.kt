@@ -14,6 +14,7 @@ import ru.mystreet.core.component.getSavedStateStore
 import ru.mystreet.core.component.values
 import ru.mystreet.map.domain.entity.AddMapObjectField
 import ru.mystreet.map.domain.entity.MapObjectCategory
+import ru.mystreet.map.domain.entity.TitleField
 import ru.mystreet.map.geomety.Point
 import ru.mystreet.map.presentation.EditMapNewObjectInfoStore
 
@@ -30,7 +31,7 @@ class EditMapNewObjectInfoComponent(
         key = "edit_map_object_info",
         initialSavedState = {
             EditMapNewObjectInfoStore.SavedState(
-                title = field?.title ?: "",
+                title = field?.title?.value ?: "",
                 description = field?.description ?: "",
                 point = currentTarget.value,
                 category = category,

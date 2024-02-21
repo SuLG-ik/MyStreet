@@ -6,34 +6,38 @@ import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import ru.mystreet.core.component.onIntentWithDebounce
 import ru.mystreet.map.domain.entity.AddMapObjectField
+import ru.mystreet.map.domain.entity.FieldSuggestion
+import ru.mystreet.map.domain.entity.TagsField
+import ru.mystreet.map.domain.entity.TitleField
+import ru.mystreet.map.domain.usecase.FormatAndValidateTitleUseCase
+import ru.mystreet.map.domain.usecase.LoadMapObjectTagsWithTitleUseCase
 import ru.mystreet.map.geomety.Point
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMviKotlinApi::class)
 class EditMapNewObjectInfoStoreImpl(
     coroutineDispatcher: CoroutineDispatcher,
     storeFactory: StoreFactory,
     savedState: EditMapNewObjectInfoStore.SavedState,
+    formatAndValidateTitleUseCase: FormatAndValidateTitleUseCase,
+    loadMapObjectTagsWithTitleUseCase: LoadMapObjectTagsWithTitleUseCase,
 ) : EditMapNewObjectInfoStore,
     Store<EditMapNewObjectInfoStore.Intent, EditMapNewObjectInfoStore.State, EditMapNewObjectInfoStore.Label> by storeFactory.create<_, Action, Message, _, _>(
         name = "EditMapNewObjectInfoStoreImpl",
         initialState = EditMapNewObjectInfoStore.State(
-            savedState.toField()
+            savedState.toField(formatAndValidateTitleUseCase)
         ),
         reducer = {
             when (it) {
                 is Message.SetDescription -> copy(field = field.copy(description = it.value))
                 is Message.SetTitle -> copy(field = field.copy(title = it.value))
                 is Message.SetPoint -> copy(field = field.copy(point = it.value))
-                is Message.SetTag -> copy(field = field.copy(tags = field.tags.copy(tag = it.value)))
                 is Message.SetTags -> copy(
-                    field = field.copy(
-                        tags = field.tags.copy(
-                            tag = it.tag,
-                            tags = it.tags,
-                            isInputAvailable = it.tags.size < field.tags.maxTags
-                        )
-                    )
+                    field = field.copy(tags = it.field),
                 )
             }
         },
@@ -43,7 +47,7 @@ class EditMapNewObjectInfoStoreImpl(
 
             }
             onIntent<EditMapNewObjectInfoStore.Intent.TitleInput> {
-                dispatch(Message.SetTitle(it.value))
+                dispatch(Message.SetTitle(formatAndValidateTitleUseCase(it.value)))
             }
             onIntent<EditMapNewObjectInfoStore.Intent.DescriptionInput> {
                 dispatch(Message.SetDescription(it.value))
@@ -51,19 +55,45 @@ class EditMapNewObjectInfoStoreImpl(
             onIntent<EditMapNewObjectInfoStore.Intent.PointInput> {
                 dispatch(Message.SetPoint(it.value))
             }
-            onIntent<EditMapNewObjectInfoStore.Intent.TagInput> {
-                dispatch(Message.SetTag(it.value))
+            onIntentWithDebounce<EditMapNewObjectInfoStore.Intent.TagInput, _, _, _, _, _>(300.milliseconds) { intent ->
+                val tags = state().field.tags
+                val newTags = tags.copy(value = intent.value)
+                dispatch(Message.SetTags(newTags))
+                debouncedLaunch {
+                    val state = state()
+                    val suggestions =
+                        loadMapObjectTagsWithTitleUseCase(
+                            state.field.category,
+                            state.field.tags.value
+                        )
+                    val suggestedTags = state().field.tags.copy(
+                        suggestion = FieldSuggestion(
+                            isLoading = false,
+                            suggestions = suggestions.map { it.title },
+                        )
+                    )
+                    withContext(Dispatchers.Main) {
+                        dispatch(Message.SetTags(suggestedTags))
+                    }
+                }
             }
-            onIntent<EditMapNewObjectInfoStore.Intent.AddTag> {
-                dispatch(Message.SetTags(state().field.tags.tags + state().field.tags.tag, ""))
+            onIntent<EditMapNewObjectInfoStore.Intent.AddTag> { intent ->
+                val tags = state().field.tags
+                val newCurrentTags = tags.tags.tags + tags.value
+                val newTags = tags.copy(
+                    tags = tags.tags.copy(tags = newCurrentTags),
+                    isInputAvailable = newCurrentTags.size < MAX_TAGS, value = ""
+                )
+                dispatch(Message.SetTags(newTags))
             }
             onIntent<EditMapNewObjectInfoStore.Intent.RemoveTag> { intent ->
-                dispatch(
-                    Message.SetTags(
-                        state().field.tags.tags.filterNot { it == intent.value },
-                        state().field.tags.tag
-                    )
+                val tags = state().field.tags
+                val newCurrentTags = tags.tags.tags.filter { it != intent.value }
+                val newTags = tags.copy(
+                    tags = tags.tags.copy(tags = newCurrentTags),
+                    isInputAvailable = newCurrentTags.size < MAX_TAGS,
                 )
+                dispatch(Message.SetTags(newTags))
             }
         },
     ) {
@@ -73,11 +103,10 @@ class EditMapNewObjectInfoStoreImpl(
     }
 
     sealed interface Message {
-        data class SetTitle(val value: String) : Message
+        data class SetTitle(val value: TitleField) : Message
         data class SetDescription(val value: String) : Message
         data class SetPoint(val value: Point) : Message
-        data class SetTag(val value: String) : Message
-        data class SetTags(val tags: List<String>, val tag: String) : Message
+        data class SetTags(val field: TagsField) : Message
     }
 
     override fun getSavedState(): EditMapNewObjectInfoStore.SavedState {
@@ -85,29 +114,32 @@ class EditMapNewObjectInfoStoreImpl(
     }
 }
 
-private fun EditMapNewObjectInfoStore.SavedState.toField(): AddMapObjectField {
+private fun EditMapNewObjectInfoStore.SavedState.toField(formatAndValidateTitleUseCase: FormatAndValidateTitleUseCase): AddMapObjectField {
     return AddMapObjectField(
-        title = title,
+        title = formatAndValidateTitleUseCase(title),
         description = description,
         point = point,
         category = category,
-        tags = AddMapObjectField.Tags(
-            tag = tag,
-            tags = tags,
-            maxTags = MAX_TAGS,
+        tags = TagsField(
+            value = tag,
             isInputAvailable = tags.size < MAX_TAGS,
+            tags = TagsField.Tags(
+                tags = tags,
+                maxTags = MAX_TAGS,
+            ),
+            suggestion = FieldSuggestion(false, emptyList()),
         )
     )
 }
 
 private fun AddMapObjectField.toSavedState(): EditMapNewObjectInfoStore.SavedState {
     return EditMapNewObjectInfoStore.SavedState(
-        title = title,
+        title = title.value,
         description = description,
         point = point,
         category = category,
-        tags = tags.tags,
-        tag = tags.tag
+        tags = tags.tags.tags,
+        tag = tags.value,
     )
 }
 

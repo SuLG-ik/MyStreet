@@ -2,6 +2,8 @@ type Query {
   getCategories: [CategoryType!]!
 
   getMapObjects: [MapObjectType!]!
+
+  getMapObjectTags(category: ID!, query: String): [MapObjectTagType!]!
 }
 
 type CategoryType {
