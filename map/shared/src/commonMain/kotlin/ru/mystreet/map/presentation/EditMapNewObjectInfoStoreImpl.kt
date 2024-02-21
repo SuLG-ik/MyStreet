@@ -79,10 +79,14 @@ class EditMapNewObjectInfoStoreImpl(
             }
             onIntent<EditMapNewObjectInfoStore.Intent.AddTag> { intent ->
                 val tags = state().field.tags
-                val newCurrentTags = tags.tags.tags + tags.value
+                val newTagValue = tags.value.trim()
+                if (newTagValue.isEmpty())
+                    return@onIntent
+                val newCurrentTags = tags.tags.tags + newTagValue
                 val newTags = tags.copy(
                     tags = tags.tags.copy(tags = newCurrentTags),
-                    isInputAvailable = newCurrentTags.size < MAX_TAGS, value = ""
+                    isInputAvailable = newCurrentTags.size < MAX_TAGS,
+                    value = "",
                 )
                 dispatch(Message.SetTags(newTags))
             }
