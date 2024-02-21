@@ -4,16 +4,19 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
@@ -96,11 +100,17 @@ private fun EditMapNewObjectScreen(
             )
             var isTagsSuggestionsExpanded by rememberSaveable { mutableStateOf(false) }
             TagsSuggestion(
-                isExpanded = isTagsSuggestionsExpanded,
+                isExpanded = field.tags.value.isNotBlank() && isTagsSuggestionsExpanded,
                 suggestion = field.tags.suggestion,
-                onTagInput = onTagInput,
+                onTagInput = {
+                    onTagInput(it)
+                    onTagAdd()
+                },
                 onDismissRequest = {
                     isTagsSuggestionsExpanded = false
+                },
+                supportingText = {
+                    Text("${field.tags.tags.tags.size}/${field.tags.tags.maxTags}")
                 },
                 modifier = Modifier.fillMaxWidth(),
             ) {
@@ -111,32 +121,12 @@ private fun EditMapNewObjectScreen(
                     completePainter = painterResource(ru.mystreet.uikit.MR.images.add),
                     chips = field.tags.tags.tags,
                     chip = {
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(5.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.clip(CircleShape).clickable {
-                                onTagRemove(it)
-                            }.border(
-                                width = 1.dp,
-                                color = MaterialTheme.colorScheme.outline,
-                                shape = CircleShape
-                            ).padding(vertical = 5.dp, horizontal = 10.dp)
-                        ) {
-                            Icon(
-                                painter = painterResource(imageResource = ru.mystreet.uikit.MR.images.remove),
-                                contentDescription = null,
-                                modifier = Modifier.size(UIKitSizeTokens.VerySmallIconSize)
-                            )
-                            Text(
-                                text = it,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                                modifier = Modifier,
-                            )
-                        }
-                    },
-                    supportingText = {
-                        Text("${field.tags.tags.tags.size}/${field.tags.tags.maxTags}")
+                        Chip(
+                            text = it,
+                            icon = painterResource(imageResource = ru.mystreet.uikit.MR.images.remove),
+                            onClick = { onTagRemove(it) },
+                            modifier = Modifier,
+                        )
                     },
                     enabled = field.tags.isInputAvailable,
                     onValueChange = {
@@ -152,41 +142,93 @@ private fun EditMapNewObjectScreen(
             onClick = onContinue,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text(stringResource(ru.mystreet.map.MR.strings.map_edit_add_continue_button))
+            Text(stringResource(MR.strings.map_edit_add_continue_button))
         }
     }
 }
 
+@Composable
+fun Chip(
+    text: String,
+    icon: Painter,
+    onClick: () -> Unit,
+    modifier: Modifier,
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier.clip(CircleShape).clickable(onClick = onClick).border(
+            width = 1.dp,
+            color = MaterialTheme.colorScheme.outline,
+            shape = CircleShape
+        ).padding(vertical = 5.dp, horizontal = 10.dp)
+    ) {
+        Icon(
+            painter = icon,
+            contentDescription = null,
+            modifier = Modifier.size(UIKitSizeTokens.VerySmallIconSize)
+        )
+        Text(
+            text = text,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier,
+        )
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun TagsSuggestion(
     isExpanded: Boolean,
     suggestion: FieldSuggestion<String>,
     onDismissRequest: () -> Unit,
     onTagInput: (String) -> Unit,
+    supportingText: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
     Column(modifier) {
-        AnimatedVisibility(isExpanded) {
-            if (suggestion.suggestions.isEmpty() && suggestion.isLoading) {
-                Text("Загрузка...")
-            } else {
-                if (suggestion.suggestions.isEmpty())
-                    Text("Теги не найдены")
-                suggestion.suggestions.forEach {
-                    DropdownMenuItem(
-                        text = { Text(it) },
-                        onClick = {
-                            onDismissRequest()
-                            onTagInput(it)
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                    )
+        content()
+        AnimatedVisibility(isExpanded && suggestion.suggestions.isNotEmpty()) {
+            Column {
+                Text("Предложенные теги", style = MaterialTheme.typography.titleMedium)
+                FlowRow {
+                    suggestion.suggestions.forEach {
+                        TagSuggestionItem(
+                            text = it,
+                            onClick = {
+                                onDismissRequest()
+                                onTagInput(it)
+                            },
+                        )
+                    }
                 }
             }
         }
-        content()
+        Box(
+            contentAlignment = Alignment.CenterEnd,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            ProvideTextStyle(value = MaterialTheme.typography.titleSmall) {
+                supportingText()
+            }
+        }
     }
+}
+
+@Composable
+fun TagSuggestionItem(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Chip(
+        text = text,
+        icon = painterResource(ru.mystreet.uikit.MR.images.add),
+        onClick = onClick,
+        modifier = modifier,
+    )
 }
 
 @Composable
