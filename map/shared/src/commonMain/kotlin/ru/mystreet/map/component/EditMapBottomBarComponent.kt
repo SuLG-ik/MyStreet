@@ -33,7 +33,7 @@ class EditMapBottomBarComponent(
 
     override val childStack: Value<ChildStack<*, EditMapBottomBar.Child>> = diChildStack(
         source = navigation,
-        initialConfiguration = Config.SelectCategory,
+        initialConfiguration = Config.SelectCategory(),
         serializer = Config.serializer(),
         childFactory = this::createChild,
     )
@@ -43,10 +43,11 @@ class EditMapBottomBarComponent(
         diComponentContext: DIComponentContext,
     ): EditMapBottomBar.Child {
         return when (config) {
-            Config.SelectCategory -> EditMapBottomBar.Child.SelectCategory(
+            is Config.SelectCategory -> EditMapBottomBar.Child.SelectCategory(
                 EditMapSelectCategoryComponent(
                     componentContext = diComponentContext,
-                    onContinue = this::onCategorySelected,
+                    category = config.field?.category,
+                    onContinue = { onCategorySelected(it, config.field) },
                 )
             )
 
@@ -54,8 +55,10 @@ class EditMapBottomBarComponent(
                 EditMapNewObjectInfoComponent(
                     componentContext = diComponentContext,
                     category = config.category,
+                    field = config.field,
                     currentTarget = currentTarget,
                     onContinue = this::onInfoSelected,
+                    onBack = this::onBackToCategory,
                 )
             )
 
@@ -69,17 +72,21 @@ class EditMapBottomBarComponent(
         }
     }
 
+    private fun onBackToCategory(field: AddMapObjectField) {
+        navigation.replaceAll(Config.SelectCategory(field))
+    }
+
     private fun onObjectAdded() {
         onObjectAdded.invoke()
     }
 
 
     private fun resetProgress() {
-        navigation.replaceAll(Config.SelectCategory)
+        navigation.replaceAll(Config.SelectCategory())
     }
 
-    private fun onCategorySelected(category: MapObjectCategory) {
-        navigation.bringToFront(Config.InfoInput(category))
+    private fun onCategorySelected(category: MapObjectCategory, field: AddMapObjectField?) {
+        navigation.bringToFront(Config.InfoInput(category, field))
     }
 
     private fun onInfoSelected(field: AddMapObjectField) {
@@ -90,10 +97,21 @@ class EditMapBottomBarComponent(
     sealed interface Config {
 
         @Serializable
-        data object SelectCategory : Config
+        data class SelectCategory(
+            val field: AddMapObjectField? = null,
+        ) : Config {
+            override fun equals(other: Any?): Boolean {
+                return other is SelectCategory
+            }
+
+            override fun hashCode(): Int {
+                return field?.hashCode() ?: 0
+            }
+        }
 
         @Serializable
-        data class InfoInput(val category: MapObjectCategory) : Config
+        data class InfoInput(val category: MapObjectCategory, val field: AddMapObjectField?) :
+            Config
 
         @Serializable
         data class Loading(val field: AddMapObjectField) : Config

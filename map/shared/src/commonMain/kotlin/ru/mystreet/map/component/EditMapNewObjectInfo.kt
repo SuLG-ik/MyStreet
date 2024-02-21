@@ -11,5 +11,14 @@ interface EditMapNewObjectInfo {
 
     fun onDescriptionInput(value: String)
 
+    fun onTagInput(value: String)
+
+    fun onTagRemove(value: String)
+
+    fun onTagAdd()
+
     fun onContinue()
+
+    fun onBack()
+
 }

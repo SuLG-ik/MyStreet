@@ -13,12 +13,17 @@ import ru.mystreet.map.presentation.EditMapSelectCategoryStore
 
 class EditMapSelectCategoryComponent(
     componentContext: DIComponentContext,
+    category: MapObjectCategory?,
     private val onContinue: (MapObjectCategory) -> Unit,
 ) : AppComponentContext(componentContext), EditMapSelectCategory {
 
     private val store: EditMapSelectCategoryStore = getSavedStateStore(
         "edit_map_select_category",
-        initialSavedState = { EditMapSelectCategoryStore.SavedState() })
+        initialSavedState = {
+            EditMapSelectCategoryStore.SavedState(
+                selectedCategoryType = category ?: MapObjectCategory.Bench,
+            )
+        })
 
     override val isContinueAvailable: Value<Boolean> = MutableValue(true)
 

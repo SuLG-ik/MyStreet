@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.apollo)
+    alias(libs.plugins.moko.resources)
 }
 
 kotlin {
@@ -36,6 +37,7 @@ kotlin {
             implementation(projects.uikit)
             api(projects.core.graphql)
             implementation(projects.core.datastore)
+            implementation(libs.moko.resources)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -57,4 +59,8 @@ apollo {
         dependsOn(projects.core.graphql)
         srcDir("src/commonMain/graphql/")
     }
+}
+
+multiplatformResources {
+    resourcesPackage = "ru.mystreet.map"
 }

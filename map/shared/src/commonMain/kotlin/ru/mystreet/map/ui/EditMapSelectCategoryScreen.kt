@@ -63,7 +63,7 @@ fun EditMapSelectCategoryScreen(
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
         Surface(
-            modifier = Modifier.fillMaxWidth().height(300.dp),
+            modifier = Modifier.fillMaxWidth().height(275.dp),
             shape = MaterialTheme.shapes.large,
         ) {
             Column(

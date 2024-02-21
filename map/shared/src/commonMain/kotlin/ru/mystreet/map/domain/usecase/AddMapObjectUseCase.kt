@@ -9,11 +9,12 @@ class AddMapObjectUseCase(
 
     suspend operator fun invoke(field: AddMapObjectField) {
         repository.addMapObject(
-            title = field.title,
+            title = field.title.value,
             description = field.description,
             category = field.category,
             latitude = field.point.latitude,
             longitude = field.point.longitude,
+            tags = field.tags.tags.tags,
         )
     }
 
