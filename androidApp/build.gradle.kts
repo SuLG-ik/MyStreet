@@ -27,6 +27,10 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
+            resValue("string", "mystreet_host", System.getenv("MYSTREET_HOST"))
+        }
+        getByName("debug") {
+            resValue("string", "mystreet_host", System.getenv("MYSTREET_HOST"))
         }
     }
     compileOptions {
@@ -39,8 +43,9 @@ android {
 }
 
 dependencies {
-    implementation(libs.gms.location)
+//    implementation(libs.gms.location)
     implementation(projects.shared)
+    implementation(libs.splash)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)

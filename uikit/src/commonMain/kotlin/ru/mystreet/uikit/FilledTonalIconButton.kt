@@ -6,12 +6,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.LocalAbsoluteTonalElevation
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.minimumInteractiveComponentSize
@@ -32,6 +37,7 @@ import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import ru.mystreet.uikit.tokens.UIKitSizeTokens
 
 
 private fun Modifier.surface(
@@ -59,7 +65,7 @@ fun UIKitSelectableTonalIconButton(
     selectedColor: Color = MaterialTheme.colorScheme.primary,
     unselectedColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = animatedColorFor(if (selected) selectedColor else unselectedColor),
-    shadowElevation: Dp = 4.dp,
+    shadowElevation: Dp = 0.dp,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     content: @Composable () -> Unit
 ) = Surface(
@@ -106,6 +112,44 @@ fun UIKitFilledTonalIconButton(
         contentAlignment = Alignment.Center
     ) {
         content()
+    }
+}
+
+@Composable
+fun UIKitFilledTonalButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    shape: Shape = IconButtonDefaults.filledShape,
+    color: Color = MaterialTheme.colorScheme.primary,
+    contentColor: Color = contentColorFor(color),
+    shadowElevation: Dp = 4.dp,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    content: @Composable RowScope.() -> Unit
+) = Surface(
+    onClick = onClick,
+    modifier = modifier.semantics { role = Role.Button },
+    enabled = enabled,
+    shape = shape,
+    color = color,
+    contentColor = contentColor,
+    shadowElevation = shadowElevation,
+    interactionSource = interactionSource
+) {
+    ProvideTextStyle(MaterialTheme.typography.labelLarge) {
+        Row(
+            modifier = Modifier.size(UIKitSizeTokens.DefaultIconSize)
+                .defaultMinSize(
+                    minWidth = UIKitSizeTokens.ButtonMinWidth,
+                    minHeight = UIKitSizeTokens.ButtonMinHeight,
+                )
+                .padding(
+                    vertical = UIKitSizeTokens.ButtonVerticalPadding,
+                    horizontal = UIKitSizeTokens.ButtonHorizontalPadding
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+            content = content,
+        )
     }
 }
 

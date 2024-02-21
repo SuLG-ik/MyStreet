@@ -1,0 +1,15 @@
+mutation AddMapObject(
+    $title: String!
+    $description: String!
+    $latitude: Float!
+    $longitude: Float!
+    $category: String!
+    $tags: [String!]!
+){
+    addMapObject(
+        title: $title, description: $description, latitude: $latitude,
+        longitude: $longitude, category: $category, tags: $tags
+    ) {
+        id
+    }
+}

@@ -1,0 +1,41 @@
+type Query {
+  getCategories: [CategoryType!]!
+
+  getMapObjects: [MapObjectType!]!
+
+  getMapObjectTags(category: ID!, query: String): [MapObjectTagType!]!
+}
+
+type CategoryType {
+  titleShort: String!
+
+  titleLarge: String!
+
+  id: String!
+}
+
+type MapObjectType {
+  id: ID!
+
+  title: String!
+
+  description: String!
+
+  category: CategoryType!
+
+  tags: [MapObjectTagType!]!
+
+  latitude: Float!
+
+  longitude: Float!
+}
+
+type MapObjectTagType {
+  id: ID!
+
+  title: String!
+}
+
+type Mutation {
+  addMapObject(category: String!, description: String!, latitude: Float!, longitude: Float!, tags: [String!]!, title: String!): MapObjectType
+}

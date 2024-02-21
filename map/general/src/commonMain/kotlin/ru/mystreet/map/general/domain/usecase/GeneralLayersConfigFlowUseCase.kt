@@ -1,7 +1,7 @@
 package ru.mystreet.map.general.domain.usecase
 
 import kotlinx.coroutines.flow.Flow
-import ru.mystreet.map.domain.GeneralLayer
+import ru.mystreet.map.domain.entity.GeneralLayer
 import ru.mystreet.map.general.domain.repository.LayersConfigRepository
 
 class GeneralLayersConfigFlowUseCase(

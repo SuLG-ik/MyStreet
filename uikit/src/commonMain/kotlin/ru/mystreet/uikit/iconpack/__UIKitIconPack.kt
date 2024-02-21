@@ -4,6 +4,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import ru.mystreet.uikit.iconpack.uikiticonpack.ArrowUp
 import ru.mystreet.uikit.iconpack.uikiticonpack.Bench
 import ru.mystreet.uikit.iconpack.uikiticonpack.Bower
+import ru.mystreet.uikit.iconpack.uikiticonpack.CenterPin
 import ru.mystreet.uikit.iconpack.uikiticonpack.EditIcon
 import ru.mystreet.uikit.iconpack.uikiticonpack.Follow
 import ru.mystreet.uikit.iconpack.uikiticonpack.Fountain
@@ -31,6 +32,7 @@ public val UIKitIconPack.AllIcons: ____KtList<ImageVector>
       return __AllIcons!!
     }
     __AllIcons= listOf(Search, Fountain, Home, PublicWc, ZoomIn, EditIcon, Streetlight, Follow,
-        Bench, Layers, ArrowUp, GreenZone, Monument, Trash, Bower, Parks, Playground, ZoomOut)
+        Bench, Layers, ArrowUp, GreenZone, Monument, Trash, Bower, Parks, CenterPin, Playground,
+        ZoomOut)
     return __AllIcons!!
   }

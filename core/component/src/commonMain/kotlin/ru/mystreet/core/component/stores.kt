@@ -8,8 +8,20 @@ import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.instancekeeper.getStore
 import com.arkivanov.mvikotlin.core.rx.Observer
 import com.arkivanov.mvikotlin.core.store.Store
+import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
+import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutorScope
+import com.arkivanov.mvikotlin.extensions.coroutines.ExecutorBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.asTimeSource
 import org.koin.core.component.get
 import org.koin.core.parameter.parametersOf
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
 inline fun <reified T : Store<*, *, *>> DIComponentContext.getStore(
     vararg params: Any,
@@ -41,7 +53,7 @@ fun <T : Any, E : Any, M : Any> zip(
 }
 
 class ValueObserver<T : Any>(
-    private val mutableValue: MutableValue<T>
+    private val mutableValue: MutableValue<T>,
 ) : Observer<T> {
     override fun onComplete() {
     }
@@ -50,4 +62,52 @@ class ValueObserver<T : Any>(
         mutableValue.value = value
     }
 
+}
+
+@OptIn(ExperimentalTime::class)
+val timeSource = Clock.System.asTimeSource()
+
+@OptIn(ExperimentalMviKotlinApi::class)
+inline fun <reified T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any> ExecutorBuilder<Intent, Action, State, Message, Label>.onIntentWithCoolDown(
+    time: Duration,
+    noinline handler: CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
+) {
+    var nextLaunchTime = timeSource.markNow()
+    onIntent<T> {
+        if (nextLaunchTime.hasPassedNow()) {
+            handler(it)
+            nextLaunchTime = timeSource.markNow() + time
+        }
+    }
+}
+
+@OptIn(ExperimentalMviKotlinApi::class)
+interface DebouncedCoroutineExecutorScope<out State : Any, in Message : Any, in Action : Any, in Label : Any> :
+    CoroutineExecutorScope<State, Message, Action, Label> {
+
+    fun debouncedLaunch(handler: suspend CoroutineScope.() -> Unit)
+
+}
+
+@OptIn(ExperimentalMviKotlinApi::class)
+inline fun <reified T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any> ExecutorBuilder<Intent, Action, State, Message, Label>.onIntentWithDebounce(
+    time: Duration,
+    noinline handler: DebouncedCoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
+) {
+    var nextLaunchTime = timeSource.markNow()
+    var job: Job? = null
+    onIntent<T> {
+        val debouncedCoroutineExecutorScope = DebouncedCoroutineExecutorScopeImpl(this)
+        with(debouncedCoroutineExecutorScope) { handler(it) }
+        job?.cancel()
+        job = launch {
+            if (nextLaunchTime.hasNotPassedNow()) {
+                nextLaunchTime = timeSource.markNow() + time
+                delay(time)
+            } else {
+                nextLaunchTime = timeSource.markNow() + time
+            }
+            debouncedCoroutineExecutorScope.launch()
+        }
+    }
 }

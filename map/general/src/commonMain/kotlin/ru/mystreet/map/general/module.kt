@@ -11,7 +11,7 @@ import ru.mystreet.map.general.domain.usecase.UpdateGeneralLayerConfigUseCase
 import ru.mystreet.map.general.presentation.LayersConfigStore
 import ru.mystreet.map.general.presentation.LayersConfigStoreImpl
 
-val generalMapModule = module {
+val mapGeneralModule = module {
     factoryOf(::LayersConfigStoreImpl) bind LayersConfigStore::class
     singleOf(::DataStoreLayersConfigRepositoryImpl) bind LayersConfigRepository::class
     factoryOf(::GeneralLayersConfigFlowUseCase)

@@ -1,8 +1,14 @@
 package ru.mystreet.map.root
 
 import org.koin.dsl.module
-import ru.mystreet.map.general.generalMapModule
+import ru.mystreet.map.general.mapGeneralModule
+import ru.mystreet.map.map.mapModule
+import ru.mystreet.map.mapSharedModule
 
 val mapHostModule = module {
-    includes(generalMapModule)
+    includes(
+        mapGeneralModule,
+        mapSharedModule,
+        mapModule,
+    )
 }

@@ -2,8 +2,9 @@ package ru.mystreet.core.component
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.childContext
+import com.arkivanov.decompose.router.children.NavigationSource
 import com.arkivanov.decompose.router.stack.ChildStack
-import com.arkivanov.decompose.router.stack.StackNavigationSource
+import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.Lifecycle
@@ -34,7 +35,7 @@ fun DIComponentContext.diChildContext(
 }
 
 fun <C : Any, T : Any> DIComponentContext.diChildStack(
-    source: StackNavigationSource<C>,
+    source: NavigationSource<StackNavigation.Event<C>>,
     serializer: KSerializer<C>?,
     initialStack: () -> List<C>,
     key: String = "DefaultChildStack",
@@ -66,7 +67,7 @@ fun <C : Any, T : Any> DIComponentContext.diChildStack(
     )
 
 fun <C : Any, T : Any> DIComponentContext.diChildStack(
-    source: StackNavigationSource<C>,
+    source: NavigationSource<StackNavigation.Event<C>>,
     serializer: KSerializer<C>?,
     initialConfiguration: C,
     key: String = "DefaultChildStack",

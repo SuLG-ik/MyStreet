@@ -1,6 +1,5 @@
 package ru.mystreet.map.general.ui
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -24,11 +23,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import ru.mystreet.map.domain.GeneralLayer
+import ru.mystreet.map.domain.entity.GeneralLayer
 import ru.mystreet.uikit.DefaultMapAlpha
 import ru.mystreet.uikit.MR
-import ru.mystreet.uikit.UIKitFilledTonalIconButton
 import ru.mystreet.uikit.UIKitSelectableTonalIconButton
+import ru.mystreet.uikit.tokens.UIKitSizeTokens
 
 @Composable
 fun LayersButton(
@@ -40,12 +39,12 @@ fun LayersButton(
         selected = isSelected,
         onClick = toggleSelected,
         shape = MaterialTheme.shapes.medium,
-        modifier = modifier.size(40.dp),
+        modifier = modifier,
     ) {
         Icon(
             painterResource(MR.images.layers),
             contentDescription = null,
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(UIKitSizeTokens.DefaultIconSize),
         )
     }
 }
@@ -125,8 +124,6 @@ fun LayerItem(
     modifier: Modifier = Modifier,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val color =
-        animateColorAsState(if (isEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondaryContainer)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(5.dp),
@@ -136,18 +133,19 @@ fun LayerItem(
             onClick = onToggleEnabled,
         )
     ) {
-        UIKitFilledTonalIconButton(
+        UIKitSelectableTonalIconButton(
+            selected = isEnabled,
             onClick = onToggleEnabled,
-            color = color.value,
+            unselectedColor = MaterialTheme.colorScheme.secondaryContainer,
             shape = MaterialTheme.shapes.medium,
             shadowElevation = 0.dp,
-            modifier = Modifier.size(45.dp),
+            modifier = Modifier.size(UIKitSizeTokens.HigherIconButtonSize),
             interactionSource = interactionSource
         ) {
             Icon(
                 painter = image,
                 contentDescription = null,
-                modifier = Modifier.size(24.dp),
+                modifier = Modifier.size(UIKitSizeTokens.DefaultIconSize),
             )
         }
         Text(

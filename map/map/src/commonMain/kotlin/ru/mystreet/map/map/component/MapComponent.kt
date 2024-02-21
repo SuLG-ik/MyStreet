@@ -1,9 +1,15 @@
 package ru.mystreet.map.map.component
 
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
+import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.essenty.lifecycle.subscribe
+import com.arkivanov.mvikotlin.core.rx.Observer
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.core.component.get
 import ru.mystreet.app.MapController
@@ -11,21 +17,58 @@ import ru.mystreet.app.UserLocationProvider
 import ru.mystreet.app.locationProvider
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
+import ru.mystreet.core.component.getStore
+import ru.mystreet.map.CameraPosition
+import ru.mystreet.map.domain.entity.MapConfig
+import ru.mystreet.map.geomety.Point
+import ru.mystreet.map.map.presentation.MapObjectsStore
+import ru.mystreet.uikit.MR
 
 class MapComponent(
     componentContext: DIComponentContext,
+    mapConfig: MapConfig,
 ) : AppComponentContext(componentContext), Map {
 
     private val coroutineScope = coroutineScope()
 
-    override val mapController: MapController = MapController()
+    private val store: MapObjectsStore = getStore()
+
+    init {
+        val disposable = store.labels(object : Observer<MapObjectsStore.Label> {
+            override fun onComplete() {
+            }
+
+            override fun onNext(value: MapObjectsStore.Label) {
+                when (value) {
+                    is MapObjectsStore.Label.OnMapObjectsLoaded -> value.loadedMapObjects.forEach {
+                        mapController.addPlacemark(
+                            Point(it.latitude, it.longitude),
+                            MR.images.user_location
+                        )
+                    }
+                }
+            }
+        })
+        lifecycle.doOnDestroy(disposable::dispose)
+    }
+
+    override val mapController: MapController =
+        MapController(initialCameraPosition = mapConfig.initialCameraPosition)
 
     private val userLocationProvider: UserLocationProvider =
         mapController.locationProvider(get())
 
     private var zoomJob: Job? = null
 
+    private fun onUpdateCameraPosition(cameraPosition: CameraPosition?) {
+        if (cameraPosition != null)
+            store.accept(MapObjectsStore.Intent.UpdateCameraPosition(cameraPosition))
+    }
+
     init {
+        mapController.cameraPosition.onEach {
+            onUpdateCameraPosition(it)
+        }.flowOn(Dispatchers.Main).launchIn(coroutineScope())
         lifecycle.subscribe(
             onResume = {
                 userLocationProvider.start()
