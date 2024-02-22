@@ -9,6 +9,8 @@ interface MapObjectsRepository {
 
     suspend fun getAllMapObjects(): List<MapObject>
 
+    suspend fun getMapObjectById(id: Long): MapObject
+
     suspend fun addMapObject(
         title: String,
         description: String,

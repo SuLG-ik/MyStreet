@@ -2,7 +2,6 @@ package ru.mystreet.map.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,6 +39,7 @@ import ru.mystreet.map.domain.entity.FieldSuggestion
 import ru.mystreet.uikit.UIKitOutlineTextField
 import ru.mystreet.uikit.UIKitOutlineTextFieldWithChips
 import ru.mystreet.uikit.UIKitTitledSurfaceColumn
+import ru.mystreet.uikit.clickableIfNoNull
 import ru.mystreet.uikit.tokens.UIKitSizeTokens
 
 @Composable
@@ -150,24 +150,26 @@ private fun EditMapNewObjectScreen(
 @Composable
 fun Chip(
     text: String,
-    icon: Painter,
-    onClick: () -> Unit,
-    modifier: Modifier,
+    icon: Painter? = null,
+    onClick: (() -> Unit)? = null,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(5.dp),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.clip(CircleShape).clickable(onClick = onClick).border(
+        modifier = modifier.clip(CircleShape).clickableIfNoNull(onClick = onClick).border(
             width = 1.dp,
             color = MaterialTheme.colorScheme.outline,
             shape = CircleShape
         ).padding(vertical = 5.dp, horizontal = 10.dp)
     ) {
-        Icon(
-            painter = icon,
-            contentDescription = null,
-            modifier = Modifier.size(UIKitSizeTokens.VerySmallIconSize)
-        )
+        if (icon != null) {
+            Icon(
+                painter = icon,
+                contentDescription = null,
+                modifier = Modifier.size(UIKitSizeTokens.VerySmallIconSize)
+            )
+        }
         Text(
             text = text,
             maxLines = 1,

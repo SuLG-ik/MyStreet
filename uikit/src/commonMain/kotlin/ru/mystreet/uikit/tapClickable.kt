@@ -1,6 +1,7 @@
 package ru.mystreet.uikit
 
 import androidx.compose.foundation.Indication
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.hoverable
@@ -14,6 +15,40 @@ import androidx.compose.ui.platform.inspectable
 import androidx.compose.ui.semantics.Role
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.coroutineScope
+
+fun Modifier.clickableIfNoNull(
+    interactionSource: MutableInteractionSource,
+    indication: Indication?,
+    enabled: Boolean = true,
+    onClickLabel: String? = null,
+    role: Role? = null,
+    onClick: (() -> Unit)?,
+): Modifier {
+    if (onClick == null) return this
+    return this then clickable(
+        interactionSource = interactionSource,
+        indication = indication,
+        enabled = enabled,
+        onClickLabel = onClickLabel,
+        role = role,
+        onClick = onClick
+    )
+}
+
+fun Modifier.clickableIfNoNull(
+    enabled: Boolean = true,
+    onClickLabel: String? = null,
+    role: Role? = null,
+    onClick: (() -> Unit)?,
+): Modifier {
+    if (onClick == null) return this
+    return this then clickable(
+        enabled = enabled,
+        onClickLabel = onClickLabel,
+        role = role,
+        onClick = onClick
+    )
+}
 
 fun Modifier.tapClickable(
     interactionSource: MutableInteractionSource,

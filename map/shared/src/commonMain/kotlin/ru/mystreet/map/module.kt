@@ -20,6 +20,7 @@ import ru.mystreet.map.domain.usecase.FormatAndValidateTitleUseCase
 import ru.mystreet.map.domain.usecase.FormatTitleUseCase
 import ru.mystreet.map.domain.usecase.LoadLocalMapConfigUseCase
 import ru.mystreet.map.domain.usecase.LoadMapObjectTagsWithTitleUseCase
+import ru.mystreet.map.domain.usecase.LoadMapObjectUseCase
 import ru.mystreet.map.domain.usecase.SaveMapInitialCameraPositionUseCase
 import ru.mystreet.map.domain.usecase.ValidateTitleUseCase
 import ru.mystreet.map.domain.validator.MapObjectFieldValidator
@@ -31,12 +32,15 @@ import ru.mystreet.map.presentation.EditMapSelectCategoryStore
 import ru.mystreet.map.presentation.EditMapSelectCategoryStoreImpl
 import ru.mystreet.map.presentation.EditMapStore
 import ru.mystreet.map.presentation.EditMapStoreImpl
+import ru.mystreet.map.presentation.MapObjectInfoStore
+import ru.mystreet.map.presentation.MapObjectInfoStoreImpl
 
 val mapSharedModule = module {
     factoryOf(::EditMapStoreImpl) bind EditMapStore::class
     factoryOf(::EditMapSelectCategoryStoreImpl) bind EditMapSelectCategoryStore::class
     factoryOf(::EditMapNewObjectInfoStoreImpl) bind EditMapNewObjectInfoStore::class
     factoryOf(::EditMapNewObjectLoadingStoreImpl) bind EditMapNewObjectLoadingStore::class
+    factoryOf(::MapObjectInfoStoreImpl) bind MapObjectInfoStore::class
     factoryOf(::AddMapObjectUseCase)
     factoryOf(::LoadLocalMapConfigUseCase)
     factoryOf(::SaveMapInitialCameraPositionUseCase)
@@ -44,6 +48,7 @@ val mapSharedModule = module {
     factoryOf(::ValidateTitleUseCase)
     factoryOf(::FormatTitleUseCase)
     factoryOf(::LoadMapObjectTagsWithTitleUseCase)
+    factoryOf(::LoadMapObjectUseCase)
     factoryOf(::RegexMapObjectFieldValidator) bind MapObjectFieldValidator::class
     factoryOf(::RawMapObjectFieldFormatter) bind MapObjectFieldFormatter::class
     singleOf(::GraphqlMapObjectsConverter)

@@ -4,7 +4,7 @@ import ru.mystreet.map.geomety.Latitude
 import ru.mystreet.map.geomety.Longitude
 
 data class MapObject(
-    val id: Int,
+    val id: Long,
     val title: String,
     val latitude: Latitude,
     val longitude: Longitude,

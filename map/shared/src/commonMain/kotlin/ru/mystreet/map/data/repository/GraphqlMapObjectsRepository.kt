@@ -4,6 +4,7 @@ import com.apollographql.apollo3.ApolloClient
 import ru.mystreet.map.data.converter.GraphqlMapObjectsConverter
 import ru.mystreet.map.data.model.AddMapObjectMutation
 import ru.mystreet.map.data.model.GetAllMapObjectsQuery
+import ru.mystreet.map.data.model.GetMapObjectQuery
 import ru.mystreet.map.domain.entity.MapObject
 import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.domain.repository.MapObjectsRepository
@@ -17,9 +18,15 @@ class GraphqlMapObjectsRepository(
 
     override suspend fun getAllMapObjects(): List<MapObject> {
         val response = apolloClient.query(GetAllMapObjectsQuery()).execute()
-        response.exception?.printStackTrace()
         val mapObjects = response.data?.getMapObjects ?: TODO(response.exception.toString())
         return converter.convert(mapObjects)
+    }
+
+    override suspend fun getMapObjectById(id: Long): MapObject {
+        val response = apolloClient.query(GetMapObjectQuery(id.toString())).execute()
+        val mapObject =
+            response.data?.getMapObject?.mapObjectFull ?: TODO(response.exception.toString())
+        return converter.convert(mapObject)
     }
 
     override suspend fun addMapObject(

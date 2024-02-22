@@ -5,10 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import dev.icerock.moko.resources.ImageResource
 import kotlinx.coroutines.flow.MutableStateFlow
+import ru.mystreet.map.BaseMapObject
 import ru.mystreet.map.CameraListener
 import ru.mystreet.map.CameraPosition
+import ru.mystreet.map.ClusterListener
 import ru.mystreet.map.IconStyle
 import ru.mystreet.map.MapAnimation
+import ru.mystreet.map.MapObjectTapListener
 import ru.mystreet.map.MapWindow
 import ru.mystreet.map.Placemark
 import ru.mystreet.map.SizeChangedListener
@@ -17,6 +20,7 @@ import ru.mystreet.map.geomety.ScreenPoint
 
 class MapController(
     val initialCameraPosition: CameraPosition?,
+    private val onObjectClickListener: (BaseMapObject) -> Boolean,
 ) {
 
     private var isInitialized = false
@@ -42,6 +46,11 @@ class MapController(
             updateCameraPosition(window.map.cameraPosition)
         }
 
+    private val tapListener =
+        MapObjectTapListener { mapObject, _ ->
+            onObjectClickListener(mapObject)
+        }
+
     private val cameraListener =
         CameraListener { _, cameraPosition, _, _ ->
             updatePinLocation(cameraPosition)
@@ -55,12 +64,14 @@ class MapController(
         }
         setMapSizeChangedListener(map)
         setCameraListener(map)
+        setTapListener(map)
     }
 
     internal fun unbindAnchor() {
         withAnchor {
             removeCameraListener(this)
             removeMapSizeChangedListener(this)
+            removeTapListener(this)
         }
         anchor.value = null
     }
@@ -119,9 +130,25 @@ class MapController(
     fun unfollowUserLocation() {
     }
 
-    fun addPlacemarks(points: List<Point>, icon: ImageResource) {
+    private var icon: ImageResource? = null
+
+    private val clusterListener = ClusterListener {
+        val icon = icon
+        if (icon != null)
+            it.appearance.setIcon(icon)
+        it.appearance.zIndex = 100f
+    }
+
+    fun addPlacemarks(points: List<Point>, icon: ImageResource, data: List<Any>) {
+        this.icon = icon
         withAnchor {
-            map.mapObjects.addClusterizedPlacemark().addPlacemarks(points, icon, IconStyle())
+            val clusterizedPlacemark = map.mapObjects.addClusterizedPlacemark(clusterListener)
+            clusterizedPlacemark
+                .addPlacemarks(points, icon, IconStyle())
+                .onEachIndexed { index, placemark ->
+                    placemark.data = data[index]
+                }
+            clusterizedPlacemark.clusterPlacemarks(CLUSTER_RADIUS, CLUSTER_MIN_ZOOM)
         }
     }
 
@@ -141,6 +168,18 @@ class MapController(
         anchor: MapWindow,
     ) {
         anchor.addSizeChangedListener(sizeChangedListener)
+    }
+
+    private fun setTapListener(
+        anchor: MapWindow,
+    ) {
+        anchor.map.mapObjects.addTapListener(tapListener)
+    }
+
+    private fun removeTapListener(
+        anchor: MapWindow,
+    ) {
+        anchor.map.mapObjects.removeTapListener(tapListener)
     }
 
     private fun removeCameraListener(
@@ -166,6 +205,11 @@ class MapController(
     private fun updateCameraPosition(cameraPosition: CameraPosition) {
         this.cameraPosition.value = cameraPosition
         this.currentTarget.value = cameraPosition.target
+    }
+
+    companion object {
+        private const val CLUSTER_RADIUS = 60.0
+        private const val CLUSTER_MIN_ZOOM = 15
     }
 
 }

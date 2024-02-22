@@ -18,8 +18,10 @@ import ru.mystreet.app.locationProvider
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.getStore
+import ru.mystreet.map.BaseMapObject
 import ru.mystreet.map.CameraPosition
 import ru.mystreet.map.domain.entity.MapConfig
+import ru.mystreet.map.domain.entity.MapGeoObject
 import ru.mystreet.map.geomety.Point
 import ru.mystreet.map.map.presentation.MapObjectsStore
 import ru.mystreet.uikit.MR
@@ -27,6 +29,7 @@ import ru.mystreet.uikit.MR
 class MapComponent(
     componentContext: DIComponentContext,
     mapConfig: MapConfig,
+    private val onMapObjectInfo: (id: Long) -> Unit,
 ) : AppComponentContext(componentContext), Map {
 
     private val coroutineScope = coroutineScope()
@@ -40,12 +43,11 @@ class MapComponent(
 
             override fun onNext(value: MapObjectsStore.Label) {
                 when (value) {
-                    is MapObjectsStore.Label.OnMapObjectsLoaded -> value.loadedMapObjects.forEach {
-                        mapController.addPlacemark(
-                            Point(it.latitude, it.longitude),
-                            MR.images.user_location
-                        )
-                    }
+                    is MapObjectsStore.Label.OnMapObjectsLoaded -> mapController.addPlacemarks(
+                        value.loadedMapObjects.map { Point(it.latitude, it.longitude) },
+                        MR.images.user_location,
+                        value.loadedMapObjects.map { MapGeoObject.MapObject(it.id) }
+                    )
                 }
             }
         })
@@ -53,7 +55,23 @@ class MapComponent(
     }
 
     override val mapController: MapController =
-        MapController(initialCameraPosition = mapConfig.initialCameraPosition)
+        MapController(
+            initialCameraPosition = mapConfig.initialCameraPosition,
+            onObjectClickListener = this::onObjectClickListener,
+        )
+
+    private fun onObjectClickListener(mapObject: BaseMapObject): Boolean {
+        val data = mapObject.data
+        if (data is MapGeoObject) {
+            when (data) {
+                is MapGeoObject.MapObject -> {
+                    onMapObjectInfo(data.id)
+                    return true
+                }
+            }
+        }
+        return false
+    }
 
     private val userLocationProvider: UserLocationProvider =
         mapController.locationProvider(get())

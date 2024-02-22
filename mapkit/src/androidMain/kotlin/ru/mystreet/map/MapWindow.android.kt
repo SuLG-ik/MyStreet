@@ -23,7 +23,7 @@ actual class MapWindow(
         get() = nativeMapWindow.height()
 
     actual fun screenToWorld(point: ScreenPoint): Point? {
-        return nativeMapWindow.screenToWorld(point.toNative())?.toData()
+        return nativeMapWindow.screenToWorld(point.toNative())?.toCommon()
     }
 
     actual fun addSizeChangedListener(listener: SizeChangedListener) {

@@ -1,0 +1,19 @@
+query GetMapObject($id: ID!){
+    getMapObject(id: $id) {
+        ...MapObjectFull
+    }
+}
+
+fragment MapObjectFull on MapObjectType {
+    id
+    title
+    latitude
+    longitude
+    category {
+        id
+    }
+    tags {
+        id
+        title
+    }
+}
