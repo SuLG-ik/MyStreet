@@ -15,6 +15,7 @@ class GraphqlMapObjectsConverter {
             MapObject(
                 id = it.id.toLong(),
                 title = it.title,
+                description = it.description,
                 latitude = Latitude(it.latitude),
                 longitude = Longitude(it.longitude),
                 category = it.category.id.convertToCategory(),
@@ -29,6 +30,7 @@ class GraphqlMapObjectsConverter {
         return MapObject(
             id = mapObject.id.toLong(),
             title = mapObject.title,
+            description = mapObject.description,
             latitude = Latitude(mapObject.latitude),
             longitude = Longitude(mapObject.longitude),
             category = mapObject.category.id.convertToCategory(),

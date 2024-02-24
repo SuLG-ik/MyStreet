@@ -2,6 +2,7 @@ query GetAllMapObjects{
     getMapObjects {
         id
         title
+        description
         latitude
         longitude
         category {
