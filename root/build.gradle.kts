@@ -36,6 +36,9 @@ kotlin {
             api(projects.core.component)
             api(projects.map.root)
             api(projects.map.shared)
+            api(projects.core.coil)
+            api(libs.coil.compose)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

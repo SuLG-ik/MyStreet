@@ -10,7 +10,7 @@ import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildSlot
 import ru.mystreet.core.component.savedValue
-import ru.mystreet.map.component.MapObjectInfoComponent
+import ru.mystreet.map.component.MapObjectInfoHostComponent
 
 class MapInfoComponent(
     componentContext: DIComponentContext,
@@ -40,9 +40,10 @@ class MapInfoComponent(
     ): MapInfo.Child {
         return when (config) {
             is Config.MapObjectInfo -> MapInfo.Child.MapObjectInfo(
-                MapObjectInfoComponent(
+                MapObjectInfoHostComponent(
                     componentContext = diComponentContext,
                     mapObjectId = config.id,
+                    onBack = this::onDismiss,
                 )
             )
         }

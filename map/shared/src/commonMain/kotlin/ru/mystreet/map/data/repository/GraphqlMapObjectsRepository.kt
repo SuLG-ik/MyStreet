@@ -1,7 +1,9 @@
 package ru.mystreet.map.data.repository
 
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.DefaultUpload
 import ru.mystreet.map.data.converter.GraphqlMapObjectsConverter
+import ru.mystreet.map.data.model.AddMapObjectImagesMutation
 import ru.mystreet.map.data.model.AddMapObjectMutation
 import ru.mystreet.map.data.model.GetAllMapObjectsQuery
 import ru.mystreet.map.data.model.GetMapObjectQuery
@@ -49,6 +51,22 @@ class GraphqlMapObjectsRepository(
         ).execute()
         if (response.exception != null)
             TODO()
+    }
+
+    override suspend fun uploadMapObjectImages(
+        mapObjectId: Long,
+        images: List<ByteArray>,
+    ) {
+        images.forEach {
+            val upload = DefaultUpload.Builder()
+                .contentType("application/json")
+                .content(it)
+                .build()
+            val response =
+                apolloClient.mutation(AddMapObjectImagesMutation(mapObjectId.toString(), upload))
+            val execute = response.execute()
+            execute
+        }
     }
 
 }

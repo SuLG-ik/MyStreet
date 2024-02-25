@@ -59,7 +59,7 @@ class EditMapNewObjectInfoStoreImpl(
                 val tags = state().field.tags
                 val newTags = tags.copy(value = intent.value)
                 dispatch(Message.SetTags(newTags))
-                debouncedLaunch {
+                deferredLaunch {
                     val state = state()
                     val suggestions =
                         loadMapObjectTagsWithTitleUseCase(

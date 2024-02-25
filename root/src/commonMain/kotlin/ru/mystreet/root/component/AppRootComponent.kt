@@ -1,14 +1,15 @@
 package ru.mystreet.root.component
 
+import coil3.ImageLoader
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
-import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.rx.Observer
 import kotlinx.serialization.Serializable
+import org.koin.core.component.get
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildStack
@@ -35,6 +36,7 @@ class AppRootComponent(
         key = "app_root_initialer",
         initialSavedState = { AppRootInitializingStore.SavedState() },
     )
+    override val imageLoader: ImageLoader = get()
 
     override val isInitializing: Value<Boolean> = store.values(this).map { it.isLoading }
 

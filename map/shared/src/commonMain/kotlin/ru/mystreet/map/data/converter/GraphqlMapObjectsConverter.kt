@@ -21,7 +21,8 @@ class GraphqlMapObjectsConverter {
                 category = it.category.id.convertToCategory(),
                 tags = it.tags.map { tag ->
                     MapObjectTag(tag.id.toLong(), tag.title)
-                }
+                },
+                images = it.images.map { it.path },
             )
         }
     }
@@ -36,8 +37,8 @@ class GraphqlMapObjectsConverter {
             category = mapObject.category.id.convertToCategory(),
             tags = mapObject.tags.map { tag ->
                 MapObjectTag(tag.id.toLong(), tag.title)
-            }
-
+            },
+            images = mapObject.images.map { it.path },
         )
     }
 

@@ -10,4 +10,5 @@ interface MapObjectInfo {
 
     val mapObjectInfo: Value<ValueContainer<MapObject?>>
 
+    fun onImagePicker()
 }

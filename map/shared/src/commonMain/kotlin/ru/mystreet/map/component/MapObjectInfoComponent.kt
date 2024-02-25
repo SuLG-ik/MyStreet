@@ -13,6 +13,7 @@ import ru.mystreet.map.presentation.MapObjectInfoStore
 class MapObjectInfoComponent(
     componentContext: DIComponentContext,
     mapObjectId: Long,
+    private val onImagePicker: () -> Unit,
 ) : AppComponentContext(componentContext), MapObjectInfo {
 
     private val store: MapObjectInfoStore =
@@ -20,6 +21,10 @@ class MapObjectInfoComponent(
             key = "object_info",
             initialSavedState = { MapObjectInfoStore.SavedState(mapObjectId) },
         )
+
+    override fun onImagePicker() {
+        onImagePicker.invoke()
+    }
 
     private val state = store.values(this)
 

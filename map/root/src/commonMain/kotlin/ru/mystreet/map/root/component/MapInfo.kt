@@ -12,7 +12,7 @@ interface MapInfo {
     fun onShowMapObjectInfo(id: Long)
 
     sealed interface Child {
-        class MapObjectInfo(val component: ru.mystreet.map.component.MapObjectInfo) : Child
+        class MapObjectInfo(val component: ru.mystreet.map.component.MapObjectInfoHostComponent) : Child
     }
 
     fun onDismiss()

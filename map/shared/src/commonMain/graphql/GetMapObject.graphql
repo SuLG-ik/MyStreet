@@ -17,4 +17,7 @@ fragment MapObjectFull on MapObjectType {
         id
         title
     }
+    images {
+        path
+    }
 }

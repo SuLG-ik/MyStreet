@@ -11,4 +11,5 @@ data class MapObject(
     val longitude: Longitude,
     val category: MapObjectCategory,
     val tags: List<MapObjectTag>,
+    val images: List<String>,
 )

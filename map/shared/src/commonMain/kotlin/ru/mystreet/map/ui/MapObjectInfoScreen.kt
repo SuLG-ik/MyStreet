@@ -5,12 +5,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -19,10 +22,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ru.mystreet.map.domain.entity.MapObject
 import ru.mystreet.map.domain.entity.MapObjectCategory
+import ru.mystreet.uikit.UIKitAsyncImage
 import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.Add
 import ru.mystreet.uikit.iconpack.uikiticonpack.AddOutlined
@@ -33,6 +39,7 @@ import ru.mystreet.uikit.tokens.UIKitSizeTokens
 fun MapObjectInfoScreen(
     isLoading: Boolean,
     mapObject: MapObject?,
+    onImagePicker: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -44,7 +51,9 @@ fun MapObjectInfoScreen(
             if (mapObject != null) {
                 MapObjectInfo(
                     mapObject = mapObject,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp).padding(bottom = 15.dp),
+                    onImagePicker = onImagePicker,
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(bottom = 15.dp),
                 )
             }
         }
@@ -54,37 +63,102 @@ fun MapObjectInfoScreen(
 @Composable
 fun MapObjectInfo(
     mapObject: MapObject,
+    onImagePicker: () -> Unit,
     modifier: Modifier,
 ) {
     Column(
-        modifier = modifier.padding(),
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
-        AddPhoto(
-            modifier = Modifier.fillMaxWidth()
-        )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
+        Images(mapObject.images, onImagePicker, modifier = Modifier.fillMaxWidth())
+        Column(
+            modifier = Modifier.padding(horizontal = 15.dp)
         ) {
-            Title(
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Title(
+                    mapObject = mapObject,
+                    modifier = Modifier.fillMaxWidth().weight(1f),
+                )
+                Rating()
+            }
+            Description(
                 mapObject = mapObject,
-                modifier = Modifier.fillMaxWidth().weight(1f),
+                modifier = Modifier.fillMaxWidth(),
             )
-            Rating()
+            Tags(
+                mapObject = mapObject,
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Reviews(
+                mapObject = mapObject,
+                modifier = modifier,
+            )
         }
-        Description(
-            mapObject = mapObject,
-            modifier = Modifier.fillMaxWidth(),
-        )
-        Tags(
-            mapObject = mapObject,
-            modifier = Modifier.fillMaxWidth(),
-        )
-        Reviews(
-            mapObject = mapObject,
-            modifier = modifier,
-        )
     }
+}
+
+@Composable
+fun Images(
+    images: List<String>,
+    onImagePicker: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyRow(
+        modifier = modifier,
+        contentPadding = PaddingValues(horizontal = 15.dp),
+        horizontalArrangement = Arrangement.spacedBy(15.dp)
+    ) {
+        items(
+            count = images.size,
+            key = { images[it] },
+            contentType = { "image" }
+        ) {
+            Image(
+                images[it],
+                modifier = Modifier.imageSize(this, it, images.size).height(Height)
+            )
+        }
+        item {
+            AddPhoto(
+                onClick = onImagePicker,
+                modifier = Modifier.addImageSize(this, images.size).height(Height)
+            )
+        }
+    }
+}
+
+@Composable
+private fun Modifier.imageSize(scope: LazyItemScope, currentIndex: Int, size: Int): Modifier {
+    if (size < 1)
+        return this
+    if (size == 1) {
+        return this then with(scope) { fillParentMaxWidth(0.8f) }
+    }
+    return this then with(scope) { fillParentMaxWidth(0.33f) }
+}
+
+@Composable
+private fun Modifier.addImageSize(scope: LazyItemScope, size: Int): Modifier {
+    if (size < 1)
+        return this then with(scope) { fillParentMaxWidth() }
+    return this
+}
+
+val Height = 120.dp
+
+@Composable
+fun Image(
+    image: String,
+    modifier: Modifier = Modifier,
+) {
+    UIKitAsyncImage(
+        image,
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = modifier.clip(MaterialTheme.shapes.medium),
+    )
 }
 
 @Composable
@@ -181,7 +255,6 @@ fun Reviews(
                 )
             }
         }
-
     }
 }
 
@@ -203,14 +276,15 @@ fun Rating(modifier: Modifier = Modifier) {
 
 
 @Composable
-fun AddPhoto(modifier: Modifier = Modifier) {
+fun AddPhoto(onClick: () -> Unit, modifier: Modifier = Modifier) {
     Surface(
         shape = MaterialTheme.shapes.medium,
+        onClick = onClick,
         color = MaterialTheme.colorScheme.surfaceContainer,
-        modifier = modifier.height(80.dp),
+        modifier = modifier,
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(5.dp, alignment = Alignment.CenterVertically)
         ) {

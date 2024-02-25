@@ -36,8 +36,10 @@ kotlin {
             implementation(projects.mapkitCompose)
             implementation(projects.uikit)
             api(projects.core.graphql)
+            api(projects.imagepicker)
             implementation(projects.core.datastore)
             implementation(libs.moko.resources)
+            implementation(libs.peekaboo.imagepicker)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

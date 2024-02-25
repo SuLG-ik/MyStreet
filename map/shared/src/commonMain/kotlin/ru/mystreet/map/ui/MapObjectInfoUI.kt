@@ -16,6 +16,7 @@ fun MapObjectInfoUI(
     MapObjectInfoScreen(
         isLoading = isLoading,
         mapObject = mapObject.value,
+        onImagePicker = component::onImagePicker,
         modifier = modifier
     )
 }

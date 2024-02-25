@@ -16,7 +16,6 @@ class GraphqlMapObjectTagRepository(
         category: MapObjectCategory,
         query: String,
     ): List<MapObjectTag> {
-        println("taaaags")
         val response =
             client.query(GetMapObjectTagsQuery(category = category.id, Optional.present(query)))
                 .execute()

@@ -2,12 +2,13 @@ package ru.mystreet.map.root.ui
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ru.mystreet.map.root.component.MapInfo
-import ru.mystreet.map.ui.MapObjectInfoUI
+import ru.mystreet.map.ui.MapObjectInfoHostUI
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,6 +41,6 @@ fun MapInfoNavHost(
     modifier: Modifier,
 ) {
     when (child) {
-        is MapInfo.Child.MapObjectInfo -> MapObjectInfoUI(child.component, modifier)
+        is MapInfo.Child.MapObjectInfo -> MapObjectInfoHostUI(child.component, modifier)
     }
 }

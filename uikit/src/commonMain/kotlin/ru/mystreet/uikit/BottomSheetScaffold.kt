@@ -6,18 +6,20 @@ import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +45,8 @@ fun UIKitBottomSheetScaffold(
     content: @Composable (PaddingValues) -> Unit,
 ) {
     val bottomStateState =
-        rememberStandardBottomSheetState(
+        rememberSheetState(
+            skipPartiallyExpanded = false,
             initialValue = if (isExpanded) SheetValue.Expanded else SheetValue.Hidden,
             skipHiddenState = false,
             confirmValueChange = remember(onDismiss) {
@@ -86,4 +89,32 @@ fun UIKitBottomSheetScaffold(
         contentColor = contentColor,
         content = content
     )
+}
+
+@Composable
+@ExperimentalMaterial3Api
+private fun rememberSheetState(
+    skipPartiallyExpanded: Boolean = false,
+    confirmValueChange: (SheetValue) -> Boolean = { true },
+    initialValue: SheetValue = SheetValue.Hidden,
+    skipHiddenState: Boolean = false,
+): SheetState {
+
+    val density = LocalDensity.current
+    return rememberSaveable(
+        skipPartiallyExpanded, confirmValueChange,
+        saver = SheetState.Saver(
+            skipPartiallyExpanded = skipPartiallyExpanded,
+            confirmValueChange = confirmValueChange,
+            density = density
+        )
+    ) {
+        SheetState(
+            skipPartiallyExpanded,
+            density,
+            initialValue,
+            confirmValueChange,
+            skipHiddenState
+        )
+    }
 }

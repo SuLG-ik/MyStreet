@@ -46,6 +46,7 @@ apollo {
         packageName.set("ru.mystreet.core.graphql")
         srcDir("src/commonMain/graphql/")
         generateApolloMetadata.set(true)
+        mapScalarToUpload("Upload")
     }
 }
 

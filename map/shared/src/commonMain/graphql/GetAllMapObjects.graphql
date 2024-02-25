@@ -12,5 +12,8 @@ query GetAllMapObjects{
             id
             title
         }
+        images {
+            path
+        }
     }
 }

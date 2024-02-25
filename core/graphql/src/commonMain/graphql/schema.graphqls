@@ -1,3 +1,5 @@
+scalar Upload
+
 type Query {
     getCategories: [CategoryType!]!
 
@@ -30,6 +32,8 @@ type MapObjectType {
     latitude: Float!
 
     longitude: Float!
+
+    images: [FileType!]!
 }
 
 type MapObjectTagType {
@@ -38,6 +42,21 @@ type MapObjectTagType {
     title: String!
 }
 
+type FileType {
+    path: String!
+}
+
 type Mutation {
-    addMapObject(category: String!, description: String!, latitude: Float!, longitude: Float!, tags: [String!]!, title: String!): MapObjectType
+    addMapObject(
+        category: String!
+        description: String!
+        latitude: Float!
+        longitude: Float!
+        tags: [String!]!
+        title: String!
+    ): MapObjectType
+    addMapObjectImage(
+        id: ID!
+        image: Upload!
+    ): MapObjectType
 }

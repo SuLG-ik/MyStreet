@@ -1,9 +1,12 @@
 package ru.mystreet.root.component
 
+import coil3.ImageLoader
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 
 interface AppRoot {
+
+    val imageLoader: ImageLoader
 
     val isInitializing: Value<Boolean>
 
