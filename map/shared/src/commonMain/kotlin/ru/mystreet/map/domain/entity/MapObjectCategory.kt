@@ -10,7 +10,7 @@ enum class MapObjectCategory(
     val image: ImageResource,
 ) {
     Bench("bench", MR.images.user_location),
-    Playground("playground", MR.images.playground),
+    Playground("playground", MR.images.user_location),
     StreetLight("streetlight", MR.images.user_location),
     Monument("monument", MR.images.user_location),
     Fountain("fountain", MR.images.user_location),
