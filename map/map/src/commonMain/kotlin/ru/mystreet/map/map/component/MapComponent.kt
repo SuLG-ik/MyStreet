@@ -24,7 +24,6 @@ import ru.mystreet.map.domain.entity.MapConfig
 import ru.mystreet.map.domain.entity.MapGeoObject
 import ru.mystreet.map.geomety.Point
 import ru.mystreet.map.map.presentation.MapObjectsStore
-import ru.mystreet.uikit.MR
 
 class MapComponent(
     componentContext: DIComponentContext,
@@ -43,11 +42,16 @@ class MapComponent(
 
             override fun onNext(value: MapObjectsStore.Label) {
                 when (value) {
-                    is MapObjectsStore.Label.OnMapObjectsLoaded -> mapController.addPlacemarks(
-                        value.loadedMapObjects.map { Point(it.latitude, it.longitude) },
-                        MR.images.user_location,
-                        value.loadedMapObjects.map { MapGeoObject.MapObject(it.id) }
-                    )
+                    is MapObjectsStore.Label.OnMapObjectsLoaded ->
+                        value.loadedMapObjects.groupBy {
+                            it.category
+                        }.forEach { (key, it) ->
+                            mapController.addPlacemarks(
+                                it.map { Point(it.latitude, it.longitude) },
+                                key.image,
+                                it.map { MapGeoObject.MapObject(it.id) },
+                            )
+                        }
                 }
             }
         })

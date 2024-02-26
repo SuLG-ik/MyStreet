@@ -9,9 +9,11 @@ import ru.mystreet.map.BaseMapObject
 import ru.mystreet.map.CameraListener
 import ru.mystreet.map.CameraPosition
 import ru.mystreet.map.ClusterListener
+import ru.mystreet.map.ClusterizedPlacemark
 import ru.mystreet.map.IconStyle
 import ru.mystreet.map.MapAnimation
 import ru.mystreet.map.MapObjectTapListener
+import ru.mystreet.map.MapObjects
 import ru.mystreet.map.MapWindow
 import ru.mystreet.map.Placemark
 import ru.mystreet.map.SizeChangedListener
@@ -139,16 +141,26 @@ class MapController(
         it.appearance.zIndex = 100f
     }
 
+    private var clusterizedPlacemark: ClusterizedPlacemark? = null
+
     fun addPlacemarks(points: List<Point>, icon: ImageResource, data: List<Any>) {
         this.icon = icon
         withAnchor {
-            val clusterizedPlacemark = map.mapObjects.addClusterizedPlacemark(clusterListener)
+            val clusterizedPlacemark = getOrCreateClusterizedPlacemark(map.mapObjects)
             clusterizedPlacemark
                 .addPlacemarks(points, icon, IconStyle())
                 .onEachIndexed { index, placemark ->
                     placemark.data = data[index]
                 }
             clusterizedPlacemark.clusterPlacemarks(CLUSTER_RADIUS, CLUSTER_MIN_ZOOM)
+        }
+    }
+
+    private fun getOrCreateClusterizedPlacemark(mapObjects: MapObjects): ClusterizedPlacemark {
+        return clusterizedPlacemark ?: run {
+            val placemarks = mapObjects.addClusterizedPlacemark(clusterListener)
+            clusterizedPlacemark = placemarks
+            placemarks
         }
     }
 
