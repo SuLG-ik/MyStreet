@@ -59,13 +59,12 @@ class GraphqlMapObjectsRepository(
     ) {
         images.forEach {
             val upload = DefaultUpload.Builder()
-                .contentType("application/json")
+                .contentType("image/jpeg")
                 .content(it)
+                .fileName("image")
                 .build()
-            val response =
-                apolloClient.mutation(AddMapObjectImagesMutation(mapObjectId.toString(), upload))
-            val execute = response.execute()
-            execute
+            apolloClient.mutation(AddMapObjectImagesMutation(mapObjectId.toString(), upload))
+                .execute()
         }
     }
 
