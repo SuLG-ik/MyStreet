@@ -1,9 +1,12 @@
 package ru.mystreet.imagepicker.ui
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -42,6 +45,7 @@ import kotlinx.coroutines.launch
 import ru.mystreet.imagepicker.component.ImagePicker
 import ru.mystreet.imagepicker.domain.entity.ImageItem
 import ru.mystreet.uikit.UIKitAsyncImage
+import ru.mystreet.uikit.UIKitFilledTonalButton
 import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.Accept
 import ru.mystreet.uikit.iconpack.uikiticonpack.BackButton
@@ -55,6 +59,7 @@ fun ImagePickerUI(
     modifier: Modifier,
 ) {
     ImagePickerScreen(
+        isContinueAvailable = component.isContinueAvailable.subscribeAsState().value,
         images = component.images.subscribeAsState().value,
         onLoad = component::onLoad,
         onBack = component::onBack,
@@ -67,6 +72,7 @@ fun ImagePickerUI(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ImagePickerScreen(
+    isContinueAvailable: Boolean,
     images: List<ImageItem>,
     onPick: (List<ByteArray>) -> Unit,
     onLoad: () -> Unit,
@@ -115,6 +121,7 @@ fun ImagePickerScreen(
             cameraMode = CameraMode.Back,
             captureIcon = {
                 CaptureIconOverlay(
+                    isContinueAvailable = isContinueAvailable,
                     onCapture = it,
                     images = images,
                     onRemove = onRemove,
@@ -139,6 +146,7 @@ fun ImagePickerScreen(
 
 @Composable
 fun CaptureIconOverlay(
+    isContinueAvailable: Boolean,
     images: List<ImageItem>,
     onCapture: () -> Unit,
     onRemove: (index: Int) -> Unit,
@@ -153,6 +161,7 @@ fun CaptureIconOverlay(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CameraControls(
+            isAcceptAvailable = isContinueAvailable,
             onCapture = onCapture,
             onCancel = onCancel,
             onAccept = onAccept,
@@ -213,36 +222,64 @@ fun SelectFromStorage(
 
 @Composable
 fun CameraControls(
+    isAcceptAvailable: Boolean,
     onCapture: () -> Unit,
     onCancel: () -> Unit,
     onAccept: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
-        IconButton(onClick = onCancel, modifier = Modifier.weight(1f)) {
-            Icon(
-                UIKitIconPack.BackButton,
+        Box(
+            modifier = Modifier
+                .weight(1f),
+            contentAlignment = Alignment.Center,
+        ) {
+            UIKitFilledTonalButton(
+                onClick = onCancel,
+                modifier = Modifier.size(75.dp),
+                color = MaterialTheme.colorScheme.surface,
+            ) {
+                Icon(
+                    UIKitIconPack.BackButton,
+                    contentDescription = null,
+                    modifier = Modifier.size(25.dp),
+                )
+            }
+        }
+        Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+            Image(
+                UIKitIconPack.CaptureButton,
                 contentDescription = null,
-                modifier = Modifier.size(75.dp)
+                modifier = Modifier
+                    .size(100.dp)
                     .clip(CircleShape)
+                    .clickable(onClick = onCapture)
             )
         }
-        Image(
-            UIKitIconPack.CaptureButton,
-            contentDescription = null,
-            modifier = Modifier.size(100.dp)
-                .clip(CircleShape)
-                .clickable(onClick = onCapture).weight(1f),
-        )
-        IconButton(onClick = onAccept, modifier = Modifier.weight(1f)) {
-            Icon(
-                UIKitIconPack.Accept,
-                contentDescription = null,
-                modifier = Modifier.size(75.dp)
-                    .clip(CircleShape)
-            )
+        Box(
+            modifier = Modifier
+                .weight(1f),
+            contentAlignment = Alignment.Center,
+        ) {
+            androidx.compose.animation.AnimatedVisibility(
+                visible = isAcceptAvailable,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                UIKitFilledTonalButton(
+                    onClick = onAccept,
+                    modifier = Modifier.size(75.dp),
+                ) {
+                    Icon(
+                        UIKitIconPack.Accept,
+                        contentDescription = null,
+                        modifier = Modifier.size(50.dp)
+                    )
+                }
+            }
         }
     }
 }

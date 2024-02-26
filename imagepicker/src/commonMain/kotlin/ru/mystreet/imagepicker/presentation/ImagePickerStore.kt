@@ -12,6 +12,7 @@ interface ImagePickerStore :
     }
 
     data class State(
+        val isContinueAvailable: Boolean,
         val images: List<ImageItem>,
     )
 

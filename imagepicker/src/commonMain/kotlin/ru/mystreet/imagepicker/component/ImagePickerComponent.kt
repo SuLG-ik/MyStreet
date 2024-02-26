@@ -35,7 +35,11 @@ class ImagePickerComponent(
         lifecycle.doOnDestroy(disposable::dispose)
     }
 
-    override val images: Value<List<ImageItem>> = store.values(this).map { it.images }
+    private val state = store.values(this)
+
+    override val isContinueAvailable: Value<Boolean> = state.map { it.isContinueAvailable }
+
+    override val images: Value<List<ImageItem>> = state.map { it.images }
 
     override fun onLoad() {
         loadStore.accept(ImagePickerImageLoadStore.Intent.Load(store.state.images.map { it.content }))

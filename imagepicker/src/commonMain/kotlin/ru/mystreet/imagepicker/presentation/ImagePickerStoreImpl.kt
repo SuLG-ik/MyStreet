@@ -20,10 +20,13 @@ class ImagePickerStoreImpl(
 ) : ImagePickerStore,
     Store<ImagePickerStore.Intent, ImagePickerStore.State, ImagePickerStore.Label> by storeFactory.create<_, _, Message, _, _>(
         name = "ImagePickerStoreImpl",
-        initialState = ImagePickerStore.State(emptyList()),
+        initialState = ImagePickerStore.State(isContinueAvailable = false, images = emptyList()),
         reducer = {
             when (it) {
-                is Message.SetImages -> copy(images = it.images)
+                is Message.SetImages -> copy(
+                    images = it.images,
+                    isContinueAvailable = it.images.isNotEmpty(),
+                )
             }
         },
         executorFactory = coroutineExecutorFactory(coroutineDispatcher) {

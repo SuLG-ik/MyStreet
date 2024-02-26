@@ -5,6 +5,9 @@ import ru.mystreet.imagepicker.domain.entity.ImageItem
 
 interface ImagePicker {
 
+
+    val isContinueAvailable: Value<Boolean>
+
     val images: Value<List<ImageItem>>
 
     fun onLoad()
