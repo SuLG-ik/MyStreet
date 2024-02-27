@@ -18,7 +18,7 @@ class GraphqlMapObjectsRepository(
     private val converter: GraphqlMapObjectsConverter,
 ) : MapObjectsRepository {
 
-    override suspend fun getAllMapObjects(): List<MapObject> {
+    override suspend fun getAllMapObjects(categories: List<MapObjectCategory>): List<MapObject> {
         val response = apolloClient.query(GetAllMapObjectsQuery()).execute()
         val mapObjects = response.data?.getMapObjects ?: TODO(response.exception.toString())
         return converter.convert(mapObjects)

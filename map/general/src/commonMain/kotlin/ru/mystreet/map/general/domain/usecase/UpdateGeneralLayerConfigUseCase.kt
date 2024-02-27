@@ -1,7 +1,7 @@
 package ru.mystreet.map.general.domain.usecase
 
 import ru.mystreet.map.domain.entity.GeneralLayerType
-import ru.mystreet.map.general.domain.repository.LayersConfigRepository
+import ru.mystreet.map.domain.repository.LayersConfigRepository
 
 class UpdateGeneralLayerConfigUseCase(
     private val layersConfigRepository: LayersConfigRepository,

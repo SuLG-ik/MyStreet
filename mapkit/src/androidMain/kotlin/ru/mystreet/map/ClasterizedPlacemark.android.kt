@@ -8,7 +8,7 @@ import ru.mystreet.map.geomety.PointF
 import ru.mystreet.map.location.toImageProvider
 
 actual class ClusterizedPlacemark(
-    private val nativeClusterizedPlacemark: ClusterizedPlacemarkCollection,
+    val nativeClusterizedPlacemark: ClusterizedPlacemarkCollection,
     private val context: Context,
 ) {
     actual fun addPlacemarks(

@@ -3,7 +3,7 @@ scalar Upload
 type Query {
     getCategories: [CategoryType!]!
 
-    getMapObjects: [MapObjectType!]!
+    getMapObjects(categories: [ID!]): [MapObjectType!]!
 
     getMapObject(id: ID!): MapObjectType!
 

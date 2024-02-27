@@ -1,4 +1,4 @@
-package ru.mystreet.map.general.data.repository
+package ru.mystreet.map.data.repository
 
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.map
 import ru.mystreet.core.datastore.DatastoreFactory
 import ru.mystreet.map.domain.entity.GeneralLayer
 import ru.mystreet.map.domain.entity.GeneralLayerType
-import ru.mystreet.map.general.domain.repository.LayersConfigRepository
+import ru.mystreet.map.domain.repository.LayersConfigRepository
 
 class DataStoreLayersConfigRepositoryImpl(
     dataStoreFactory: DatastoreFactory,
@@ -22,8 +22,9 @@ class DataStoreLayersConfigRepositoryImpl(
     }
 }
 
+
 private fun preferenceEnabledKeyByType(type: GeneralLayerType): Preferences.Key<Boolean> {
-    return booleanPreferencesKey("layer_${type.id}_enabled")
+    return booleanPreferencesKey("layer_${type.category.id}_enabled")
 }
 
 private fun Preferences.get(type: GeneralLayerType): Boolean {
