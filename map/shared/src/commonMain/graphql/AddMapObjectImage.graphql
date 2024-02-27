@@ -1,0 +1,11 @@
+mutation AddMapObjectImages(
+    $id: ID!
+    $image: Upload!
+){
+    addMapObjectImage(
+        id: $id
+        image: $image
+    ) {
+        id
+    }
+}

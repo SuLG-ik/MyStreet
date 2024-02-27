@@ -6,6 +6,7 @@ import ru.mystreet.app.store.mviModule
 import ru.mystreet.core.datastore.dataStoreModule
 import ru.mystreet.core.datastore.platformDataStoreModule
 import ru.mystreet.root.rootModule
+import ru.sulgik.core.coil.coilModule
 import ru.sulgik.core.graphql.graphqlModule
 
 val appModule = module {
@@ -15,6 +16,7 @@ val appModule = module {
         platformMokoAssetsStore,
         dataStoreModule,
         mviModule,
+        coilModule,
 
         rootModule,
     )

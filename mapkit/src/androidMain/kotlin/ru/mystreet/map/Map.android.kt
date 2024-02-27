@@ -56,12 +56,12 @@ actual class Map(
             map.move(cameraPosition.toNative())
             listener?.onMoveFinished(true)
         } else
-            map.move(cameraPosition.toNative(), animation.toData(), listener?.toData())
+            map.move(cameraPosition.toNative(), animation.toCommon(), listener?.toCommon())
     }
 
 
     actual val cameraPosition: CameraPosition
-        get() = map.cameraPosition.toData()
+        get() = map.cameraPosition.toCommon()
 
     actual val mapObjects: MapObjects = MapObjects(map.mapObjects, context)
 
@@ -78,11 +78,11 @@ actual class Map(
 
 }
 
-fun com.yandex.mapkit.map.CameraPosition.toData(): CameraPosition {
-    return CameraPosition(target.toData(), zoom, azimuth, tilt)
+fun com.yandex.mapkit.map.CameraPosition.toCommon(): CameraPosition {
+    return CameraPosition(target.toCommon(), zoom, azimuth, tilt)
 }
 
-fun com.yandex.mapkit.geometry.Point.toData(): Point {
+fun com.yandex.mapkit.geometry.Point.toCommon(): Point {
     return Point(Latitude(latitude), Longitude(longitude))
 }
 
@@ -95,15 +95,15 @@ class DelegatingCameraCallback(
 }
 
 
-private fun CameraCallback.toData(): Map.CameraCallback {
+private fun CameraCallback.toCommon(): Map.CameraCallback {
     return DelegatingCameraCallback(this)
 }
 
-private fun MapAnimation.toData(): Animation {
-    return Animation(type.toData(), duration)
+private fun MapAnimation.toCommon(): Animation {
+    return Animation(type.toCommon(), duration)
 }
 
-private fun MapAnimation.Type.toData(): Animation.Type {
+private fun MapAnimation.Type.toCommon(): Animation.Type {
     return when (this) {
         MapAnimation.Type.SMOOTH -> Animation.Type.SMOOTH
         MapAnimation.Type.LINEAR -> Animation.Type.LINEAR

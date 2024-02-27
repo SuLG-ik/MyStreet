@@ -138,7 +138,7 @@ fun UIKitFilledTonalButton(
 ) {
     ProvideTextStyle(MaterialTheme.typography.labelLarge) {
         Row(
-            modifier = Modifier.size(UIKitSizeTokens.DefaultIconSize)
+            modifier = Modifier
                 .defaultMinSize(
                     minWidth = UIKitSizeTokens.ButtonMinWidth,
                     minHeight = UIKitSizeTokens.ButtonMinHeight,

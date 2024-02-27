@@ -5,6 +5,7 @@ import ru.mystreet.map.geomety.Point
 
 expect class ClusterizedPlacemark {
 
-    fun addPlacemarks(points: List<Point>, icon: ImageResource, iconStyle: IconStyle)
+    fun addPlacemarks(points: List<Point>, icon: ImageResource, iconStyle: IconStyle): List<Placemark>
+    fun clusterPlacemarks(clusterRadius: Double, minZoom: Int)
 
 }

@@ -1,41 +1,62 @@
+scalar Upload
+
 type Query {
-  getCategories: [CategoryType!]!
+    getCategories: [CategoryType!]!
 
-  getMapObjects: [MapObjectType!]!
+    getMapObjects: [MapObjectType!]!
 
-  getMapObjectTags(category: ID!, query: String): [MapObjectTagType!]!
+    getMapObject(id: ID!): MapObjectType!
+
+    getMapObjectTags(category: ID!, query: String): [MapObjectTagType!]!
 }
 
 type CategoryType {
-  titleShort: String!
+    titleShort: String!
 
-  titleLarge: String!
+    titleLarge: String!
 
-  id: String!
+    id: String!
 }
 
 type MapObjectType {
-  id: ID!
+    id: ID!
 
-  title: String!
+    title: String!
 
-  description: String!
+    description: String!
 
-  category: CategoryType!
+    category: CategoryType!
 
-  tags: [MapObjectTagType!]!
+    tags: [MapObjectTagType!]!
 
-  latitude: Float!
+    latitude: Float!
 
-  longitude: Float!
+    longitude: Float!
+
+    images: [FileType!]!
 }
 
 type MapObjectTagType {
-  id: ID!
+    id: ID!
 
-  title: String!
+    title: String!
+}
+
+type FileType {
+    path: String!
 }
 
 type Mutation {
-  addMapObject(category: String!, description: String!, latitude: Float!, longitude: Float!, tags: [String!]!, title: String!): MapObjectType
+    addMapObject(
+        category: String!
+        description: String!
+        latitude: Float!
+        longitude: Float!
+        tags: [String!]!
+        title: String!
+    ): MapObjectType
+    addMapObjectImage(
+        id: ID!
+        image: Upload!
+    ): MapObjectType
 }

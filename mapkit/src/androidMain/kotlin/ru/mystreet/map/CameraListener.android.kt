@@ -16,11 +16,11 @@ class MappingCameraListener(
         p2: NativeCameraUpdateReason,
         p3: Boolean
     ) {
-        listener.onPositionChanged(map, p1.toData(), p2.toData(), p3)
+        listener.onPositionChanged(map, p1.toCommon(), p2.toCommon(), p3)
     }
 }
 
-private fun com.yandex.mapkit.map.CameraUpdateReason.toData(): CameraUpdateReason {
+private fun com.yandex.mapkit.map.CameraUpdateReason.toCommon(): CameraUpdateReason {
     return when(this) {
         com.yandex.mapkit.map.CameraUpdateReason.GESTURES -> CameraUpdateReason.GESTURES
         com.yandex.mapkit.map.CameraUpdateReason.APPLICATION -> CameraUpdateReason.APPLICATION
