@@ -335,17 +335,19 @@ fun NoCameraPermission(
     onLoadFromDisk: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
+    Scaffold(
         modifier = modifier,
+        bottomBar = {
+            SelectedImagesRow(
+                images = images,
+                onRemove = onRemove,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     ) {
         CameraPermissionRequest(
             onLoadFromDisk = onLoadFromDisk,
-            modifier = Modifier.fillMaxWidth().align(Alignment.Center),
-        )
-        SelectedImagesRow(
-            images = images,
-            onRemove = onRemove,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(it),
         )
     }
 }
