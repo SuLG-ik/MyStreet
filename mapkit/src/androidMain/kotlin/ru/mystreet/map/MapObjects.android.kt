@@ -27,6 +27,10 @@ actual class MapObjects(
         ).toNative(context)
     }
 
+    actual fun removePlacemarks(clusterizedPlacemark: ClusterizedPlacemark) {
+        mapObjects.remove(clusterizedPlacemark.nativeClusterizedPlacemark)
+    }
+
     actual fun addTapListener(listener: MapObjectTapListener) {
         val nativeListener = MappingMapObjectTapListener(listener, context)
         tapListeners[listener] = nativeListener
@@ -40,13 +44,13 @@ actual class MapObjects(
 }
 
 private fun ClusterizedPlacemarkCollection.toNative(
-    context: Context
+    context: Context,
 ): ClusterizedPlacemark {
     return ClusterizedPlacemark(this, context)
 }
 
 fun PlacemarkMapObject.toCommon(
-    context: Context
+    context: Context,
 ): Placemark {
     return Placemark(this, context)
 }

@@ -1,4 +1,4 @@
-package ru.mystreet.map.general.domain.repository
+package ru.mystreet.map.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 import ru.mystreet.map.domain.entity.GeneralLayer

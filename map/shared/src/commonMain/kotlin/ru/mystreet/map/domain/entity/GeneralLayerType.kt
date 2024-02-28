@@ -1,12 +1,12 @@
 package ru.mystreet.map.domain.entity
 
-enum class GeneralLayerType(val id: String, val isEnabledByDefault: Boolean) {
-    Bench("bench", true),
-    Playground("playground", true),
-    StreetLight("streetlight", true),
-    Monument("monument", true),
-    Fountain("fountain", true),
-    Bower("bower", true),
-    GreenZone("greenzone", true),
-    PublicWC("publicwc", true),
+enum class GeneralLayerType(val category: MapObjectCategory, val isEnabledByDefault: Boolean) {
+    Bench(MapObjectCategory.Bench, true),
+    Playground(MapObjectCategory.Playground, true),
+    StreetLight(MapObjectCategory.StreetLight, true),
+    Monument(MapObjectCategory.Monument, true),
+    Fountain(MapObjectCategory.Fountain, true),
+    Bower(MapObjectCategory.Bower, true),
+    GreenArea(MapObjectCategory.GreenArea, true),
+    PublicWC(MapObjectCategory.PublicWC, true),
 }

@@ -38,6 +38,7 @@ kotlin {
             implementation(libs.moko.resources.compose)
             implementation(projects.map.shared)
             implementation(projects.core.datastore)
+            implementation(projects.map.map)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -52,7 +52,8 @@ class MapHostComponent(
             MapHost.Config.General -> MapHost.Child.General(
                 GeneralMapComponent(
                     componentContext = componentContext,
-                    editMap = editMap
+                    editMap = editMap,
+                    map = map,
                 )
             )
 
