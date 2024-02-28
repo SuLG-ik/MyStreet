@@ -242,7 +242,7 @@ fun SelectedImages(
             "${images.count}/${images.maxCount}",
             style = MaterialTheme.typography.titleSmall,
             modifier = Modifier.align(Alignment.End)
-                .padding(10.dp)
+                .padding(bottom = 10.dp, end = 10.dp)
                 .background(
                     MaterialTheme.colorScheme.surfaceContainer,
                     shape = MaterialTheme.shapes.medium,
