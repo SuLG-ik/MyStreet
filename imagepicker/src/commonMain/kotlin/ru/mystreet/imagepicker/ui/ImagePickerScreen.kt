@@ -23,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,9 +33,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -113,12 +117,14 @@ fun ImagePickerScreen(
             )
         }
     ) {
+        var isCapturing by remember { mutableStateOf(false) }
         PeekabooCamera(
             modifier = Modifier.fillMaxSize().padding(it),
             cameraMode = CameraMode.Back,
             captureIcon = { onCapture ->
                 CaptureIconOverlay(
                     isContinueAvailable = isContinueAvailable,
+                    isCapturing = isCapturing,
                     onCapture = onCapture,
                     images = images,
                     onRemove = onRemove,
@@ -127,6 +133,12 @@ fun ImagePickerScreen(
                     onCancel = onBack,
                     modifier = Modifier.fillMaxSize().padding(bottom = 15.dp),
                 )
+            },
+            progressIndicator = {
+                DisposableEffect(Unit) {
+                    isCapturing = true
+                    onDispose { isCapturing = false }
+                }
             },
             onCapture = {
                 if (it != null)
@@ -149,6 +161,7 @@ fun ImagePickerScreen(
 @Composable
 fun CaptureIconOverlay(
     isContinueAvailable: Boolean,
+    isCapturing: Boolean,
     images: SelectedImages,
     onCapture: () -> Unit,
     onRemove: (index: Int) -> Unit,
@@ -163,7 +176,8 @@ fun CaptureIconOverlay(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CameraControls(
-            isCaptureAvailable = images.count < images.maxCount,
+            isCapturing = isCapturing,
+            isCaptureAvailable = images.count < images.maxCount && !isCapturing,
             isAcceptAvailable = isContinueAvailable,
             onCapture = onCapture,
             onCancel = onCancel,
@@ -272,6 +286,7 @@ fun SelectFromStorage(
 
 @Composable
 fun CameraControls(
+    isCapturing: Boolean,
     isCaptureAvailable: Boolean,
     isAcceptAvailable: Boolean,
     onCapture: () -> Unit,
@@ -291,7 +306,6 @@ fun CameraControls(
         ) {
             UIKitFilledTonalButton(
                 onClick = onCancel,
-                enabled = isCaptureAvailable,
                 modifier = Modifier.size(75.dp),
                 color = MaterialTheme.colorScheme.surface,
             ) {
@@ -312,8 +326,18 @@ fun CameraControls(
                 modifier = Modifier
                     .size(100.dp)
                     .clip(CircleShape)
-                    .clickable(onClick = onCapture)
+                    .clickable(enabled = isCaptureAvailable, onClick = onCapture)
             )
+            androidx.compose.animation.AnimatedVisibility(
+                visible = isCapturing,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(100.dp)
+                )
+            }
         }
         Box(
             modifier = Modifier
