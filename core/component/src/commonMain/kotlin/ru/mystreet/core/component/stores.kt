@@ -13,7 +13,6 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutorScope
 import com.arkivanov.mvikotlin.extensions.coroutines.ExecutorBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -82,22 +81,22 @@ inline fun <reified T : Intent, Intent : Any, Action : Any, State : Any, Message
 }
 
 @OptIn(ExperimentalMviKotlinApi::class)
-interface DebouncedCoroutineExecutorScope<out State : Any, in Message : Any, in Action : Any, in Label : Any> :
+interface DeferredCoroutineExecutorScope<out State : Any, in Message : Any, in Action : Any, in Label : Any> :
     CoroutineExecutorScope<State, Message, Action, Label> {
 
-    fun debouncedLaunch(handler: suspend CoroutineScope.() -> Unit)
+    fun deferredLaunch(handler: suspend CoroutineScope.() -> Unit)
 
 }
 
 @OptIn(ExperimentalMviKotlinApi::class)
 inline fun <reified T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any> ExecutorBuilder<Intent, Action, State, Message, Label>.onIntentWithDebounce(
     time: Duration,
-    noinline handler: DebouncedCoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
+    noinline handler: DeferredCoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
 ) {
     var nextLaunchTime = timeSource.markNow()
     var job: Job? = null
     onIntent<T> {
-        val debouncedCoroutineExecutorScope = DebouncedCoroutineExecutorScopeImpl(this)
+        val debouncedCoroutineExecutorScope = DeferredCoroutineExecutorScopeImpl(this)
         with(debouncedCoroutineExecutorScope) { handler(it) }
         job?.cancel()
         job = launch {
@@ -107,6 +106,22 @@ inline fun <reified T : Intent, Intent : Any, Action : Any, State : Any, Message
             } else {
                 nextLaunchTime = timeSource.markNow() + time
             }
+            debouncedCoroutineExecutorScope.launch()
+        }
+    }
+}
+
+@OptIn(ExperimentalMviKotlinApi::class)
+inline fun <reified T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any> ExecutorBuilder<Intent, Action, State, Message, Label>.onIntentWithSkipping(
+    noinline handler: DeferredCoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
+) {
+    var job: Job? = null
+    onIntent<T> {
+        if (job?.isActive == true)
+            return@onIntent
+        val debouncedCoroutineExecutorScope = DeferredCoroutineExecutorScopeImpl(this)
+        with(debouncedCoroutineExecutorScope) { handler(it) }
+        job = launch {
             debouncedCoroutineExecutorScope.launch()
         }
     }

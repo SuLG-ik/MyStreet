@@ -22,6 +22,11 @@ mvikotlin = "4.0.0-alpha02"
 datastore = "1.1.0-beta01"
 apollo = "4.0.0-beta.4"
 splash = "1.0.1"
+peekaboo = "0.4.3"
+coil = "3.0.0-alpha04"
+ktor = "2.3.8"
+compressor = "3.0.1"
+atomicfu = "0.23.2"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -57,7 +62,15 @@ mvikotlin-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-
 datastore-preferences = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
 datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore" }
 apollo = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
-splash = { module = "androidx.core:core-splashscreen", version.ref="splash" }
+splash = { module = "androidx.core:core-splashscreen", version.ref = "splash" }
+peekaboo-imagepicker = { module = "io.github.onseok:peekaboo-image-picker", version.ref = "peekaboo" }
+peekaboo-ui = { module = "io.github.onseok:peekaboo-ui", version.ref = "peekaboo" }
+coil-core = { module = "io.coil-kt.coil3:coil", version.ref = "coil" }
+coil-compose = { module = "io.coil-kt.coil3:coil-compose-core", version.ref = "coil" }
+coil-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil" }
+ktor-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+compressor = { module = "id.zelory:compressor", version.ref = "compressor" }
+atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
@@ -70,6 +83,7 @@ kotlinCocoapods = { id = "org.jetbrains.kotlin.native.cocoapods", version.ref = 
 buildKonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildKonfig" }
 moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }
 apollo = { id = "com.apollographql.apollo3", version.ref = "apollo" }
+atomicfu = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "kotlin" }
 
 [bundles]
 koin-test = ["koin-test", "koin-test-junit4"]

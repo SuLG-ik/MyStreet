@@ -12,7 +12,7 @@ enum class LayerInfo(
     Bench(MR.strings.bench, MR.images.bench),
     Bower(MR.strings.bower, MR.images.bower),
     Fountain(MR.strings.fountain, MR.images.fountain),
-    GreenZone(MR.strings.green_zone, MR.images.green_zone),
+    GreenArea(MR.strings.green_zone, MR.images.green_zone),
     Monument(MR.strings.monument, MR.images.monument),
     Playground(MR.strings.playground, MR.images.playground),
     PublicWC(MR.strings.public_wc, MR.images.public_wc),
@@ -27,7 +27,7 @@ fun GeneralLayerType.toUI(): LayerInfo {
         GeneralLayerType.Monument -> LayerInfo.Monument
         GeneralLayerType.Fountain -> LayerInfo.Fountain
         GeneralLayerType.Bower -> LayerInfo.Bower
-        GeneralLayerType.GreenZone -> LayerInfo.GreenZone
+        GeneralLayerType.GreenArea -> LayerInfo.GreenArea
         GeneralLayerType.PublicWC -> LayerInfo.PublicWC
     }
 }

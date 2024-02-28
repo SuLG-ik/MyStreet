@@ -11,8 +11,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.mystreet.core.component.onIntentWithCoolDown
 import ru.mystreet.map.domain.entity.MapObject
+import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.domain.usecase.SaveMapInitialCameraPositionUseCase
 import ru.mystreet.map.map.domain.usecase.GetAllMapObjectsUseCase
+import ru.mystreet.map.map.domain.usecase.GetCategoriesDifferUseCase
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalMviKotlinApi::class)
@@ -21,6 +23,7 @@ class MapObjectsStoreImpl(
     storeFactory: StoreFactory,
     getAllMapObjectsUseCase: GetAllMapObjectsUseCase,
     saveMapInitialCameraPositionUseCase: SaveMapInitialCameraPositionUseCase,
+    getCategoriesDifferUseCase: GetCategoriesDifferUseCase,
 ) : MapObjectsStore,
     Store<MapObjectsStore.Intent, MapObjectsStore.State, MapObjectsStore.Label> by storeFactory.create<_, Action, Message, _, _>(
         name = "MapObjectsStoreImpl",
@@ -28,6 +31,7 @@ class MapObjectsStoreImpl(
         reducer = {
             when (it) {
                 is Message.SetMapObjects -> copy(loadedMapObjects = it.objects)
+                is Message.SetMapCategories -> copy(categories = it.categories)
             }
         },
         bootstrapper = coroutineBootstrapper(
@@ -37,14 +41,31 @@ class MapObjectsStoreImpl(
             coroutineDispatcher
         ) {
             onAction<Action.Setup> {
+                val categories = state().categories.orEmpty()
                 launch {
-                    val mapObjects = getAllMapObjectsUseCase()
+                    val mapObjects = getAllMapObjectsUseCase(categories)
                     withContext(Dispatchers.Main) {
                         dispatch(Message.SetMapObjects(mapObjects))
                         publish(MapObjectsStore.Label.OnMapObjectsLoaded(mapObjects))
                     }
                 }
             }
+//            onIntent<MapObjectsStore.Intent.SetMapObjectCategories> { intent ->
+//                val (newCategories, categoriesToRemove) = getCategoriesDifferUseCase(
+//                    state().categories,
+//                    intent.categories
+//                )
+//                dispatch(Message.SetMapCategories(newCategories))
+//                if (categoriesToRemove.isNotEmpty())
+//                    publish(MapObjectsStore.Label.OnRemoveMapObjectsCategories(categoriesToRemove))
+//                launch {
+//                    val mapObjects = getAllMapObjectsUseCase(newCategories)
+//                    withContext(Dispatchers.Main) {
+//                        dispatch(Message.SetMapObjects(mapObjects))
+//                        publish(MapObjectsStore.Label.OnMapObjectsLoaded(mapObjects))
+//                    }
+//                }
+//            }
             onIntentWithCoolDown<MapObjectsStore.Intent.UpdateCameraPosition, _, _, _, _, _>(1.seconds) {
                 launch {
                     saveMapInitialCameraPositionUseCase(it.cameraPosition)
@@ -59,5 +80,6 @@ class MapObjectsStoreImpl(
 
     sealed interface Message {
         data class SetMapObjects(val objects: List<MapObject>) : Message
+        data class SetMapCategories(val categories: List<MapObjectCategory>) : Message
     }
 }

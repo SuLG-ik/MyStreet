@@ -10,20 +10,47 @@ actual class MapObjects(
     private val context: Context,
 ) {
 
+    private val tapListeners =
+        mutableMapOf<MapObjectTapListener, com.yandex.mapkit.map.MapObjectTapListener>()
+
+
     actual fun addPlacemark(): Placemark {
-        return mapObjects.addPlacemark().toData(context)
+        return mapObjects.addPlacemark().toCommon(context)
     }
 
-    actual fun addClusterizedPlacemark(): ClusterizedPlacemark {
-        return mapObjects.addClusterizedPlacemarkCollection { }.toNative(context)
+    actual fun addClusterizedPlacemark(clusterListener: ClusterListener): ClusterizedPlacemark {
+        return mapObjects.addClusterizedPlacemarkCollection(
+            MappingClusterListener(
+                clusterListener = clusterListener,
+                context = context
+            )
+        ).toNative(context)
+    }
+
+    actual fun removePlacemarks(clusterizedPlacemark: ClusterizedPlacemark) {
+        mapObjects.remove(clusterizedPlacemark.nativeClusterizedPlacemark)
+    }
+
+    actual fun addTapListener(listener: MapObjectTapListener) {
+        val nativeListener = MappingMapObjectTapListener(listener, context)
+        tapListeners[listener] = nativeListener
+        mapObjects.addTapListener(nativeListener)
+    }
+
+    actual fun removeTapListener(listener: MapObjectTapListener) {
+        return mapObjects.removeTapListener(tapListeners[listener] ?: return)
     }
 
 }
 
-private fun ClusterizedPlacemarkCollection.toNative(context: Context): ClusterizedPlacemark {
+private fun ClusterizedPlacemarkCollection.toNative(
+    context: Context,
+): ClusterizedPlacemark {
     return ClusterizedPlacemark(this, context)
 }
 
-private fun PlacemarkMapObject.toData(context: Context): Placemark {
+fun PlacemarkMapObject.toCommon(
+    context: Context,
+): Placemark {
     return Placemark(this, context)
 }

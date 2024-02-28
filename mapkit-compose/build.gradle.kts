@@ -42,6 +42,8 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
+            implementation(compose.ui)
+            implementation(compose.material3)
             api(libs.moko.resources)
             api(project(":mapkit"))
         }

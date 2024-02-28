@@ -6,7 +6,7 @@ import kotlinx.coroutines.channels.ProducerScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import ru.mystreet.map.toData
+import ru.mystreet.map.toCommon
 import com.yandex.mapkit.location.Location as YLocation
 
 actual class LocationManager(
@@ -48,7 +48,7 @@ class ContinuationLocationListener(
 
 private fun YLocation.toData(): Location {
     return Location(
-        position = position.toData(),
+        position = position.toCommon(),
         accuracy = accuracy,
         altitude = altitude,
         altitudeAccuracy = altitudeAccuracy,

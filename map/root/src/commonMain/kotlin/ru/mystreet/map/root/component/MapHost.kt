@@ -72,4 +72,5 @@ interface MapHost {
     fun onNavigate(config: Config)
 
     val editMap: EditMap
+    val mapInfo: MapInfo
 }

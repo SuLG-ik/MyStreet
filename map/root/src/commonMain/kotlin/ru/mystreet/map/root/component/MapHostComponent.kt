@@ -25,13 +25,15 @@ class MapHostComponent(
     override val map: Map = MapComponent(
         componentContext = diChildContext(key = "map_kit_component"),
         mapConfig = mapConfig,
+        onMapObjectInfo = this::onMapObjectInfo
     )
-
     override val editMap: EditMap = EditMapComponent(diChildContext("edit_map"), map.mapController)
 
     override val uiConfig: Value<MapHost.UIConfig> = editMap.isEnabled.map {
         MapHost.UIConfig(!it)
     }
+
+    override val mapInfo: MapInfo = MapInfoComponent(diChildContext("map_info"))
 
     private val navigation = StackNavigation<MapHost.Config>()
 
@@ -50,7 +52,8 @@ class MapHostComponent(
             MapHost.Config.General -> MapHost.Child.General(
                 GeneralMapComponent(
                     componentContext = componentContext,
-                    editMap = editMap
+                    editMap = editMap,
+                    map = map,
                 )
             )
 
@@ -60,7 +63,12 @@ class MapHostComponent(
         }
     }
 
+    private fun onMapObjectInfo(id: Long) {
+        mapInfo.onShowMapObjectInfo(id)
+    }
+
     override fun onNavigate(config: MapHost.Config) {
         navigation.bringToFront(config)
     }
+
 }

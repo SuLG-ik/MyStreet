@@ -8,19 +8,25 @@ import ru.mystreet.map.geomety.PointF
 import ru.mystreet.map.location.toImageProvider
 
 actual class ClusterizedPlacemark(
-    private val nativeClusterizedPlacemark: ClusterizedPlacemarkCollection,
+    val nativeClusterizedPlacemark: ClusterizedPlacemarkCollection,
     private val context: Context,
 ) {
     actual fun addPlacemarks(
         points: List<Point>,
         icon: ImageResource,
-        iconStyle: IconStyle
-    ) {
-        nativeClusterizedPlacemark.addPlacemarks(
+        iconStyle: IconStyle,
+    ): List<Placemark> {
+        return nativeClusterizedPlacemark.addPlacemarks(
             points.map { it.toNative() },
             icon.toImageProvider(context),
             iconStyle.toNative(),
-        )
+        ).map {
+            it.toCommon(context)
+        }
+    }
+
+    actual fun clusterPlacemarks(clusterRadius: Double, minZoom: Int) {
+        nativeClusterizedPlacemark.clusterPlacemarks(clusterRadius, minZoom)
     }
 
 }

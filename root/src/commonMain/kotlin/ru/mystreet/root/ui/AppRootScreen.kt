@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.safeContent
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import coil3.compose.AsyncImage
 import ru.mystreet.uikit.theme.UIKitTheme
 
 @Composable
