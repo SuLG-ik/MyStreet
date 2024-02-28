@@ -9,15 +9,15 @@ enum class MapObjectCategory(
     val id: String,
     val image: ImageResource,
 ) {
-    Bench("bench", MR.images.bench_map_item),
-    Playground("playground", MR.images.user_location),
-    StreetLight("streetlight", MR.images.user_location),
-    Monument("monument", MR.images.user_location),
-    Fountain("fountain", MR.images.user_location),
-    Bower("bower", MR.images.user_location),
-    GreenArea("green_area", MR.images.user_location),
-    PublicWC("publicwc", MR.images.user_location),
-    Trash("trash", MR.images.user_location);
+    Bench("bench", MR.images.map_icon_bench),
+    Playground("playground", MR.images.map_icon_playground ),
+    StreetLight("streetlight", MR.images.map_icon_streetlight),
+    Monument("monument", MR.images.map_icon_monument),
+    Fountain("fountain", MR.images.map_icon_fountain),
+    Bower("bower", MR.images.map_icon_bower),
+    GreenArea("green_area", MR.images.map_icon_green_area),
+    PublicWC("public_wc", MR.images.map_icon_public_wc),
+    Trash("trash", MR.images.map_icon_trash);
 
     companion object {
 
