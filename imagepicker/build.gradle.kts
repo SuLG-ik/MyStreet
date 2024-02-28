@@ -40,6 +40,7 @@ kotlin {
             api(libs.peekaboo.imagepicker)
             api(libs.peekaboo.ui)
             api(libs.atomicfu)
+            api(libs.calf.permissions)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

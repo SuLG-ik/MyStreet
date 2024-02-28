@@ -8,7 +8,7 @@ import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.getStore
 import ru.mystreet.core.component.values
-import ru.mystreet.imagepicker.domain.entity.ImageItem
+import ru.mystreet.imagepicker.domain.entity.SelectedImages
 import ru.mystreet.imagepicker.presentation.ImagePickerImageLoadStore
 import ru.mystreet.imagepicker.presentation.ImagePickerStore
 
@@ -39,10 +39,10 @@ class ImagePickerComponent(
 
     override val isContinueAvailable: Value<Boolean> = state.map { it.isContinueAvailable }
 
-    override val images: Value<List<ImageItem>> = state.map { it.images }
+    override val images: Value<SelectedImages> = state.map { it.selectedImages }
 
     override fun onLoad() {
-        loadStore.accept(ImagePickerImageLoadStore.Intent.Load(store.state.images.map { it.content }))
+        loadStore.accept(ImagePickerImageLoadStore.Intent.Load(store.state.selectedImages.images.map { it.content }))
     }
 
     override fun onBack() {
