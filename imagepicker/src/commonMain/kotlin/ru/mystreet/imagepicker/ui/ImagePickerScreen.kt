@@ -1,8 +1,11 @@
 package ru.mystreet.imagepicker.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -29,10 +32,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
@@ -49,6 +54,7 @@ import com.preat.peekaboo.ui.PeekabooCamera
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.mystreet.imagepicker.domain.entity.ImageItem
+import ru.mystreet.imagepicker.domain.entity.SelectedImages
 import ru.mystreet.uikit.UIKitAsyncImage
 import ru.mystreet.uikit.UIKitFilledTonalButton
 import ru.mystreet.uikit.iconpack.UIKitIconPack
@@ -64,7 +70,7 @@ import ru.mystreet.uikit.iconpack.uikiticonpack.Remove
 @Composable
 fun ImagePickerScreen(
     isContinueAvailable: Boolean,
-    images: List<ImageItem>,
+    images: SelectedImages,
     onPick: (List<ByteArray>) -> Unit,
     onLoad: () -> Unit,
     onBack: () -> Unit,
@@ -143,7 +149,7 @@ fun ImagePickerScreen(
 @Composable
 fun CaptureIconOverlay(
     isContinueAvailable: Boolean,
-    images: List<ImageItem>,
+    images: SelectedImages,
     onCapture: () -> Unit,
     onRemove: (index: Int) -> Unit,
     onCancel: () -> Unit,
@@ -157,13 +163,14 @@ fun CaptureIconOverlay(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CameraControls(
+            isCaptureAvailable = images.count < images.maxCount,
             isAcceptAvailable = isContinueAvailable,
             onCapture = onCapture,
             onCancel = onCancel,
             onAccept = onAccept,
             modifier = Modifier.fillMaxWidth()
         )
-        SelectedImagesRow(
+        SelectedImages(
             images = images,
             onRemove = onRemove,
             onLoadFromDisk = onLoadFromDisk,
@@ -208,6 +215,36 @@ fun SelectedImagesRow(
 }
 
 @Composable
+fun SelectedImages(
+    images: SelectedImages,
+    onRemove: (index: Int) -> Unit,
+    onLoadFromDisk: (() -> Unit)? = null,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        Text(
+            "${images.count}/${images.maxCount}",
+            style = MaterialTheme.typography.titleSmall,
+            modifier = Modifier.align(Alignment.End)
+                .padding(10.dp)
+                .background(
+                    MaterialTheme.colorScheme.surfaceContainer,
+                    shape = MaterialTheme.shapes.medium,
+                )
+                .padding(horizontal = 10.dp, vertical = 5.dp)
+        )
+        SelectedImagesRow(
+            images = images.images,
+            onRemove = onRemove,
+            onLoadFromDisk = if (images.count < images.maxCount) onLoadFromDisk else null,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Composable
 fun SelectFromStorage(
     onLoadFromDisk: () -> Unit,
     modifier: Modifier = Modifier,
@@ -235,12 +272,14 @@ fun SelectFromStorage(
 
 @Composable
 fun CameraControls(
+    isCaptureAvailable: Boolean,
     isAcceptAvailable: Boolean,
     onCapture: () -> Unit,
     onCancel: () -> Unit,
     onAccept: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val captureAlpha by animateFloatAsState(if (isCaptureAvailable) 1f else 0.6f)
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
@@ -252,6 +291,7 @@ fun CameraControls(
         ) {
             UIKitFilledTonalButton(
                 onClick = onCancel,
+                enabled = isCaptureAvailable,
                 modifier = Modifier.size(75.dp),
                 color = MaterialTheme.colorScheme.surface,
             ) {
@@ -262,7 +302,10 @@ fun CameraControls(
                 )
             }
         }
-        Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier.weight(1f).alpha(captureAlpha),
+            contentAlignment = Alignment.Center
+        ) {
             Image(
                 UIKitIconPack.CaptureButton,
                 contentDescription = null,
@@ -330,7 +373,7 @@ fun Image(
 
 @Composable
 fun NoCameraPermission(
-    images: List<ImageItem>,
+    images: SelectedImages,
     onRemove: (index: Int) -> Unit,
     onLoadFromDisk: () -> Unit,
     modifier: Modifier = Modifier,
@@ -338,23 +381,29 @@ fun NoCameraPermission(
     Scaffold(
         modifier = modifier,
         bottomBar = {
-            SelectedImagesRow(
+            SelectedImages(
                 images = images,
                 onRemove = onRemove,
                 modifier = Modifier.fillMaxWidth()
             )
-        }
+        },
     ) {
-        CameraPermissionRequest(
-            onLoadFromDisk = onLoadFromDisk,
-            modifier = Modifier.fillMaxWidth().padding(it),
-        )
+        Box(
+            modifier = Modifier.fillMaxSize().padding(it)
+        ) {
+            CameraPermissionRequest(
+                isLoadFromDiskAvailable = images.count < images.maxCount,
+                onLoadFromDisk = onLoadFromDisk,
+                modifier = Modifier.fillMaxWidth().align(Alignment.Center),
+            )
+        }
     }
 }
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraPermissionRequest(
+    isLoadFromDiskAvailable: Boolean,
     onLoadFromDisk: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -374,11 +423,13 @@ fun CameraPermissionRequest(
             textAlign = TextAlign.Center
         )
         Column {
-            OutlinedButton(
-                onClick = onLoadFromDisk,
-                modifier = Modifier.width(200.dp)
-            ) {
-                Text("Загрузить из галереи")
+            AnimatedVisibility(visible = isLoadFromDiskAvailable) {
+                OutlinedButton(
+                    onClick = onLoadFromDisk,
+                    modifier = Modifier.width(200.dp)
+                ) {
+                    Text("Загрузить из галереи")
+                }
             }
             OutlinedButton(
                 onClick = {

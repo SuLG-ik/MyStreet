@@ -1,7 +1,7 @@
 package ru.mystreet.imagepicker.presentation
 
 import com.arkivanov.mvikotlin.core.store.Store
-import ru.mystreet.imagepicker.domain.entity.ImageItem
+import ru.mystreet.imagepicker.domain.entity.SelectedImages
 
 interface ImagePickerStore :
     Store<ImagePickerStore.Intent, ImagePickerStore.State, ImagePickerStore.Label> {
@@ -13,7 +13,7 @@ interface ImagePickerStore :
 
     data class State(
         val isContinueAvailable: Boolean,
-        val images: List<ImageItem>,
+        val selectedImages: SelectedImages,
     )
 
     sealed interface Label
