@@ -19,8 +19,12 @@ class FramedMapObjectsQueueServiceImpl(
 
     private val mapFramesInLoading = atomic<MutableScatterSet<MapFrame>>(mutableScatterSetOf())
 
-    override suspend fun loadFramedMapObjects(visibleArea: VisibleArea): List<FramedMapObjects> {
-        val visibleFrames = calculateFramesForVisibleAreaUseCase(visibleArea)
+    override suspend fun loadFramedMapObjects(
+        loadedFrames: List<MapFrame>,
+        visibleArea: VisibleArea,
+    ): List<FramedMapObjects> {
+        val visibleFrames =
+            calculateFramesForVisibleAreaUseCase(visibleArea).filterNot { it in loadedFrames }
         if (visibleFrames.isEmpty()) {
             return emptyList()
         }
