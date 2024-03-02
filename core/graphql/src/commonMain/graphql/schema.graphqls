@@ -1,9 +1,31 @@
 scalar Upload
 
+input LoadedFrameInput {
+    column: Int!
+    row: Int!
+}
+
+input PointInput {
+    latitude: Float!
+    longitude: Float!
+}
+
+type LoadedFrame {
+    column: Int!
+    row: Int!
+}
+
+type FramedMapObjects {
+    frame: LoadedFrame!
+    objects: [MapObjectType!]!
+}
+
 type Query {
+    getFramedMapObjects(loadedFrames: [LoadedFrameInput!]!): [FramedMapObjects!]!
+
     getCategories: [CategoryType!]!
 
-    getMapObjects(categories: [ID!]): [MapObjectType!]!
+    getMapObjects(categories: [ID!]): [MapObjectType!]! @deprecated
 
     getMapObject(id: ID!): MapObjectType!
 

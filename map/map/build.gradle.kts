@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.apollo)
+    alias(libs.plugins.atomicfu)
 }
 
 kotlin {
@@ -33,10 +35,14 @@ kotlin {
             implementation(libs.decompose.ui)
             api(libs.essenty.lifecycle)
             api(libs.essenty.coroutines)
+            api(libs.store5)
+            api(libs.atomicfu)
             api(libs.koin.core)
             api(projects.core.component)
             api(projects.mapkitCompose)
             api(projects.map.shared)
+            api(projects.core.db)
+            api(projects.core.time)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -49,5 +55,13 @@ android {
     compileSdk = 34
     defaultConfig {
         minSdk = 24
+    }
+}
+
+apollo {
+    service("service") {
+        packageName.set("ru.mystreet.map.data.model")
+        dependsOn(projects.core.graphql)
+        srcDir("src/commonMain/graphql/")
     }
 }

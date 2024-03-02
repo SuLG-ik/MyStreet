@@ -59,7 +59,7 @@ buildkonfig {
         this.buildConfigField(
             FieldSpec.Type.STRING,
             "MYSTREET_GRAPHQL_URL",
-            System.getenv("MYSTREET_GRAPHQL_URL"),
+            System.getenv()["MYSTREET_GRAPHQL_URL"] ?: "",
             const = true,
         )
     }

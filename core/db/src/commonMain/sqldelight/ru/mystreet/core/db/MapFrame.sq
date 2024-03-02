@@ -1,0 +1,28 @@
+import kotlinx.datetime.LocalDateTime;
+
+CREATE TABLE mapFrame (
+  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  column INTEGER NOT NULL,
+  row INTEGER NOT NULL,
+  updatedAt TEXT AS LocalDateTime NOT NULL,
+  createdAt TEXT AS LocalDateTime NOT NULL
+);
+
+CREATE UNIQUE INDEX mapFrame_id ON mapFrame(id);
+CREATE UNIQUE INDEX mapFrame_column_row ON mapFrame(column, row);
+
+getMapFrame:
+SELECT * FROM mapFrame WHERE column = :column AND row = :row;
+
+countMapFrames:
+SELECT COUNT(*) FROM mapFrame WHERE column = :column AND row = :row;
+
+upserMapFrame {
+    UPDATE mapFrame
+    SET updatedAt = :updatedAt
+    WHERE column = :column AND row = :row;
+
+    INSERT OR IGNORE INTO mapFrame (column, row, updatedAt, createdAt)
+    VALUES (:column, :row, :updatedAt, :updatedAt);
+    SELECT id FROM mapFrame WHERE column = :column AND row = :row;
+}

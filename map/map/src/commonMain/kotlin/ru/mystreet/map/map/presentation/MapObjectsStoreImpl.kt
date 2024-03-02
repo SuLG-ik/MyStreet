@@ -14,7 +14,7 @@ import ru.mystreet.map.domain.entity.MapObject
 import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.domain.usecase.SaveMapInitialCameraPositionUseCase
 import ru.mystreet.map.map.domain.usecase.GetAllMapObjectsUseCase
-import ru.mystreet.map.map.domain.usecase.GetCategoriesDifferUseCase
+import ru.mystreet.map.map.domain.usecase.QueueFramedMapObjectsUseCase
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(ExperimentalMviKotlinApi::class)
@@ -22,8 +22,8 @@ class MapObjectsStoreImpl(
     coroutineDispatcher: CoroutineDispatcher,
     storeFactory: StoreFactory,
     getAllMapObjectsUseCase: GetAllMapObjectsUseCase,
+    queueFramedMapObjectsUseCase: QueueFramedMapObjectsUseCase,
     saveMapInitialCameraPositionUseCase: SaveMapInitialCameraPositionUseCase,
-    getCategoriesDifferUseCase: GetCategoriesDifferUseCase,
 ) : MapObjectsStore,
     Store<MapObjectsStore.Intent, MapObjectsStore.State, MapObjectsStore.Label> by storeFactory.create<_, Action, Message, _, _>(
         name = "MapObjectsStoreImpl",
