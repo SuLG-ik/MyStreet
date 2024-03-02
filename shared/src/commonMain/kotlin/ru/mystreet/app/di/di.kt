@@ -5,8 +5,10 @@ import org.koin.dsl.module
 import ru.mystreet.app.store.mviModule
 import ru.mystreet.core.datastore.dataStoreModule
 import ru.mystreet.core.datastore.platformDataStoreModule
+import ru.mystreet.core.time.dateTimeModule
 import ru.mystreet.root.rootModule
 import ru.sulgik.core.coil.coilModule
+import ru.sulgik.core.db.dbModule
 import ru.sulgik.core.graphql.graphqlModule
 
 val appModule = module {
@@ -17,6 +19,8 @@ val appModule = module {
         dataStoreModule,
         mviModule,
         coilModule,
+        dbModule,
+        dateTimeModule,
 
         rootModule,
     )

@@ -12,12 +12,12 @@ import ru.mystreet.map.ClusterListener
 import ru.mystreet.map.ClusterizedPlacemark
 import ru.mystreet.map.MapAnimation
 import ru.mystreet.map.MapObjectTapListener
-import ru.mystreet.map.MapObjects
 import ru.mystreet.map.MapWindow
 import ru.mystreet.map.Placemark
 import ru.mystreet.map.SizeChangedListener
 import ru.mystreet.map.geomety.Point
 import ru.mystreet.map.geomety.ScreenPoint
+import ru.mystreet.map.geomety.VisibleArea
 
 class MapController(
     val initialCameraPosition: CameraPosition?,
@@ -206,6 +206,12 @@ class MapController(
     private fun updateCameraPosition(cameraPosition: CameraPosition) {
         this.cameraPosition.value = cameraPosition
         this.currentTarget.value = cameraPosition.target
+    }
+
+    fun visibleArea(cameraPosition: CameraPosition): VisibleArea? {
+        return withAnchor {
+            map.visibleArea(cameraPosition)
+        }
     }
 
     companion object {

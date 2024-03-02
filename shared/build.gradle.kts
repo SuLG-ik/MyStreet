@@ -74,6 +74,8 @@ kotlin {
             api(projects.uikit)
             api(projects.core.graphql)
             api(projects.core.coil)
+            api(projects.core.db)
+            api(projects.core.time)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -94,11 +96,12 @@ buildkonfig {
     packageName = "ru.mystreet.app"
     // objectName = 'YourAwesomeConfig'
     // exposeObjectWithName = 'YourAwesomePublicConfig'
+
     defaultConfigs {
         this.buildConfigField(
             FieldSpec.Type.STRING,
             "API_KEY",
-            System.getenv("map_api_key"),
+            System.getenv()["map_api_key"] ?: "",
             const = true
         )
     }

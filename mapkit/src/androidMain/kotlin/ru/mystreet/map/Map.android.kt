@@ -4,12 +4,14 @@ import android.content.Context
 import com.yandex.mapkit.Animation
 import com.yandex.mapkit.layers.ObjectEvent
 import com.yandex.mapkit.map.Map
+import com.yandex.mapkit.map.VisibleRegion
 import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
 import dev.icerock.moko.resources.ImageResource
 import ru.mystreet.map.geomety.Latitude
 import ru.mystreet.map.geomety.Longitude
 import ru.mystreet.map.geomety.Point
+import ru.mystreet.map.geomety.VisibleArea
 import ru.mystreet.map.location.toImageProvider
 import com.yandex.mapkit.map.CameraListener as NativeCameraListener
 
@@ -76,6 +78,10 @@ actual class Map(
         map.addCameraListener(nativeListener)
     }
 
+    actual fun visibleArea(cameraPosition: CameraPosition): VisibleArea {
+        return map.visibleRegion(cameraPosition.toNative()).toCommon()
+    }
+
 }
 
 fun com.yandex.mapkit.map.CameraPosition.toCommon(): CameraPosition {
@@ -84,6 +90,15 @@ fun com.yandex.mapkit.map.CameraPosition.toCommon(): CameraPosition {
 
 fun com.yandex.mapkit.geometry.Point.toCommon(): Point {
     return Point(Latitude(latitude), Longitude(longitude))
+}
+
+fun VisibleRegion.toCommon(): VisibleArea {
+    return VisibleArea(
+        topLeft = topLeft.toCommon(),
+        topRight = topRight.toCommon(),
+        bottomLeft = bottomLeft.toCommon(),
+        bottomRight = bottomRight.toCommon()
+    )
 }
 
 class DelegatingCameraCallback(
