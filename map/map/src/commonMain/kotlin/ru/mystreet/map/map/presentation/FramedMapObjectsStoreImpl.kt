@@ -24,9 +24,7 @@ class FramedMapObjectsStoreImpl(
 ) : FramedMapObjectsStore,
     Store<FramedMapObjectsStore.Intent, FramedMapObjectsStore.State, FramedMapObjectsStore.Label> by storeFactory.create<_, Action, Message, _, _>(
         name = "FramedMapObjectsStoreImpl",
-        initialState = FramedMapObjectsStore.State(
-            loadedObjects = emptyList(),
-        ),
+        initialState = FramedMapObjectsStore.State(),
         reducer = {
             when (it) {
                 is Message.AddMapObjects -> copy(
@@ -37,8 +35,9 @@ class FramedMapObjectsStoreImpl(
         },
         executorFactory = coroutineExecutorFactory(coroutineDispatcher) {
             onAction<Action.LoadMapObjects> {
+                val loadedFrames = state().loadedFrames
                 launch {
-                    val objects = queueFramedMapObjectsUseCase(it.visibleArea)
+                    val objects = queueFramedMapObjectsUseCase(loadedFrames, it.visibleArea)
                     withContext(Dispatchers.Main) {
                         dispatch(Message.AddMapObjects(objects))
                         publish(FramedMapObjectsStore.Label.OnLoaded(objects.flatMap { it.objects }))
