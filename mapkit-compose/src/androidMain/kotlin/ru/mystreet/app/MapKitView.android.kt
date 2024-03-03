@@ -47,6 +47,7 @@ actual fun MapView(
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
+        println("aaaaaa new anchor")
         mapController.bindAnchor(
             MapWindow(
                 mapView.mapWindow,

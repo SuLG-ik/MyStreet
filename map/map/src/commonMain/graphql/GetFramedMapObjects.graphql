@@ -1,0 +1,28 @@
+query GetFramedMapObjectsPart(
+    $loadedFrames: [LoadedFrameInput!]!
+) {
+    getFramedMapObjects(loadedFrames: $loadedFrames) {
+        frame {
+            ...MapFrame
+        }
+        objects {
+            ...MapObjectPart
+        }
+    }
+}
+
+fragment MapFrame on LoadedFrame {
+    column
+    row
+}
+
+fragment MapObjectPart on MapObjectType {
+    id
+    title
+    latitude
+    longitude
+    category {
+        id
+        titleShort
+    }
+}

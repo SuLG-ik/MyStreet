@@ -12,8 +12,8 @@ import ru.mystreet.map.component.EditMap
 import ru.mystreet.map.component.EditMapComponent
 import ru.mystreet.map.domain.entity.MapConfig
 import ru.mystreet.map.general.component.GeneralMapComponent
+import ru.mystreet.map.map.component.FramedMapComponent
 import ru.mystreet.map.map.component.Map
-import ru.mystreet.map.map.component.MapComponent
 import ru.mystreet.map.parks.component.ParksMapComponent
 import ru.mystreet.map.trash.component.TrashMapComponent
 
@@ -22,7 +22,7 @@ class MapHostComponent(
     mapConfig: MapConfig,
 ) : AppComponentContext(componentContext), MapHost {
 
-    override val map: Map = MapComponent(
+    override val map: Map = FramedMapComponent(
         componentContext = diChildContext(key = "map_kit_component"),
         mapConfig = mapConfig,
         onMapObjectInfo = this::onMapObjectInfo
