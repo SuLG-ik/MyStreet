@@ -1,6 +1,6 @@
 [versions]
 compose = "1.6.1"
-compose-plugin = "1.6.0-rc02"
+compose-plugin = "1.6.0"
 compose-compiler = "1.5.8"
 agp = "8.2.2"
 kotlin = "1.9.22"
@@ -27,6 +27,8 @@ coil = "3.0.0-alpha04"
 ktor = "2.3.8"
 compressor = "3.0.1"
 atomicfu = "0.23.2"
+sqldelight = "2.0.1"
+store5 = "5.0.0-beta02"
 calf = "0.3.1"
 
 [libraries]
@@ -72,6 +74,11 @@ coil-ktor = { module = "io.coil-kt.coil3:coil-network-ktor", version.ref = "coil
 ktor-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
 compressor = { module = "id.zelory:compressor", version.ref = "compressor" }
 atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "atomicfu" }
+sqldelight-core = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
+sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
+sqldelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
+sqldelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
+store5 = { module = "org.mobilenativefoundation.store:store5", version.ref = "store5" }
 calf-permissions = { module = "com.mohamedrejeb.calf:calf-permissions", version.ref = "calf" }
 
 [plugins]
@@ -86,6 +93,7 @@ buildKonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildKonfig"
 moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.ref = "moko-resources" }
 apollo = { id = "com.apollographql.apollo3", version.ref = "apollo" }
 atomicfu = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "kotlin" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 
 [bundles]
 koin-test = ["koin-test", "koin-test-junit4"]

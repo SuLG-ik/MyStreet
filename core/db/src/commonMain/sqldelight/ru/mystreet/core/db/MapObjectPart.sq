@@ -1,0 +1,26 @@
+CREATE TABLE mapObjectPart (
+  id INTEGER PRIMARY KEY NOT NULL,
+  title TEXT NOT NULL,
+  latitude REAL NOT NULL,
+  longitude REAL NOT NULL,
+  frameId INTEGER NOT NULL,
+  category TEXT NOT NULL,
+  FOREIGN KEY (frameId) REFERENCES mapFrame(id)
+);
+
+CREATE UNIQUE INDEX mapObjectPart_id ON mapObjectPart(id);
+CREATE INDEX mapObjectPart_frame_id ON mapObjectPart(frameId);
+
+deleteAndInsertMapObjectParts {
+    DELETE FROM mapObjectPart WHERE id = :id;
+
+    INSERT INTO mapObjectPart (id, title, category, latitude, longitude, frameId)
+    VALUES (:id, :title,  :category, :latitude, :longitude, :frameId);
+}
+
+insertMapObjectParts:
+INSERT INTO mapObjectPart (id, title,category, latitude, longitude, frameId)
+VALUES (:id, :title, :category,:latitude, :longitude, :frameId);
+
+getMapObjectPartsByFrame:
+SELECT * FROM mapObjectPart WHERE (frameId) = :frameId;

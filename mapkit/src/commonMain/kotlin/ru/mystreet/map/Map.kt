@@ -1,5 +1,7 @@
 package ru.mystreet.map
 
+import ru.mystreet.map.geomety.VisibleArea
+
 expect class Map {
 
     val cameraPosition: CameraPosition
@@ -15,5 +17,7 @@ expect class Map {
     fun addCameraListener(listener: CameraListener)
 
     fun removeCameraListener(listener: CameraListener)
+
+    fun visibleArea(cameraPosition: CameraPosition): VisibleArea
 
 }

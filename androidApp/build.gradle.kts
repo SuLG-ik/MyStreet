@@ -25,12 +25,13 @@ android {
         }
     }
     buildTypes {
+        val env = System.getenv()
         getByName("release") {
             isMinifyEnabled = false
-            resValue("string", "mystreet_host", System.getenv("MYSTREET_HOST"))
+            resValue("string", "mystreet_host", env["MYSTREET_HOST"] ?: "")
         }
         getByName("debug") {
-            resValue("string", "mystreet_host", System.getenv("MYSTREET_HOST"))
+            resValue("string", "mystreet_host", env["MYSTREET_HOST"] ?: "")
         }
     }
     compileOptions {
