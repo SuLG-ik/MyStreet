@@ -11,6 +11,7 @@ actual class MapWindow(
     private val nativeMapWindow: NativeMapWindow,
     context: Context,
 ) {
+
     private val sizeChangedListeners: MutableMap<SizeChangedListener, NativeSizeChangedListener> =
         mutableMapOf()
 

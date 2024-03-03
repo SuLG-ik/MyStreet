@@ -22,6 +22,8 @@ import ru.mystreet.map.geomety.VisibleArea
 class MapController(
     val initialCameraPosition: CameraPosition?,
     private val onObjectClickListener: (BaseMapObject) -> Boolean,
+    private val onBind: (() -> Unit)? = null,
+    private val onUnbind: (() -> Unit)? = null,
 ) {
 
     private var isInitialized = false
@@ -36,6 +38,7 @@ class MapController(
     private var pin: Placemark? = null
 
     var isFollowLocation by mutableStateOf(false)
+
 
     private inline fun <T : Any> withAnchor(block: MapWindow.() -> T): T? {
         return anchor.value?.run(block)
@@ -66,6 +69,7 @@ class MapController(
         setMapSizeChangedListener(map)
         setCameraListener(map)
         setTapListener(map)
+        onBind?.invoke()
     }
 
     internal fun unbindAnchor() {
@@ -75,6 +79,7 @@ class MapController(
             removeTapListener(this)
         }
         anchor.value = null
+        onUnbind?.invoke()
     }
 
     fun zoom(value: Float, animate: Boolean = false) {
