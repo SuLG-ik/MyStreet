@@ -25,8 +25,6 @@ type Query {
 
     getCategories: [CategoryType!]!
 
-    getMapObjects(categories: [ID!]): [MapObjectType!]! @deprecated
-
     getMapObject(id: ID!): MapObjectType!
 
     getMapObjectTags(category: ID!, query: String): [MapObjectTagType!]!

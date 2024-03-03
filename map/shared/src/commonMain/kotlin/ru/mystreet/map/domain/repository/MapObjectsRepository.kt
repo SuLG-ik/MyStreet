@@ -7,8 +7,6 @@ import ru.mystreet.map.geomety.Longitude
 
 interface MapObjectsRepository {
 
-    suspend fun getAllMapObjects(categories: List<MapObjectCategory>): List<MapObject>
-
     suspend fun getMapObjectById(id: Long): MapObject
 
     suspend fun addMapObject(

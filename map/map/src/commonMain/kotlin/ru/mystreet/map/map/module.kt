@@ -21,7 +21,6 @@ import ru.mystreet.map.map.domain.store5.GetSingleLocalFramedMapObjectSOT
 import ru.mystreet.map.map.domain.store5.GetSingleRemoteFramedMapObjectsSOT
 import ru.mystreet.map.map.domain.store5.SingleFramedMapObjectsStore5
 import ru.mystreet.map.map.domain.usecase.CalculateFramesForVisibleAreaUseCase
-import ru.mystreet.map.map.domain.usecase.GetAllMapObjectsUseCase
 import ru.mystreet.map.map.domain.usecase.GetCategoriesDifferUseCase
 import ru.mystreet.map.map.domain.usecase.GetFramedMapObjectsUseCase
 import ru.mystreet.map.map.domain.usecase.GetLocalFramedMapObjectUseCase
@@ -30,13 +29,9 @@ import ru.mystreet.map.map.domain.usecase.QueueFramedMapObjectsUseCase
 import ru.mystreet.map.map.domain.usecase.SaveLocalFramedMapObjectUseCase
 import ru.mystreet.map.map.presentation.FramedMapObjectsStore
 import ru.mystreet.map.map.presentation.FramedMapObjectsStoreImpl
-import ru.mystreet.map.map.presentation.MapObjectsStore
-import ru.mystreet.map.map.presentation.MapObjectsStoreImpl
 
 val mapModule = module {
-    factoryOf(::GetAllMapObjectsUseCase)
     factoryOf(::GetCategoriesDifferUseCase)
-    factoryOf(::MapObjectsStoreImpl) bind MapObjectsStore::class
     factoryOf(::FramedMapObjectsStoreImpl) bind FramedMapObjectsStore::class
     singleOf(::SingleFramedSingleMapObjectsStore5Impl) bind SingleFramedMapObjectsStore5::class
     factoryOf(::GetSingleRemoteFramedMapObjectsSOT)
