@@ -7,10 +7,12 @@ import kotlinx.coroutines.launch
 import ru.mystreet.app.MapController
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
+import ru.mystreet.map.geomety.Point
 
 class MapCameraComponent(
     componentContext: DIComponentContext,
     private val controller: MapController,
+    private val getUserLocation: () -> Point?,
 ) : AppComponentContext(componentContext), MapCamera {
 
     private val coroutineScope = coroutineScope()
@@ -34,10 +36,8 @@ class MapCameraComponent(
     }
 
     override fun onFollowLocation() {
-        if (controller.isFollowLocation)
-            controller.unfollowUserLocation()
-        else
-            controller.followUserLocation()
+        val target = getUserLocation() ?: return
+        controller.move(target, DEFAULT_FOLLOW_LOCATION_ZOOM, animate = true)
     }
 
     private fun onZoomPress(value: Float, isStart: Boolean) {

@@ -5,8 +5,6 @@ import ru.mystreet.map.IconStyle
 import ru.mystreet.map.MapObjectVisitor
 import ru.mystreet.map.Placemark
 import ru.mystreet.map.domain.entity.MapGeoObject
-import ru.mystreet.map.map.component.MapObjectsComponent.Companion.CLUSTER_MIN_ZOOM
-import ru.mystreet.map.map.component.MapObjectsComponent.Companion.CLUSTER_RADIUS
 
 class MapObjectsVisibilityVisitor(
     private val isVisible: (MapGeoObject.MapObject) -> Boolean,
