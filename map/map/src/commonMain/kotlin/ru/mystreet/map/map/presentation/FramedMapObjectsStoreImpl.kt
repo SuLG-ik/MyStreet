@@ -6,6 +6,8 @@ import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.mystreet.core.component.onIntentWithDebounce
@@ -38,10 +40,16 @@ class FramedMapObjectsStoreImpl(
                 val loadedFrames = state().loadedFrames
                 launch {
                     val objects = queueFramedMapObjectsUseCase(loadedFrames, it.visibleArea)
-                    withContext(Dispatchers.Main) {
-                        dispatch(Message.AddMapObjects(objects))
-                        publish(FramedMapObjectsStore.Label.OnLoaded(objects.flatMap { it.objects }))
-                    }
+                    objects.map {
+                        async {
+                            it.collect {
+                                withContext(Dispatchers.Main) {
+                                    dispatch(Message.AddMapObjects(listOf(it)))
+                                    publish(FramedMapObjectsStore.Label.OnLoaded(it))
+                                }
+                            }
+                        }
+                    }.awaitAll()
                 }
             }
             onIntentWithDebounce<FramedMapObjectsStore.Intent.UpdateCameraPosition, _, _, _, _, _>(

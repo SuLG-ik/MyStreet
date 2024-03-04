@@ -21,6 +21,7 @@ class GeneralMapComponent(
 
     init {
         appBar.layers.subscribe(lifecycle) {
+            println("aaaaaaaa ${it.joinToString()}")
             map.setCategories(it.filter { it.isEnabled }.map { layer -> layer.type.category })
         }
     }
