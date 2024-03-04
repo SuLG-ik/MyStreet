@@ -7,6 +7,7 @@ import ru.mystreet.map.map.data.converter.SQLDelightFramedMapObjectConverter
 import ru.mystreet.map.map.domain.entity.FramedMapObjects
 import ru.mystreet.map.map.domain.entity.MapFrame
 import ru.mystreet.map.map.domain.repository.LocalFramedMapObjectsRepository
+import kotlin.time.ExperimentalTime
 
 class SQLDelightLocalFramedMapObjectsRepository(
     private val mapObjectPartQueries: MapObjectPartQueries,
@@ -37,6 +38,7 @@ class SQLDelightLocalFramedMapObjectsRepository(
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     override suspend fun getMapObjects(frame: MapFrame): FramedMapObjects? {
         return mapObjectPartQueries.transactionWithResult {
             val savedFrame = mapFrameQueries.getMapFrame(frame.column.toLong(), frame.row.toLong())

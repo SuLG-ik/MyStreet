@@ -28,7 +28,7 @@ enum class MapObjectCategory(
                 StreetLight.id -> StreetLight
                 Monument.id -> Monument
                 Fountain.id -> Fountain
-                Bench.id -> Bower
+                Bower.id -> Bower
                 GreenArea.id -> GreenArea
                 PublicWC.id -> PublicWC
                 Trash.id -> Trash
