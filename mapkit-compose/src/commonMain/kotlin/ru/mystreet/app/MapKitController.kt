@@ -12,12 +12,14 @@ import ru.mystreet.map.ClusterListener
 import ru.mystreet.map.ClusterizedPlacemark
 import ru.mystreet.map.MapAnimation
 import ru.mystreet.map.MapObjectTapListener
+import ru.mystreet.map.MapObjects
 import ru.mystreet.map.MapWindow
 import ru.mystreet.map.Placemark
 import ru.mystreet.map.SizeChangedListener
 import ru.mystreet.map.geomety.Point
 import ru.mystreet.map.geomety.ScreenPoint
 import ru.mystreet.map.geomety.VisibleArea
+import ru.mystreet.map.image.ImageProvider
 
 class MapController(
     val initialCameraPosition: CameraPosition?,
@@ -104,7 +106,7 @@ class MapController(
     }
 
 
-    fun addPlacemark(position: Point, image: ImageResource): Placemark? {
+    fun addPlacemark(position: Point, image: ImageProvider): Placemark? {
         return withAnchor {
             map.mapObjects.addPlacemark().apply {
                 geomety = position
@@ -113,7 +115,7 @@ class MapController(
         }
     }
 
-    fun addCenterAlignedPin(image: ImageResource): Placemark? {
+    fun addCenterAlignedPin(image: ImageProvider): Placemark? {
         return pin ?: withAnchor {
             val screenPoint = ScreenPoint(
                 width / 2f,
@@ -136,7 +138,7 @@ class MapController(
     fun unfollowUserLocation() {
     }
 
-    private var icon: ImageResource? = null
+    private var icon: ImageProvider? = null
 
     private val clusterListener = ClusterListener {
         val icon = icon
@@ -216,6 +218,12 @@ class MapController(
     fun visibleArea(cameraPosition: CameraPosition): VisibleArea? {
         return withAnchor {
             map.visibleArea(cameraPosition)
+        }
+    }
+
+    fun addCollection(): MapObjects? {
+        return withAnchor {
+            map.mapObjects.addMapObjects()
         }
     }
 

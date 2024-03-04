@@ -1,38 +1,51 @@
 package ru.mystreet.map
 
-import android.content.Context
 import com.yandex.mapkit.map.ClusterizedPlacemarkCollection
-import dev.icerock.moko.resources.ImageResource
 import ru.mystreet.map.geomety.Point
 import ru.mystreet.map.geomety.PointF
-import ru.mystreet.map.location.toImageProvider
+import ru.mystreet.map.image.ImageProvider
 
 actual class ClusterizedPlacemark(
     val nativeClusterizedPlacemark: ClusterizedPlacemarkCollection,
-    private val context: Context,
 ) {
     actual fun addPlacemarks(
         points: List<Point>,
-        icon: ImageResource,
+        icon: ImageProvider,
         iconStyle: IconStyle,
     ): List<Placemark> {
         return nativeClusterizedPlacemark.addPlacemarks(
             points.map { it.toNative() },
-            icon.toImageProvider(context),
+            icon.toNative(),
             iconStyle.toNative(),
         ).map {
-            it.toCommon(context)
+            it.toCommon()
         }
+    }
+
+    actual fun visit(visitor: MapObjectVisitor) {
+        nativeClusterizedPlacemark.traverse(visitor)
     }
 
     actual fun clusterPlacemarks(clusterRadius: Double, minZoom: Int) {
         nativeClusterizedPlacemark.clusterPlacemarks(clusterRadius, minZoom)
     }
 
+    actual fun remove(placemark: Placemark) {
+        nativeClusterizedPlacemark.remove(placemark.nativePlacemark)
+    }
+
 }
 
-private fun IconStyle.toNative(): com.yandex.mapkit.map.IconStyle {
-    return com.yandex.mapkit.map.IconStyle(anchor?.toNative(), null, null, null, null, null, null)
+internal fun IconStyle.toNative(): com.yandex.mapkit.map.IconStyle {
+    return com.yandex.mapkit.map.IconStyle(
+        anchor?.toNative(),
+        null,
+        null,
+        null,
+        isVisible,
+        null,
+        null
+    )
 }
 
 private fun PointF.toNative(): android.graphics.PointF {

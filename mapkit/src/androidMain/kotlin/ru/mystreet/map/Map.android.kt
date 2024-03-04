@@ -44,7 +44,6 @@ class UserLocationImage(
 
 actual class Map(
     private val map: Map,
-    context: Context,
 ) {
 
     private val cameraListeners = mutableMapOf<CameraListener, NativeCameraListener>()
@@ -65,7 +64,7 @@ actual class Map(
     actual val cameraPosition: CameraPosition
         get() = map.cameraPosition.toCommon()
 
-    actual val mapObjects: MapObjects = MapObjects(map.mapObjects, context)
+    actual val mapObjects: MapObjects = map.mapObjects.toCommon()
 
     actual fun addCameraListener(listener: CameraListener) {
         val nativeListener = MappingCameraListener(this, listener)
