@@ -1,13 +1,11 @@
 package ru.mystreet.map
 
-import android.content.Context
 import com.yandex.mapkit.map.ClusterizedPlacemarkCollection
 import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.map.PlacemarkMapObject
 
 actual class MapObjects(
     private val mapObjects: MapObjectCollection,
-    private val context: Context,
 ) {
 
     private val tapListeners =
@@ -15,16 +13,15 @@ actual class MapObjects(
 
 
     actual fun addPlacemark(): Placemark {
-        return mapObjects.addPlacemark().toCommon(context)
+        return mapObjects.addPlacemark().toCommon()
     }
 
     actual fun addClusterizedPlacemark(clusterListener: ClusterListener): ClusterizedPlacemark {
         return mapObjects.addClusterizedPlacemarkCollection(
             MappingClusterListener(
-                clusterListener = clusterListener,
-                context = context
+                clusterListener = clusterListener
             )
-        ).toNative(context)
+        ).toCommon()
     }
 
     actual fun removePlacemarks(clusterizedPlacemark: ClusterizedPlacemark) {
@@ -32,7 +29,7 @@ actual class MapObjects(
     }
 
     actual fun addTapListener(listener: MapObjectTapListener) {
-        val nativeListener = MappingMapObjectTapListener(listener, context)
+        val nativeListener = MappingMapObjectTapListener(listener)
         tapListeners[listener] = nativeListener
         mapObjects.addTapListener(nativeListener)
     }
@@ -41,16 +38,24 @@ actual class MapObjects(
         return mapObjects.removeTapListener(tapListeners[listener] ?: return)
     }
 
+    actual fun addMapObjects(): MapObjects {
+        return mapObjects.addCollection().toCommon()
+    }
+
+    actual fun visit(visitor: MapObjectVisitor) {
+        return mapObjects.traverse(visitor)
+    }
+
 }
 
-private fun ClusterizedPlacemarkCollection.toNative(
-    context: Context,
-): ClusterizedPlacemark {
-    return ClusterizedPlacemark(this, context)
+internal fun MapObjectCollection.toCommon(): MapObjects {
+    return MapObjects(this)
 }
 
-fun PlacemarkMapObject.toCommon(
-    context: Context,
-): Placemark {
-    return Placemark(this, context)
+internal fun ClusterizedPlacemarkCollection.toCommon(): ClusterizedPlacemark {
+    return ClusterizedPlacemark(this)
+}
+
+fun PlacemarkMapObject.toCommon(): Placemark {
+    return Placemark(this)
 }

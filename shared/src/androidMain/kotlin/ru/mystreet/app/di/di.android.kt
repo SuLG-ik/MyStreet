@@ -9,6 +9,7 @@ import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import ru.mystreet.map.image.ImageProviderFactory
 import ru.mystreet.map.location.LocationManager
 import com.yandex.mapkit.location.LocationManager as YLocationManager
 
@@ -27,4 +28,5 @@ actual val platformYandexMapModule = module {
     } bind MapKit::class
     single { get<MapKit>().createLocationManager() } bind YLocationManager::class
     singleOf(::LocationManager)
+    singleOf(::ImageProviderFactory)
 }

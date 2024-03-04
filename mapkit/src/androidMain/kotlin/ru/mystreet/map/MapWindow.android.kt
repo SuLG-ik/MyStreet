@@ -9,13 +9,12 @@ import com.yandex.mapkit.map.SizeChangedListener as NativeSizeChangedListener
 
 actual class MapWindow(
     private val nativeMapWindow: NativeMapWindow,
-    context: Context,
 ) {
 
     private val sizeChangedListeners: MutableMap<SizeChangedListener, NativeSizeChangedListener> =
         mutableMapOf()
 
-    actual val map: Map = Map(nativeMapWindow.map, context)
+    actual val map: Map = Map(nativeMapWindow.map)
 
     actual val width: Int
         get() = nativeMapWindow.width()
