@@ -15,4 +15,6 @@ expect class MapWindow {
 
     fun addSizeChangedListener(listener: SizeChangedListener)
 
+    fun setUserLocationObjectsListener(userLocationObjectListener: UserLocationObjectListener)
+
 }

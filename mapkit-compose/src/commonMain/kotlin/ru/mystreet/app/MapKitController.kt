@@ -3,7 +3,6 @@ package ru.mystreet.app
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import dev.icerock.moko.resources.ImageResource
 import kotlinx.coroutines.flow.MutableStateFlow
 import ru.mystreet.map.BaseMapObject
 import ru.mystreet.map.CameraListener
@@ -16,6 +15,7 @@ import ru.mystreet.map.MapObjects
 import ru.mystreet.map.MapWindow
 import ru.mystreet.map.Placemark
 import ru.mystreet.map.SizeChangedListener
+import ru.mystreet.map.UserLocationObjectListener
 import ru.mystreet.map.geomety.Point
 import ru.mystreet.map.geomety.ScreenPoint
 import ru.mystreet.map.geomety.VisibleArea
@@ -35,12 +35,9 @@ class MapController(
     val cameraPosition: MutableStateFlow<CameraPosition?> = MutableStateFlow(null)
     val currentTarget: MutableStateFlow<Point> = MutableStateFlow(Point())
 
-    private var userImage: ImageResource? = null
-
     private var pin: Placemark? = null
 
     var isFollowLocation by mutableStateOf(false)
-
 
     private inline fun <T : Any> withAnchor(block: MapWindow.() -> T): T? {
         return anchor.value?.run(block)
@@ -129,7 +126,10 @@ class MapController(
         }
     }
 
-    fun setUserLocation(image: ImageResource) {
+    fun setUserLocationObjectListener(userLocationObjectListener: UserLocationObjectListener) {
+        withAnchor {
+            setUserLocationObjectsListener(userLocationObjectListener)
+        }
     }
 
     fun followUserLocation() {
