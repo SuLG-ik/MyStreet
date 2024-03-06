@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.jetbrainsCompose)
 }
 
 kotlin {
@@ -26,17 +26,19 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
             api(libs.mvikotlin.core)
+            api(libs.mvikotlin.coroutines)
             api(libs.decompose.core)
+            implementation(projects.uikit)
             implementation(libs.decompose.ui)
             api(libs.essenty.lifecycle)
+            api(libs.essenty.coroutines)
             api(libs.koin.core)
-            implementation(projects.map.map)
-            implementation(projects.map.general)
-            implementation(projects.map.trash)
-            implementation(projects.map.parks)
+            api(projects.core.component)
+            implementation(libs.moko.resources)
+            implementation(libs.moko.resources.compose)
             implementation(projects.map.shared)
-            implementation(projects.account)
-            implementation(projects.uikit)
+            implementation(projects.core.datastore)
+            implementation(projects.map.map)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -45,7 +47,7 @@ kotlin {
 }
 
 android {
-    namespace = "ru.mystreet.map.root"
+    namespace = "ru.mystreet.account"
     compileSdk = 34
     defaultConfig {
         minSdk = 24

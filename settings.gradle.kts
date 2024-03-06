@@ -22,6 +22,7 @@ include(":mapkit")
 include(":mapkit-compose")
 include(":root")
 include(":imagepicker")
+include(":account")
 
 include(":map:root")
 include(":map:map")

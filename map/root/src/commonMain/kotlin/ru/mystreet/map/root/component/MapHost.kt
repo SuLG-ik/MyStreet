@@ -4,6 +4,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
+import ru.mystreet.account.component.AccountHost
 import ru.mystreet.map.component.EditMap
 import ru.mystreet.map.general.component.GeneralMap
 import ru.mystreet.map.map.component.Map
@@ -36,6 +37,9 @@ interface MapHost {
         @Serializable
         data object Search : Config()
 
+        @Serializable
+        data object Account : Config()
+
         companion object {
             val allConfig: List<Config> by lazy { listOf(General, Parks, Trash, Search) }
         }
@@ -61,10 +65,6 @@ interface MapHost {
             val component: TrashMap,
         ) : Child()
 
-        @Serializable
-        data object Search : Child()
-
-
     }
 
     val map: Map
@@ -73,4 +73,5 @@ interface MapHost {
 
     val editMap: EditMap
     val mapInfo: MapInfo
+    val account: AccountHost
 }
