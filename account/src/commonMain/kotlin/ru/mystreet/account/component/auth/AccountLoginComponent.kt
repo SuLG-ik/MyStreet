@@ -8,6 +8,8 @@ import ru.mystreet.core.component.DIComponentContext
 
 class AccountLoginComponent(
     componentContext: DIComponentContext,
+    private val onRegister: () -> Unit,
+    private val onRestorePassword: () -> Unit,
 ) : AppComponentContext(componentContext), AccountLogin {
     override val isLoading: Value<Boolean> = MutableValue(false)
     override val isContinueAvailable: Value<Boolean> = MutableValue(false)
@@ -23,5 +25,13 @@ class AccountLoginComponent(
 
     override fun onContinue() {
 
+    }
+
+    override fun onRestorePassword() {
+        onRestorePassword.invoke()
+    }
+
+    override fun onRegister() {
+        onRegister.invoke()
     }
 }

@@ -1,6 +1,8 @@
 package ru.mystreet.account.ui
 
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -21,7 +23,7 @@ fun AccountHostUI(
         onDismiss = component::onDismiss,
         sheetContent = {
             Children(component.childStack) {
-                AccountHostNavHost(it.instance, modifier = Modifier.fillMaxSize())
+                AccountHostNavHost(it.instance, modifier = Modifier.fillMaxWidth().fillMaxHeight(0.90f))
             }
         },
         modifier = modifier,

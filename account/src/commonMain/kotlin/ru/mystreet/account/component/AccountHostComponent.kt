@@ -29,7 +29,12 @@ class AccountHostComponent(
         diComponentContext: DIComponentContext,
     ): AccountHost.Child {
         return when (config) {
-            Config.Auth -> AccountHost.Child.Auth(AccountAuthHostComponent(diComponentContext))
+            Config.Auth -> AccountHost.Child.Auth(
+                AccountAuthHostComponent(
+                    componentContext = diComponentContext,
+                    onBack = this::onBack,
+                )
+            )
         }
     }
 
@@ -42,6 +47,10 @@ class AccountHostComponent(
 
     override fun onExpand() {
         isExpanded.value = true
+    }
+
+    private fun onBack() {
+
     }
 
     @Serializable

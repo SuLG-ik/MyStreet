@@ -15,4 +15,6 @@ interface AccountLogin {
     fun onPasswordInput(value: String)
 
     fun onContinue()
+    fun onRegister()
+    fun onRestorePassword()
 }
