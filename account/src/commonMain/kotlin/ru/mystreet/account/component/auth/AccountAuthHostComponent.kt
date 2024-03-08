@@ -39,7 +39,7 @@ class AccountAuthHostComponent(
             Config.Register -> AccountAuthHost.Child.Register(
                 AccountRegisterComponent(
                     componentContext = diComponentContext,
-                    onBack = this::onBack,
+                    onLogin = this::onBack,
                 )
             )
         }

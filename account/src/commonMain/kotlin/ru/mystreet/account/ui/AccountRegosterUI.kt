@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -27,42 +28,46 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import ru.mystreet.account.component.auth.AccountLogin
-import ru.mystreet.account.component.domain.entity.LoginField
+import ru.mystreet.account.component.auth.AccountRegister
+import ru.mystreet.account.component.domain.entity.RegisterField
 import ru.mystreet.uikit.AppIcon
 import ru.mystreet.uikit.UIKitOutlineTextField
 
 @Composable
-fun AccountLoginUI(
-    component: AccountLogin,
+fun AccountRegisterUI(
+    component: AccountRegister,
     modifier: Modifier = Modifier,
 ) {
     val isLoading by component.isLoading.subscribeAsState()
     val isContinueAvailable by component.isContinueAvailable.subscribeAsState()
     val field by component.loginField.subscribeAsState()
-    AccountLoginScreen(
+    AccountRegisterScreen(
         isLoading = isLoading,
         isContinueAvailable = isContinueAvailable,
         field = field,
+        onNameInput = component::onNameInput,
         onLoginInput = component::onLoginInput,
         onPasswordInput = component::onPasswordInput,
+        onPasswordRepeatInput = component::onPasswordInput,
+        onEmailInput = component::onEmailInput,
         onContinue = component::onContinue,
-        onRestorePassword = component::onRestorePassword,
-        onRegister = component::onRegister,
+        onLogin = component::onLogin,
         modifier = modifier,
     )
 }
 
 @Composable
-fun AccountLoginScreen(
+fun AccountRegisterScreen(
     isLoading: Boolean,
     isContinueAvailable: Boolean,
-    field: LoginField,
+    field: RegisterField,
+    onNameInput: (String) -> Unit,
     onLoginInput: (String) -> Unit,
+    onEmailInput: (String) -> Unit,
     onPasswordInput: (String) -> Unit,
+    onPasswordRepeatInput: (String) -> Unit,
     onContinue: () -> Unit,
-    onRegister: () -> Unit,
-    onRestorePassword: () -> Unit,
+    onLogin: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -77,12 +82,15 @@ fun AccountLoginScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             AppIcon(
-                modifier = Modifier.size(200.dp)
+                modifier = Modifier.sizeIn(maxWidth = 200.dp, maxHeight = 200.dp)
             )
-            AccountLoginFields(
+            AccountRegisterFields(
                 field = field,
+                onNameInput = onNameInput,
                 onLoginInput = onLoginInput,
+                onEmailInput = onEmailInput,
                 onPasswordInput = onPasswordInput,
+                onPasswordRepeatInput = onPasswordRepeatInput,
                 modifier = Modifier.fillMaxWidth(),
             )
             FilledTonalButton(
@@ -94,11 +102,10 @@ fun AccountLoginScreen(
                     CircularProgressIndicator(modifier = Modifier.size(24.dp))
                 }
                 Spacer(modifier = Modifier.width(5.dp))
-                Text("Продолжить")
+                Text("Регистрация")
             }
-            NotLoginMenu(
-                onRegister = onRegister,
-                onRestorePassword = onRestorePassword,
+            NotRegisterMenu(
+                onLogin = onLogin,
                 modifier = Modifier.fillMaxWidth()
             )
         }
@@ -107,19 +114,36 @@ fun AccountLoginScreen(
 
 
 @Composable
-fun AccountLoginFields(
-    field: LoginField,
+fun AccountRegisterFields(
+    field: RegisterField,
+    onNameInput: (String) -> Unit,
     onLoginInput: (String) -> Unit,
+    onEmailInput: (String) -> Unit,
     onPasswordInput: (String) -> Unit,
+    onPasswordRepeatInput: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier,
     ) {
         UIKitOutlineTextField(
-            title = "Логин или почта",
+            title = "Имя",
+            value = field.name,
+            onValueChange = onNameInput,
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        UIKitOutlineTextField(
+            title = "Псевдоним",
             value = field.login,
             onValueChange = onLoginInput,
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        UIKitOutlineTextField(
+            title = "Почта",
+            value = field.email,
+            onValueChange = onEmailInput,
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -131,13 +155,20 @@ fun AccountLoginFields(
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
         )
+        UIKitOutlineTextField(
+            title = "Повторите пароль",
+            value = field.passwordRepeat,
+            onValueChange = onPasswordRepeatInput,
+            singleLine = true,
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
 
 @Composable
-fun NotLoginMenu(
-    onRestorePassword: () -> Unit,
-    onRegister: () -> Unit,
+fun NotRegisterMenu(
+    onLogin: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -146,21 +177,12 @@ fun NotLoginMenu(
         verticalArrangement = Arrangement.spacedBy(5.dp),
     ) {
         Text(
-            "Забыли пароль?",
+            "Уже есть аккаунт?",
             style = MaterialTheme.typography.titleSmall,
             modifier = Modifier.clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
-                onClick = onRestorePassword
-            )
-        )
-        Text(
-            "Создать аккаунт",
-            style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier.clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = onRegister,
+                onClick = onLogin
             )
         )
     }

@@ -22,6 +22,6 @@ fun AccountAuthHostNavHost(
 ) {
     when (child) {
         is AccountAuthHost.Child.Login -> AccountLoginUI(child.component, modifier)
-        is AccountAuthHost.Child.Register -> TODO()
+        is AccountAuthHost.Child.Register -> AccountRegisterUI(child.component, modifier)
     }
 }
