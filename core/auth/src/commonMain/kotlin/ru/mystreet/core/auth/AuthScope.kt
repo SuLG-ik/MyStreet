@@ -1,5 +1,8 @@
 package ru.mystreet.core.auth
 
-class AuthScope(
+import kotlin.jvm.JvmInline
+
+@JvmInline
+value class AuthScope(
     val username: String,
 )

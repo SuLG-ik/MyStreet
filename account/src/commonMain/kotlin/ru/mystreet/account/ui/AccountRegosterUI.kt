@@ -29,7 +29,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ru.mystreet.account.component.auth.AccountRegister
-import ru.mystreet.account.component.domain.entity.RegisterField
+import ru.mystreet.account.domain.entity.RegisterField
 import ru.mystreet.uikit.AppIcon
 import ru.mystreet.uikit.UIKitOutlineTextField
 

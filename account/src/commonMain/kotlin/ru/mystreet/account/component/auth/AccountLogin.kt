@@ -1,7 +1,7 @@
 package ru.mystreet.account.component.auth
 
 import com.arkivanov.decompose.value.Value
-import ru.mystreet.account.component.domain.entity.LoginField
+import ru.mystreet.account.domain.entity.LoginField
 
 interface AccountLogin {
 

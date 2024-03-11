@@ -36,9 +36,8 @@ kotlin {
             api(projects.core.component)
             implementation(libs.moko.resources)
             implementation(libs.moko.resources.compose)
-            implementation(projects.map.shared)
             implementation(projects.core.datastore)
-            implementation(projects.map.map)
+            implementation(projects.core.auth)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

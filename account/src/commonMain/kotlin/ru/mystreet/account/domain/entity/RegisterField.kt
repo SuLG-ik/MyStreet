@@ -1,4 +1,4 @@
-package ru.mystreet.account.component.domain.entity
+package ru.mystreet.account.domain.entity
 
 data class RegisterField(
     val name: String = "",

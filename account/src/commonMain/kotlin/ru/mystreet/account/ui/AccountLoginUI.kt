@@ -28,7 +28,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ru.mystreet.account.component.auth.AccountLogin
-import ru.mystreet.account.component.domain.entity.LoginField
+import ru.mystreet.account.domain.entity.LoginField
 import ru.mystreet.uikit.AppIcon
 import ru.mystreet.uikit.UIKitOutlineTextField
 
