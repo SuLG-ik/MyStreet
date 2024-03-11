@@ -24,8 +24,9 @@ class SQLDelightLocalFramedMapObjectsRepository(
                 row = objects.frame.row.toLong(),
             ).executeAsOne()
             transaction {
+                mapObjectPartQueries.deleteAllByFrame(frameId)
                 objects.objects.forEach { mapObject ->
-                    mapObjectPartQueries.deleteAndInsertMapObjectParts(
+                    mapObjectPartQueries.insertMapObjectParts(
                         title = mapObject.title,
                         category = mapObject.category.id,
                         latitude = mapObject.point.latitude.value,
