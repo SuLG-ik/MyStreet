@@ -5,6 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -18,13 +19,18 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
@@ -32,6 +38,8 @@ import ru.mystreet.account.component.auth.AccountRegister
 import ru.mystreet.account.domain.entity.RegisterField
 import ru.mystreet.uikit.AppIcon
 import ru.mystreet.uikit.UIKitOutlineTextField
+import ru.mystreet.uikit.iconpack.UIKitIconPack
+import ru.mystreet.uikit.iconpack.uikiticonpack.BackButton
 
 @Composable
 fun AccountRegisterUI(
@@ -40,15 +48,15 @@ fun AccountRegisterUI(
 ) {
     val isLoading by component.isLoading.subscribeAsState()
     val isContinueAvailable by component.isContinueAvailable.subscribeAsState()
-    val field by component.loginField.subscribeAsState()
+    val field by component.registerField.subscribeAsState()
     AccountRegisterScreen(
         isLoading = isLoading,
         isContinueAvailable = isContinueAvailable,
         field = field,
         onNameInput = component::onNameInput,
-        onLoginInput = component::onLoginInput,
+        onLoginInput = component::onUsernameInput,
         onPasswordInput = component::onPasswordInput,
-        onPasswordRepeatInput = component::onPasswordInput,
+        onPasswordRepeatInput = component::onPasswordRepeatInput,
         onEmailInput = component::onEmailInput,
         onContinue = component::onContinue,
         onLogin = component::onLogin,
@@ -93,17 +101,21 @@ fun AccountRegisterScreen(
                 onPasswordRepeatInput = onPasswordRepeatInput,
                 modifier = Modifier.fillMaxWidth(),
             )
-            FilledTonalButton(
-                onClick = onContinue,
-                enabled = isContinueAvailable,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                AnimatedVisibility(visible = isLoading) {
-                    CircularProgressIndicator(modifier = Modifier.size(24.dp))
+            Row {
+                BackButton(onClick = onLogin)
+                FilledTonalButton(
+                    onClick = onContinue,
+                    enabled = isContinueAvailable,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    AnimatedVisibility(visible = isLoading) {
+                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                    }
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Text("Регистрация")
                 }
-                Spacer(modifier = Modifier.width(5.dp))
-                Text("Регистрация")
             }
+
             NotRegisterMenu(
                 onLogin = onLogin,
                 modifier = Modifier.fillMaxWidth()
@@ -135,7 +147,7 @@ fun AccountRegisterFields(
         )
         UIKitOutlineTextField(
             title = "Псевдоним",
-            value = field.login,
+            value = field.username,
             onValueChange = onLoginInput,
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
@@ -184,6 +196,25 @@ fun NotRegisterMenu(
                 indication = null,
                 onClick = onLogin
             )
+        )
+    }
+}
+
+@Composable
+fun BackButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val density = LocalDensity.current
+    OutlinedIconButton(
+        onClick = onClick,
+        colors = IconButtonDefaults.outlinedIconButtonColors(),
+        modifier = modifier,
+    ) {
+        Icon(
+            UIKitIconPack.BackButton,
+            contentDescription = null,
+            modifier = Modifier.size(with(density) { LocalTextStyle.current.lineHeight.toDp() })
         )
     }
 }

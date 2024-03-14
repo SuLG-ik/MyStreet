@@ -9,11 +9,11 @@ interface AccountRegister {
 
     val isContinueAvailable: Value<Boolean>
 
-    val loginField: Value<RegisterField>
+    val registerField: Value<RegisterField>
 
     fun onNameInput(value: String)
 
-    fun onLoginInput(value: String)
+    fun onUsernameInput(value: String)
 
     fun onEmailInput(value: String)
 

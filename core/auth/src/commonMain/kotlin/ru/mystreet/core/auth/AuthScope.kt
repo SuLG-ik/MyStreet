@@ -6,3 +6,9 @@ import kotlin.jvm.JvmInline
 value class AuthScope(
     val username: String,
 )
+
+
+data class PrivateAuthScope(
+    val username: String,
+    val password: String,
+)

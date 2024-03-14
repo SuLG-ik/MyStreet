@@ -2,10 +2,12 @@ package ru.mystreet.account.component
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
+import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Serializable
 import ru.mystreet.account.component.auth.AccountAuthHostComponent
+import ru.mystreet.account.component.profile.AccountProfileHostImpl
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildStack
@@ -20,7 +22,7 @@ class AccountHostComponent(
     override val childStack: Value<ChildStack<*, AccountHost.Child>> = diChildStack(
         source = navigation,
         serializer = Config.serializer(),
-        initialConfiguration = Config.Auth,
+        initialConfiguration = Config.Profile,
         childFactory = this::createChild,
     )
 
@@ -33,9 +35,25 @@ class AccountHostComponent(
                 AccountAuthHostComponent(
                     componentContext = diComponentContext,
                     onBack = this::onBack,
+                    onAuthenticated = this::onAuthenticated,
+                )
+            )
+
+            Config.Profile -> AccountHost.Child.Profile(
+                AccountProfileHostImpl(
+                    diComponentContext = diComponentContext,
+                    onNotAuthenticated = this::onNotAuthenticated
                 )
             )
         }
+    }
+
+    private fun onAuthenticated() {
+        navigation.bringToFront(Config.Profile)
+    }
+
+    private fun onNotAuthenticated() {
+        navigation.bringToFront(Config.Auth)
     }
 
     override val isExpanded: MutableValue<Boolean> =
@@ -57,6 +75,9 @@ class AccountHostComponent(
     sealed interface Config {
         @Serializable
         data object Auth : Config
+
+        @Serializable
+        data object Profile : Config
     }
 
 }

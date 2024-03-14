@@ -12,6 +12,7 @@ import ru.mystreet.core.component.diChildStack
 class AccountAuthHostComponent(
     componentContext: DIComponentContext,
     onBack: () -> Unit,
+    private val onAuthenticated: () -> Unit,
 ) : AppComponentContext(componentContext), AccountAuthHost {
 
     private val navigation = StackNavigation<Config>()
@@ -32,7 +33,8 @@ class AccountAuthHostComponent(
                 AccountLoginComponent(
                     componentContext = diComponentContext,
                     onRegister = this::onRegister,
-                    onRestorePassword = this::onRestorePassword
+                    onRestorePassword = this::onRestorePassword,
+                    onAuthenticated = this::onAuthenticated,
                 )
             )
 
@@ -55,6 +57,10 @@ class AccountAuthHostComponent(
 
     private fun onBack() {
 
+    }
+
+    private fun onAuthenticated() {
+        onAuthenticated.invoke()
     }
 
     @Serializable

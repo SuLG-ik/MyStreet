@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.apollo)
     alias(libs.plugins.jetbrainsCompose)
 }
 
@@ -34,6 +35,7 @@ kotlin {
             api(libs.essenty.coroutines)
             api(libs.koin.core)
             api(projects.core.component)
+            implementation(projects.core.graphql)
             implementation(libs.moko.resources)
             implementation(libs.moko.resources.compose)
             implementation(projects.core.datastore)
@@ -50,5 +52,15 @@ android {
     compileSdk = 34
     defaultConfig {
         minSdk = 24
+    }
+}
+
+
+
+apollo {
+    service("service") {
+        packageName.set("ru.mystreet.map.account")
+        dependsOn(projects.core.graphql)
+        srcDir("src/commonMain/graphql/")
     }
 }

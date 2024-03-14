@@ -79,7 +79,7 @@ class AccountLoginStoreImpl(
 fun AccountLoginStore.SavedState.restore(): AccountLoginStore.State {
     return AccountLoginStore.State(
         isLoading = false,
-        isContinueAvailable = false,
+        isContinueAvailable = true,
         field = LoginField(
             login = login,
             password = password
