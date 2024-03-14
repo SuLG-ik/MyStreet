@@ -1,4 +1,4 @@
-package ru.mystreet.map.presentation
+package ru.mystreet.map.presentation.add
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory

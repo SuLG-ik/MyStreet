@@ -5,7 +5,7 @@ import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 import ru.mystreet.account.component.AccountHost
-import ru.mystreet.map.component.EditMap
+import ru.mystreet.map.component.edit.EditMap
 import ru.mystreet.map.general.component.GeneralMap
 import ru.mystreet.map.map.component.Map
 import ru.mystreet.map.parks.component.ParksMap

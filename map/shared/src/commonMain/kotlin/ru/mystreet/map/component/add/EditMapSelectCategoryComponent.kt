@@ -1,4 +1,4 @@
-package ru.mystreet.map.component
+package ru.mystreet.map.component.add
 
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
@@ -9,7 +9,7 @@ import ru.mystreet.core.component.getSavedStateStore
 import ru.mystreet.core.component.values
 import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.domain.entity.SelectableCategory
-import ru.mystreet.map.presentation.EditMapSelectCategoryStore
+import ru.mystreet.map.presentation.add.EditMapSelectCategoryStore
 
 class EditMapSelectCategoryComponent(
     componentContext: DIComponentContext,

@@ -1,4 +1,4 @@
-package ru.mystreet.map.component
+package ru.mystreet.map.component.add
 
 import com.arkivanov.decompose.value.Value
 import ru.mystreet.map.domain.entity.AddMapObjectField

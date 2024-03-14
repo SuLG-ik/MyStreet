@@ -1,4 +1,4 @@
-package ru.mystreet.map.component
+package ru.mystreet.map.component.add
 
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
@@ -14,9 +14,8 @@ import ru.mystreet.core.component.getSavedStateStore
 import ru.mystreet.core.component.values
 import ru.mystreet.map.domain.entity.AddMapObjectField
 import ru.mystreet.map.domain.entity.MapObjectCategory
-import ru.mystreet.map.domain.entity.TitleField
 import ru.mystreet.map.geomety.Point
-import ru.mystreet.map.presentation.EditMapNewObjectInfoStore
+import ru.mystreet.map.presentation.add.EditMapNewObjectInfoStore
 
 class EditMapNewObjectInfoComponent(
     componentContext: DIComponentContext,

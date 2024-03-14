@@ -1,4 +1,4 @@
-package ru.mystreet.map.component
+package ru.mystreet.map.component.edit
 
 import com.arkivanov.decompose.value.Value
 

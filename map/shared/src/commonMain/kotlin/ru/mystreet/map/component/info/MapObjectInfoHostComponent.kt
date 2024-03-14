@@ -1,4 +1,4 @@
-package ru.mystreet.map.component
+package ru.mystreet.map.component.info
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -11,7 +11,7 @@ import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildStack
 import ru.mystreet.core.component.getStore
 import ru.mystreet.imagepicker.component.ImagePickerComponent
-import ru.mystreet.map.presentation.MapObjectImageLoaderStore
+import ru.mystreet.map.presentation.add.MapObjectImageLoaderStore
 
 class MapObjectInfoHostComponent(
     componentContext: DIComponentContext,

@@ -1,4 +1,4 @@
-package ru.mystreet.map.component
+package ru.mystreet.map.component.info
 
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
@@ -8,7 +8,7 @@ import ru.mystreet.core.component.ValueContainer
 import ru.mystreet.core.component.getSavedStateStore
 import ru.mystreet.core.component.values
 import ru.mystreet.map.domain.entity.MapObject
-import ru.mystreet.map.presentation.MapObjectInfoStore
+import ru.mystreet.map.presentation.info.MapObjectInfoStore
 
 class MapObjectInfoComponent(
     componentContext: DIComponentContext,

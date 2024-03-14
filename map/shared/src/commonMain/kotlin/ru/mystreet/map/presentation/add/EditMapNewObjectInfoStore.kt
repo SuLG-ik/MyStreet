@@ -1,4 +1,4 @@
-package ru.mystreet.map.presentation
+package ru.mystreet.map.presentation.add
 
 import kotlinx.serialization.Serializable
 import ru.mystreet.core.component.SavedStateStore

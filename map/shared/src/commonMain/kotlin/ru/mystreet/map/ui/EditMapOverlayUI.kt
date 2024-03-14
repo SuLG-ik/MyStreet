@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import ru.mystreet.map.component.EditMap
+import ru.mystreet.map.component.edit.EditMap
 
 @Composable
 fun EditMapOverlayUI(

@@ -10,7 +10,7 @@ import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildSlot
 import ru.mystreet.core.component.savedValue
-import ru.mystreet.map.component.MapObjectInfoHostComponent
+import ru.mystreet.map.component.info.MapObjectInfoHostComponent
 
 class MapInfoComponent(
     componentContext: DIComponentContext,
