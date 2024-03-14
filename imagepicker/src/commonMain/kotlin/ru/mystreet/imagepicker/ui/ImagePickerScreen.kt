@@ -33,12 +33,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -53,8 +50,8 @@ import com.mohamedrejeb.calf.permissions.shouldShowRationale
 import com.preat.peekaboo.image.picker.ResizeOptions
 import com.preat.peekaboo.image.picker.SelectionMode
 import com.preat.peekaboo.image.picker.rememberImagePickerLauncher
-import com.preat.peekaboo.ui.CameraMode
-import com.preat.peekaboo.ui.PeekabooCamera
+import com.preat.peekaboo.ui.camera.PeekabooCamera
+import com.preat.peekaboo.ui.camera.rememberPeekabooCameraState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.mystreet.imagepicker.domain.entity.ImageItem
@@ -117,44 +114,42 @@ fun ImagePickerScreen(
             )
         }
     ) {
-        var isCapturing by remember { mutableStateOf(false) }
-        PeekabooCamera(
-            modifier = Modifier.fillMaxSize().padding(it),
-            cameraMode = CameraMode.Back,
-            captureIcon = { onCapture ->
-                CaptureIconOverlay(
-                    isContinueAvailable = isContinueAvailable,
-                    isCapturing = isCapturing,
-                    onCapture = onCapture,
-                    images = images,
-                    onRemove = onRemove,
-                    onLoadFromDisk = imagePickerLauncher::launch,
-                    onAccept = { onLoad() },
-                    onCancel = onBack,
-                    modifier = Modifier.fillMaxSize().padding(bottom = 15.dp),
-                )
-            },
-            progressIndicator = {
-                DisposableEffect(Unit) {
-                    isCapturing = true
-                    onDispose { isCapturing = false }
-                }
-            },
-            onCapture = {
-                if (it != null)
+        val cameraState = rememberPeekabooCameraState(onCapture = remember(scope, onPick) {
+            {
+                if (it != null) {
                     scope.launch(Dispatchers.Main) {
                         onPick(listOf(it))
                     }
-            },
-            permissionDeniedContent = {
-                NoCameraPermission(
-                    images = images,
-                    onRemove = onRemove,
-                    onLoadFromDisk = imagePickerLauncher::launch,
-                    modifier = Modifier.fillMaxSize()
-                )
+                }
             }
-        )
+        })
+        Box(
+            modifier = Modifier.fillMaxSize().padding(it)
+        ) {
+            PeekabooCamera(
+                state = cameraState,
+                modifier = Modifier.fillMaxSize().padding(it),
+                permissionDeniedContent = {
+                    NoCameraPermission(
+                        images = images,
+                        onRemove = onRemove,
+                        onLoadFromDisk = imagePickerLauncher::launch,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            )
+            CaptureIconOverlay(
+                isContinueAvailable = isContinueAvailable,
+                isCapturing = cameraState.isCapturing,
+                onCapture = cameraState::capture,
+                images = images,
+                onRemove = onRemove,
+                onLoadFromDisk = imagePickerLauncher::launch,
+                onAccept = { onLoad() },
+                onCancel = onBack,
+                modifier = Modifier.fillMaxSize().padding(bottom = 15.dp),
+            )
+        }
     }
 }
 
