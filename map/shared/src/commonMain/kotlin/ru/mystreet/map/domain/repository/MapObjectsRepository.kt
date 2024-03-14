@@ -9,6 +9,8 @@ interface MapObjectsRepository {
 
     suspend fun getMapObjectById(id: Long): MapObject
 
+    suspend fun setMapObjectFavourite(id: Long, isFavourite: Boolean)
+
     suspend fun addMapObject(
         title: String,
         description: String,

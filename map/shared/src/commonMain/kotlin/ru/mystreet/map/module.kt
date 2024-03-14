@@ -25,6 +25,7 @@ import ru.mystreet.map.domain.usecase.LoadLocalMapConfigUseCase
 import ru.mystreet.map.domain.usecase.LoadMapObjectTagsWithTitleUseCase
 import ru.mystreet.map.domain.usecase.LoadMapObjectUseCase
 import ru.mystreet.map.domain.usecase.SaveMapInitialCameraPositionUseCase
+import ru.mystreet.map.domain.usecase.SetMapObjectFavouriteUseCase
 import ru.mystreet.map.domain.usecase.UploadMapObjectImagesUseCase
 import ru.mystreet.map.domain.usecase.ValidateTitleUseCase
 import ru.mystreet.map.domain.validator.MapObjectFieldValidator
@@ -51,6 +52,7 @@ val mapSharedModule = module {
     factoryOf(::MapObjectInfoStoreImpl) bind MapObjectInfoStore::class
     factoryOf(::MapObjectImageLoaderStoreImpl) bind MapObjectImageLoaderStore::class
     factoryOf(::AddMapObjectUseCase)
+    factoryOf(::SetMapObjectFavouriteUseCase)
     factoryOf(::LoadLocalMapConfigUseCase)
     factoryOf(::SaveMapInitialCameraPositionUseCase)
     factoryOf(::FormatAndValidateTitleUseCase)

@@ -3,6 +3,8 @@ package ru.mystreet.account.component.profile
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
+import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.arkivanov.mvikotlin.core.rx.Observer
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
@@ -26,11 +28,17 @@ class AccountProfileHostImpl(
     private val store: AccountProfileStore = getStore()
 
     init {
-        store.labels.onEach {
-            when(it) {
-                AccountProfileStore.Label.OnNotAuthenticated -> onNotAuthenticated()
+        val disposable = store.labels(object : Observer<AccountProfileStore.Label> {
+            override fun onComplete() {
             }
-        }.flowOn(Dispatchers.Main).launchIn(scope)
+
+            override fun onNext(value: AccountProfileStore.Label) {
+                when(value) {
+                    AccountProfileStore.Label.OnNotAuthenticated -> onNotAuthenticated()
+                }
+            }
+        })
+        lifecycle.doOnDestroy(disposable::dispose)
     }
 
     private val state = store.values(this)

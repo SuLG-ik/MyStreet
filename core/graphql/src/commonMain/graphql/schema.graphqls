@@ -360,6 +360,8 @@ type MapObjectType {
 
   images: [FileType!]!
 
+  forUser(username: String): UserMapObjectType
+
   rating: MapObjectRatingType!
 }
 
@@ -496,6 +498,14 @@ type UserInfoMutation {
   favourite: FavouriteMapObjectMutation!
 }
 
+type UserMapObjectFavouriteType {
+  isFavourite: Boolean!
+}
+
+type UserMapObjectType {
+  favourite: UserMapObjectFavouriteType!
+}
+
 type UserReviewScoreType {
   like: Boolean!
 
@@ -517,7 +527,7 @@ type UserType {
 }
 
 type UsersMutation {
-  info(id: ID!): UserInfoMutation
+  info(username: ID): UserInfoMutation
 }
 
 type UsersQuery {

@@ -17,6 +17,7 @@ fun MapObjectInfoUI(
         isLoading = isLoading,
         mapObject = mapObject.value,
         onImagePicker = component::onImagePicker,
+        onFavourite = component::onFavourite,
         modifier = modifier
     )
 }

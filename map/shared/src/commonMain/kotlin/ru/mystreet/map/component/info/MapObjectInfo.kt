@@ -11,4 +11,7 @@ interface MapObjectInfo {
     val mapObjectInfo: Value<ValueContainer<MapObject?>>
 
     fun onImagePicker()
+
+    fun onFavourite(value: Boolean)
+
 }

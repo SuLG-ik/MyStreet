@@ -9,8 +9,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.mystreet.core.component.onIntentWithDebounce
 import ru.mystreet.map.domain.entity.MapObject
 import ru.mystreet.map.domain.usecase.LoadMapObjectUseCase
+import ru.mystreet.map.domain.usecase.SetMapObjectFavouriteUseCase
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMviKotlinApi::class)
 class MapObjectInfoStoreImpl(
@@ -18,6 +21,7 @@ class MapObjectInfoStoreImpl(
     storeFactory: StoreFactory,
     private val savedState: MapObjectInfoStore.SavedState,
     loadMapObjectUseCase: LoadMapObjectUseCase,
+    setMapObjectFavouriteUseCase: SetMapObjectFavouriteUseCase,
 ) : MapObjectInfoStore,
     Store<MapObjectInfoStore.Intent, MapObjectInfoStore.State, MapObjectInfoStore.Label> by storeFactory.create<_, Action, Message, _, _>(
         name = "MapObjectInfoStoreImpl",
@@ -27,6 +31,13 @@ class MapObjectInfoStoreImpl(
         reducer = {
             when (it) {
                 is Message.SetMapObject -> copy(isLoading = false, mapObject = it.mapObject)
+                is Message.SetFavourite -> copy(
+                    mapObject = mapObject?.copy(
+                        forUser = mapObject.forUser?.copy(
+                            isFavourite = mapObject.forUser.isFavourite,
+                        )
+                    )
+                )
             }
         },
         bootstrapper = coroutineBootstrapper(coroutineDispatcher) { dispatch(Action.Setup) },
@@ -39,6 +50,14 @@ class MapObjectInfoStoreImpl(
                     }
                 }
             }
+            onIntentWithDebounce<MapObjectInfoStore.Intent.SetFavourite, _, _, _, _, _>(300.milliseconds) {
+                deferredLaunch {
+                    setMapObjectFavouriteUseCase(savedState.id, it.value)
+                    withContext(Dispatchers.Main) {
+                        dispatch(Message.SetFavourite(it.value))
+                    }
+                }
+            }
         },
     ) {
 
@@ -48,6 +67,7 @@ class MapObjectInfoStoreImpl(
 
     sealed interface Message {
         data class SetMapObject(val mapObject: MapObject) : Message
+        data class SetFavourite(val value: Boolean) : Message
     }
 
     override fun getSavedState(): MapObjectInfoStore.SavedState {

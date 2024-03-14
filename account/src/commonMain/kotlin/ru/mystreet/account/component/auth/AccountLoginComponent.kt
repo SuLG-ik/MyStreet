@@ -3,6 +3,8 @@ package ru.mystreet.account.component.auth
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
+import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.arkivanov.mvikotlin.core.rx.Observer
 import com.arkivanov.mvikotlin.extensions.coroutines.labels
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
@@ -10,6 +12,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import ru.mystreet.account.domain.entity.LoginField
 import ru.mystreet.account.presentation.AccountLoginStore
+import ru.mystreet.account.presentation.AccountProfileStore
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.getSavedStateStore
@@ -30,11 +33,17 @@ class AccountLoginComponent(
     )
 
     init {
-        store.labels.onEach {
-            when (it) {
-                is AccountLoginStore.Label.LoginSuccess -> onAuthenticated()
+        val disposable = store.labels(object : Observer<AccountLoginStore.Label> {
+            override fun onComplete() {
             }
-        }.flowOn(Dispatchers.Main).launchIn(scope)
+
+            override fun onNext(value: AccountLoginStore.Label) {
+                when (value) {
+                    is AccountLoginStore.Label.LoginSuccess -> onAuthenticated()
+                }
+            }
+        })
+        lifecycle.doOnDestroy(disposable::dispose)
     }
 
     private val state = store.values(this)

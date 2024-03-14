@@ -42,6 +42,7 @@ class AccountAuthHostComponent(
                 AccountRegisterComponent(
                     componentContext = diComponentContext,
                     onLogin = this::onBack,
+                    onRegistered = this::onBack,
                 )
             )
         }

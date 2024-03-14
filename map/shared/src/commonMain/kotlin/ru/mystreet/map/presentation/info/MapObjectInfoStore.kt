@@ -13,7 +13,7 @@ interface MapObjectInfoStore :
     )
 
     sealed interface Intent {
-
+        data class SetFavourite(val value: Boolean) : Intent
     }
 
     data class State(

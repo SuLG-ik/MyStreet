@@ -12,4 +12,9 @@ data class MapObject(
     val category: MapObjectCategory,
     val tags: List<MapObjectTag>,
     val images: List<String>,
+    val forUser: UserMapObject?,
+)
+
+data class UserMapObject(
+    val isFavourite: Boolean,
 )

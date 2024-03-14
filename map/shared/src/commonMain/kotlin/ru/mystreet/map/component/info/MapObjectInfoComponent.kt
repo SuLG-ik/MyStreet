@@ -26,6 +26,10 @@ class MapObjectInfoComponent(
         onImagePicker.invoke()
     }
 
+    override fun onFavourite(value: Boolean) {
+        store.accept(MapObjectInfoStore.Intent.SetFavourite(value))
+    }
+
     private val state = store.values(this)
 
     override val isLoading: Value<Boolean> = state.map { it.isLoading }
