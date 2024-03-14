@@ -1,4 +1,4 @@
-package ru.mystreet.map.component
+package ru.mystreet.map.component.edit
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -11,6 +11,9 @@ import kotlinx.serialization.Serializable
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildStack
+import ru.mystreet.map.component.add.EditMapNewObjectInfoComponent
+import ru.mystreet.map.component.add.EditMapNewObjectLoadingComponent
+import ru.mystreet.map.component.add.EditMapSelectCategoryComponent
 import ru.mystreet.map.domain.entity.AddMapObjectField
 import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.geomety.Point

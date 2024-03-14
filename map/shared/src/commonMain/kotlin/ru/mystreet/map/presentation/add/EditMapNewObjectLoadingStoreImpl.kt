@@ -1,4 +1,4 @@
-package ru.mystreet.map.presentation
+package ru.mystreet.map.presentation.add
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
@@ -9,33 +9,32 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.mystreet.map.domain.entity.MapObject
-import ru.mystreet.map.domain.usecase.LoadMapObjectUseCase
+import ru.mystreet.map.domain.usecase.AddMapObjectUseCase
 
 @OptIn(ExperimentalMviKotlinApi::class)
-class MapObjectInfoStoreImpl(
+class EditMapNewObjectLoadingStoreImpl(
     coroutineDispatcher: CoroutineDispatcher,
     storeFactory: StoreFactory,
-    private val savedState: MapObjectInfoStore.SavedState,
-    loadMapObjectUseCase: LoadMapObjectUseCase,
-) : MapObjectInfoStore,
-    Store<MapObjectInfoStore.Intent, MapObjectInfoStore.State, MapObjectInfoStore.Label> by storeFactory.create<_, Action, Message, _, _>(
-        name = "MapObjectInfoStoreImpl",
-        initialState = MapObjectInfoStore.State(
+    private val savedState: EditMapNewObjectLoadingStore.SavedState,
+    addMapObjectUseCase: AddMapObjectUseCase,
 
-        ),
+    ) : EditMapNewObjectLoadingStore,
+    Store<EditMapNewObjectLoadingStore.Intent, EditMapNewObjectLoadingStore.State, EditMapNewObjectLoadingStore.Label> by storeFactory.create<_, Action, Message, _, _>(
+        name = "EditMapNewObjectLoadingStoreImpl",
+        initialState = EditMapNewObjectLoadingStore.State(),
         reducer = {
             when (it) {
-                is Message.SetMapObject -> copy(isLoading = false, mapObject = it.mapObject)
+                is Message.SetLoading -> copy(isLoading = it.value)
             }
         },
         bootstrapper = coroutineBootstrapper(coroutineDispatcher) { dispatch(Action.Setup) },
         executorFactory = coroutineExecutorFactory(coroutineDispatcher) {
             onAction<Action.Setup> {
                 launch {
-                    val mapObject = loadMapObjectUseCase(savedState.id)
+                    addMapObjectUseCase(savedState.field)
                     withContext(Dispatchers.Main) {
-                        dispatch(Message.SetMapObject(mapObject))
+                        dispatch(Message.SetLoading(false))
+                        publish(EditMapNewObjectLoadingStore.Label.LoadingCompleted)
                     }
                 }
             }
@@ -47,10 +46,10 @@ class MapObjectInfoStoreImpl(
     }
 
     sealed interface Message {
-        data class SetMapObject(val mapObject: MapObject) : Message
+        data class SetLoading(val value: Boolean) : Message
     }
 
-    override fun getSavedState(): MapObjectInfoStore.SavedState {
+    override fun getSavedState(): EditMapNewObjectLoadingStore.SavedState {
         return savedState
     }
 }

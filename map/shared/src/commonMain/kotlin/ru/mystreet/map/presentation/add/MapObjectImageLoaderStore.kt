@@ -1,4 +1,4 @@
-package ru.mystreet.map.presentation
+package ru.mystreet.map.presentation.add
 
 import ru.mystreet.imagepicker.presentation.ImagePickerImageLoadStore
 

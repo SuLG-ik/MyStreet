@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import ru.mystreet.map.component.EditMapSelectCategory
+import ru.mystreet.map.component.add.EditMapSelectCategory
 
 @Composable
 fun EditMapSelectCategoryUI(

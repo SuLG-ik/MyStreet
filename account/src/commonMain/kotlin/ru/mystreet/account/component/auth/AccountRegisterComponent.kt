@@ -2,6 +2,8 @@ package ru.mystreet.account.component.auth
 
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
+import com.arkivanov.essenty.lifecycle.doOnDestroy
+import com.arkivanov.mvikotlin.core.rx.Observer
 import ru.mystreet.account.domain.entity.RegisterField
 import ru.mystreet.account.presentation.AccountRegisterStore
 import ru.mystreet.core.component.AppComponentContext
@@ -12,6 +14,7 @@ import ru.mystreet.core.component.values
 class AccountRegisterComponent(
     componentContext: DIComponentContext,
     private val onLogin: () -> Unit,
+    private val onRegistered: () -> Unit,
 ) : AppComponentContext(componentContext), AccountRegister {
 
     private val store: AccountRegisterStore = getSavedStateStore(
@@ -19,6 +22,19 @@ class AccountRegisterComponent(
         initialSavedState = { AccountRegisterStore.SavedState() }
     )
 
+    init {
+        val disposable = store.labels(object : Observer<AccountRegisterStore.Label> {
+            override fun onComplete() {
+            }
+
+            override fun onNext(value: AccountRegisterStore.Label) {
+                when (value) {
+                    is AccountRegisterStore.Label.RegisterSuccess -> onRegistered()
+                }
+            }
+        })
+        lifecycle.doOnDestroy(disposable::dispose)
+    }
 
     private val state = store.values(this)
     override val isLoading: Value<Boolean> = state.map { it.isLoading }

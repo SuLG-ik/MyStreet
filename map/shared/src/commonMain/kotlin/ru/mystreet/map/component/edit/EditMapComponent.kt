@@ -1,4 +1,4 @@
-package ru.mystreet.map.component
+package ru.mystreet.map.component.edit
 
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
@@ -8,7 +8,7 @@ import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildContext
 import ru.mystreet.core.component.getSavedStateStore
 import ru.mystreet.core.component.values
-import ru.mystreet.map.presentation.EditMapStore
+import ru.mystreet.map.presentation.edit.EditMapStore
 
 class EditMapComponent(
     componentContext: DIComponentContext,

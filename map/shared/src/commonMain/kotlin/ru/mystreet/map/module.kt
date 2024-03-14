@@ -25,21 +25,22 @@ import ru.mystreet.map.domain.usecase.LoadLocalMapConfigUseCase
 import ru.mystreet.map.domain.usecase.LoadMapObjectTagsWithTitleUseCase
 import ru.mystreet.map.domain.usecase.LoadMapObjectUseCase
 import ru.mystreet.map.domain.usecase.SaveMapInitialCameraPositionUseCase
+import ru.mystreet.map.domain.usecase.SetMapObjectFavouriteUseCase
 import ru.mystreet.map.domain.usecase.UploadMapObjectImagesUseCase
 import ru.mystreet.map.domain.usecase.ValidateTitleUseCase
 import ru.mystreet.map.domain.validator.MapObjectFieldValidator
-import ru.mystreet.map.presentation.EditMapNewObjectInfoStore
-import ru.mystreet.map.presentation.EditMapNewObjectInfoStoreImpl
-import ru.mystreet.map.presentation.EditMapNewObjectLoadingStore
-import ru.mystreet.map.presentation.EditMapNewObjectLoadingStoreImpl
-import ru.mystreet.map.presentation.EditMapSelectCategoryStore
-import ru.mystreet.map.presentation.EditMapSelectCategoryStoreImpl
-import ru.mystreet.map.presentation.EditMapStore
-import ru.mystreet.map.presentation.EditMapStoreImpl
-import ru.mystreet.map.presentation.MapObjectImageLoaderStore
-import ru.mystreet.map.presentation.MapObjectImageLoaderStoreImpl
-import ru.mystreet.map.presentation.MapObjectInfoStore
-import ru.mystreet.map.presentation.MapObjectInfoStoreImpl
+import ru.mystreet.map.presentation.add.EditMapNewObjectInfoStore
+import ru.mystreet.map.presentation.add.EditMapNewObjectInfoStoreImpl
+import ru.mystreet.map.presentation.add.EditMapNewObjectLoadingStore
+import ru.mystreet.map.presentation.add.EditMapNewObjectLoadingStoreImpl
+import ru.mystreet.map.presentation.add.EditMapSelectCategoryStore
+import ru.mystreet.map.presentation.add.EditMapSelectCategoryStoreImpl
+import ru.mystreet.map.presentation.edit.EditMapStore
+import ru.mystreet.map.presentation.edit.EditMapStoreImpl
+import ru.mystreet.map.presentation.add.MapObjectImageLoaderStore
+import ru.mystreet.map.presentation.add.MapObjectImageLoaderStoreImpl
+import ru.mystreet.map.presentation.info.MapObjectInfoStore
+import ru.mystreet.map.presentation.info.MapObjectInfoStoreImpl
 
 val mapSharedModule = module {
     includes(imagePickerModule)
@@ -51,6 +52,7 @@ val mapSharedModule = module {
     factoryOf(::MapObjectInfoStoreImpl) bind MapObjectInfoStore::class
     factoryOf(::MapObjectImageLoaderStoreImpl) bind MapObjectImageLoaderStore::class
     factoryOf(::AddMapObjectUseCase)
+    factoryOf(::SetMapObjectFavouriteUseCase)
     factoryOf(::LoadLocalMapConfigUseCase)
     factoryOf(::SaveMapInitialCameraPositionUseCase)
     factoryOf(::FormatAndValidateTitleUseCase)

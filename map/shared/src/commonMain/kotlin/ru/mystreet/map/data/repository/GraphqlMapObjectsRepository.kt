@@ -2,12 +2,15 @@ package ru.mystreet.map.data.repository
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.DefaultUpload
+import ru.mystreet.core.graphql.type.AddFavouriteMapObjectInput
 import ru.mystreet.core.graphql.type.AddMapObjectInput
 import ru.mystreet.core.graphql.type.PointInput
 import ru.mystreet.map.data.converter.GraphqlMapObjectsConverter
+import ru.mystreet.map.data.model.AddMapObjectFavouriteMutation
 import ru.mystreet.map.data.model.AddMapObjectImagesMutation
 import ru.mystreet.map.data.model.AddMapObjectMutation
 import ru.mystreet.map.data.model.GetMapObjectQuery
+import ru.mystreet.map.data.model.RemoveMapObjectFavouriteMutation
 import ru.mystreet.map.domain.entity.MapObject
 import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.domain.repository.MapObjectsRepository
@@ -24,6 +27,20 @@ class GraphqlMapObjectsRepository(
         val mapObject =
             response.data?.mapObjects?.info?.mapObjectFull ?: TODO(response.exception.toString())
         return converter.convert(mapObject)
+    }
+
+    override suspend fun setMapObjectFavourite(id: Long, isFavourite: Boolean) {
+        if (isFavourite) {
+            apolloClient.mutation(
+                AddMapObjectFavouriteMutation(
+                    AddFavouriteMapObjectInput(id.toString())
+                )
+            ).execute()
+        } else {
+            apolloClient.mutation(
+                RemoveMapObjectFavouriteMutation(id.toString())
+            ).execute()
+        }
     }
 
     override suspend fun addMapObject(

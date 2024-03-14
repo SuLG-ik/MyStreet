@@ -1,9 +1,9 @@
-package ru.mystreet.map.presentation
+package ru.mystreet.map.presentation.add
 
 import kotlinx.serialization.Serializable
 import ru.mystreet.core.component.SavedStateStore
-import ru.mystreet.map.domain.entity.SelectableCategory
 import ru.mystreet.map.domain.entity.MapObjectCategory
+import ru.mystreet.map.domain.entity.SelectableCategory
 
 interface EditMapSelectCategoryStore :
     SavedStateStore<EditMapSelectCategoryStore.Intent, EditMapSelectCategoryStore.State, EditMapSelectCategoryStore.Label, EditMapSelectCategoryStore.SavedState> {

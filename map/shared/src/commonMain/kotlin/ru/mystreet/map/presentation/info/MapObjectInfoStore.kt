@@ -1,4 +1,4 @@
-package ru.mystreet.map.presentation
+package ru.mystreet.map.presentation.info
 
 import kotlinx.serialization.Serializable
 import ru.mystreet.core.component.SavedStateStore
@@ -13,7 +13,7 @@ interface MapObjectInfoStore :
     )
 
     sealed interface Intent {
-
+        data class SetFavourite(val value: Boolean) : Intent
     }
 
     data class State(

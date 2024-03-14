@@ -1,9 +1,8 @@
-package ru.mystreet.map.presentation
+package ru.mystreet.map.presentation.edit
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
-import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 
 @OptIn(ExperimentalMviKotlinApi::class)
@@ -26,7 +25,6 @@ class EditMapStoreImpl(
         },
         executorFactory = coroutineExecutorFactory(coroutineDispatcher) {
             onIntent<EditMapStore.Intent.Toggle> {
-                println("fsadfsiwerisdfzxcij")
                 dispatch(Message.SetEnabled(it.isEnabled))
             }
         },

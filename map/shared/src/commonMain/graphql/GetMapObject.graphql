@@ -24,4 +24,9 @@ fragment MapObjectFull on MapObjectType {
     images {
         path
     }
+    forUser {
+        favourite {
+            isFavourite
+        }
+    }
 }

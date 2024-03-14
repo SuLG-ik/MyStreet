@@ -4,6 +4,7 @@ import ru.mystreet.map.data.model.fragment.MapObjectFull
 import ru.mystreet.map.domain.entity.MapObject
 import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.domain.entity.MapObjectTag
+import ru.mystreet.map.domain.entity.UserMapObject
 import ru.mystreet.map.geomety.Latitude
 import ru.mystreet.map.geomety.Longitude
 import ru.mystreet.map.geomety.Point
@@ -24,9 +25,15 @@ class GraphqlMapObjectsConverter {
                 MapObjectTag(tag.id.toLong(), tag.title)
             },
             images = mapObject.images.map { it.path },
+            forUser = mapObject.forUser?.convert()
         )
     }
 
+    private fun MapObjectFull.ForUser.convert(): UserMapObject {
+        return UserMapObject(
+            isFavourite = favourite.isFavourite,
+        )
+    }
 }
 
 private fun String.convertToCategory(): MapObjectCategory {
