@@ -1,4 +1,4 @@
-package ru.mystreet.map.root.ui
+package ru.mystreet.uikit
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -9,10 +9,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import ru.mystreet.uikit.UIKitBottomSheetScaffold
 
 @Composable
-fun MapInfoScreen(
+fun InfoBottomSheetScreen(
     isExpanded: Boolean,
     onDismiss: () -> Unit,
     sheetContent: @Composable () -> Unit,

@@ -2,6 +2,8 @@ package ru.mystreet.map.data.repository
 
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.DefaultUpload
+import ru.mystreet.core.graphql.type.AddMapObjectInput
+import ru.mystreet.core.graphql.type.PointInput
 import ru.mystreet.map.data.converter.GraphqlMapObjectsConverter
 import ru.mystreet.map.data.model.AddMapObjectImagesMutation
 import ru.mystreet.map.data.model.AddMapObjectMutation
@@ -20,7 +22,7 @@ class GraphqlMapObjectsRepository(
     override suspend fun getMapObjectById(id: Long): MapObject {
         val response = apolloClient.query(GetMapObjectQuery(id.toString())).execute()
         val mapObject =
-            response.data?.getMapObject?.mapObjectFull ?: TODO(response.exception.toString())
+            response.data?.mapObjects?.info?.mapObjectFull ?: TODO(response.exception.toString())
         return converter.convert(mapObject)
     }
 
@@ -34,12 +36,16 @@ class GraphqlMapObjectsRepository(
     ) {
         val response = apolloClient.mutation(
             AddMapObjectMutation(
-                title = title,
-                description = description,
-                category = category.id,
-                latitude = latitude.value,
-                longitude = longitude.value,
-                tags = tags
+                AddMapObjectInput(
+                    title = title,
+                    description = description,
+                    category = category.id,
+                    point = PointInput(
+                        latitude = latitude.value,
+                        longitude = longitude.value,
+                    ),
+                    tags = tags
+                )
             )
         ).execute()
         if (response.exception != null)

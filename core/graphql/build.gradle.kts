@@ -25,7 +25,7 @@ kotlin {
         }
         commonMain.dependencies {
             api(libs.apollo)
-            api(libs.koin.core)
+            implementation(projects.core.auth)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

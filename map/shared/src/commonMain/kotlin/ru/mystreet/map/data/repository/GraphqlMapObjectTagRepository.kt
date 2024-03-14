@@ -19,6 +19,6 @@ class GraphqlMapObjectTagRepository(
         val response =
             client.query(GetMapObjectTagsQuery(category = category.id, Optional.present(query)))
                 .execute()
-        return converter.convert(response.data?.getMapObjectTags ?: TODO())
+        return converter.convert(response.data?.mapObjectTags?.query ?: TODO())
     }
 }

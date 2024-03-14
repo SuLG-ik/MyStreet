@@ -1,0 +1,15 @@
+query GetAccountInfo {
+    users {
+        info {
+            ...AccountProfileFull
+        }
+    }
+}
+
+
+fragment AccountProfileFull on UserType {
+    username
+    name
+    email
+}
+
