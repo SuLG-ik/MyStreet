@@ -22,15 +22,3 @@ fun AccountProfileUI(
         )
     }
 }
-
-@Composable
-fun AccountProfileScreen(
-    account: AccountProfileFull,
-    modifier: Modifier = Modifier,
-) {
-    Column(modifier = modifier) {
-        Text(account.name)
-        Text(account.email)
-        Text(account.username)
-    }
-}
