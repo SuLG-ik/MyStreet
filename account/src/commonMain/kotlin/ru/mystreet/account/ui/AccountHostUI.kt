@@ -1,7 +1,6 @@
 package ru.mystreet.account.ui
 
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,6 +8,7 @@ import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ru.mystreet.account.component.AccountHost
+import ru.mystreet.account.ui.profile.AccountProfileUI
 import ru.mystreet.uikit.InfoBottomSheetScreen
 
 @Composable

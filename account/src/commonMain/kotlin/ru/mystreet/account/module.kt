@@ -27,8 +27,8 @@ import ru.mystreet.account.domain.usecase.ValidateLoginUseCase
 import ru.mystreet.account.domain.usecase.ValidatePasswordUseCase
 import ru.mystreet.account.presentation.AccountLoginStore
 import ru.mystreet.account.presentation.AccountLoginStoreImpl
-import ru.mystreet.account.presentation.AccountProfileStore
-import ru.mystreet.account.presentation.AccountProfileStoreImpl
+import ru.mystreet.account.presentation.profile.AccountProfileStore
+import ru.mystreet.account.presentation.profile.AccountProfileStoreImpl
 import ru.mystreet.account.presentation.AccountRegisterStore
 import ru.mystreet.account.presentation.AccountRegisterStoreImpl
 

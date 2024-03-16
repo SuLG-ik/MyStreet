@@ -5,13 +5,8 @@ import com.arkivanov.decompose.value.operator.map
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.rx.Observer
-import com.arkivanov.mvikotlin.extensions.coroutines.labels
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import ru.mystreet.account.domain.entity.AccountProfileFull
-import ru.mystreet.account.presentation.AccountProfileStore
+import ru.mystreet.account.presentation.profile.AccountProfileStore
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.ValueContainer

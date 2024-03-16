@@ -1,4 +1,4 @@
-package ru.mystreet.account.ui
+package ru.mystreet.account.ui.profile
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
