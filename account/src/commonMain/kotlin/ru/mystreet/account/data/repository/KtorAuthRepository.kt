@@ -4,6 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.http.HttpStatusCode
 import ru.mystreet.account.data.converter.AuthConverter
 import ru.mystreet.account.data.entity.RemoteLoginRequest
 import ru.mystreet.account.data.entity.RemoteLoginResponse
@@ -11,6 +12,7 @@ import ru.mystreet.account.data.entity.RemoteRegisterRequest
 import ru.mystreet.account.data.entity.RemoteRegisterResponse
 import ru.mystreet.account.domain.entity.LoginResponse
 import ru.mystreet.account.domain.entity.RegisterResponse
+import ru.mystreet.account.domain.exception.UserIncorrectCredentials
 import ru.mystreet.account.domain.repository.AuthRepository
 
 class KtorAuthRepository(
@@ -20,8 +22,10 @@ class KtorAuthRepository(
     override suspend fun login(login: String, password: String): LoginResponse {
         val response = client.post("/auth/login") {
             setBody(RemoteLoginRequest(username = login, password = password))
-        }.body<RemoteLoginResponse>()
-        return with(converter) { response.convert() }
+        }
+        if (response.status == HttpStatusCode.Unauthorized)
+            throw UserIncorrectCredentials()
+        return with(converter) { response.body<RemoteLoginResponse>().convert() }
     }
 
     override suspend fun register(
