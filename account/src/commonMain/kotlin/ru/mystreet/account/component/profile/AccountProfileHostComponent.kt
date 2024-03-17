@@ -57,7 +57,9 @@ class AccountProfileHostComponent(
 
     @Serializable
     sealed interface Config {
+        @Serializable
         data object Info : Config
+        @Serializable
         data object Settings : Config
     }
 
