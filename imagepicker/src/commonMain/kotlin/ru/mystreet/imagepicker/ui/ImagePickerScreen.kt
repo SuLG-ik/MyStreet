@@ -128,7 +128,7 @@ fun ImagePickerScreen(
         ) {
             PeekabooCamera(
                 state = cameraState,
-                modifier = Modifier.fillMaxSize().padding(it),
+                modifier = Modifier.fillMaxSize(),
                 permissionDeniedContent = {
                     NoCameraPermission(
                         images = images,
@@ -142,6 +142,7 @@ fun ImagePickerScreen(
                 isContinueAvailable = isContinueAvailable,
                 isCapturing = cameraState.isCapturing,
                 onCapture = cameraState::capture,
+                isCameraAvailable = cameraState.isCameraReady,
                 images = images,
                 onRemove = onRemove,
                 onLoadFromDisk = imagePickerLauncher::launch,
@@ -157,6 +158,7 @@ fun ImagePickerScreen(
 fun CaptureIconOverlay(
     isContinueAvailable: Boolean,
     isCapturing: Boolean,
+    isCameraAvailable: Boolean,
     images: SelectedImages,
     onCapture: () -> Unit,
     onRemove: (index: Int) -> Unit,
@@ -165,27 +167,28 @@ fun CaptureIconOverlay(
     onLoadFromDisk: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(15.dp, Alignment.Bottom),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        CameraControls(
-            isCapturing = isCapturing,
-            isCaptureAvailable = images.count < images.maxCount && !isCapturing,
-            isAcceptAvailable = isContinueAvailable,
-            onCapture = onCapture,
-            onCancel = onCancel,
-            onAccept = onAccept,
-            modifier = Modifier.fillMaxWidth()
-        )
-        SelectedImages(
-            images = images,
-            onRemove = onRemove,
-            onLoadFromDisk = onLoadFromDisk,
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
+    if (isCameraAvailable)
+        Column(
+            modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(15.dp, Alignment.Bottom),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            CameraControls(
+                isCapturing = isCapturing,
+                isCaptureAvailable = images.count < images.maxCount && !isCapturing,
+                isAcceptAvailable = isContinueAvailable,
+                onCapture = onCapture,
+                onCancel = onCancel,
+                onAccept = onAccept,
+                modifier = Modifier.fillMaxWidth()
+            )
+            SelectedImages(
+                images = images,
+                onRemove = onRemove,
+                onLoadFromDisk = onLoadFromDisk,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
 }
 
 @Composable
