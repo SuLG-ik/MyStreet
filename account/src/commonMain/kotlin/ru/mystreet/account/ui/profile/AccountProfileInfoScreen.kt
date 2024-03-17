@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
@@ -27,11 +29,13 @@ import androidx.compose.ui.unit.dp
 import ru.mystreet.account.domain.entity.AccountProfileFull
 import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.AddOutlined
+import ru.mystreet.uikit.iconpack.uikiticonpack.Settings
 import ru.mystreet.uikit.tokens.UIKitSizeTokens
 
 @Composable
-fun AccountProfileScreen(
+fun AccountProfileInfoScreen(
     account: AccountProfileFull,
+    onSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -40,7 +44,20 @@ fun AccountProfileScreen(
                 modifier = Modifier.fillMaxWidth(),
             )
         },
-        modifier = modifier
+        bottomBar = {
+            BottomAppBar(
+                actions = {
+                    IconButton(onClick = onSettings) {
+                        Icon(
+                            UIKitIconPack.Settings,
+                            contentDescription = null,
+                            modifier = Modifier.size(UIKitSizeTokens.DefaultIconSize),
+                        )
+                    }
+                }
+            )
+        },
+        modifier = modifier,
     ) {
         Column(
             modifier = Modifier.fillMaxSize().padding(it)

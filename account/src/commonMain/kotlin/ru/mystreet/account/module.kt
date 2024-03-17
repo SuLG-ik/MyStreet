@@ -17,6 +17,7 @@ import ru.mystreet.account.domain.service.DirectAuthFieldValidator
 import ru.mystreet.account.domain.usecase.FormatLoginUseCase
 import ru.mystreet.account.domain.usecase.FormatPasswordUseCase
 import ru.mystreet.account.domain.usecase.LoadAccountProfileFullUseCase
+import ru.mystreet.account.domain.usecase.LogOutUseCase
 import ru.mystreet.account.domain.usecase.LoginIsContinueAvailableUseCase
 import ru.mystreet.account.domain.usecase.LoginUseCase
 import ru.mystreet.account.domain.usecase.ProvideLoginUseCase
@@ -27,10 +28,12 @@ import ru.mystreet.account.domain.usecase.ValidateLoginUseCase
 import ru.mystreet.account.domain.usecase.ValidatePasswordUseCase
 import ru.mystreet.account.presentation.AccountLoginStore
 import ru.mystreet.account.presentation.AccountLoginStoreImpl
-import ru.mystreet.account.presentation.profile.AccountProfileStore
-import ru.mystreet.account.presentation.profile.AccountProfileStoreImpl
 import ru.mystreet.account.presentation.AccountRegisterStore
 import ru.mystreet.account.presentation.AccountRegisterStoreImpl
+import ru.mystreet.account.presentation.profile.AccountProfileSettingStore
+import ru.mystreet.account.presentation.profile.AccountProfileSettingStoreImpl
+import ru.mystreet.account.presentation.profile.AccountProfileStore
+import ru.mystreet.account.presentation.profile.AccountProfileStoreImpl
 
 val accountModule = module {
     factoryOf(::AccountLoginStoreImpl) bind AccountLoginStore::class
@@ -39,6 +42,7 @@ val accountModule = module {
     factoryOf(::RemoteLoginUseCase)
     factoryOf(::RegisterUseCase)
     factoryOf(::LoginUseCase)
+    factoryOf(::LogOutUseCase)
     factoryOf(::LoadAccountProfileFullUseCase)
     factoryOf(::FormatPasswordUseCase)
     factoryOf(::FormatLoginUseCase)
@@ -47,6 +51,7 @@ val accountModule = module {
     factoryOf(::ProvideLoginUseCase)
     factoryOf(::ProvidePasswordUseCase)
     factoryOf(::LoginIsContinueAvailableUseCase)
+    factoryOf(::AccountProfileSettingStoreImpl) bind AccountProfileSettingStore::class
     singleOf(::DirectAuthFieldFormatter) bind AuthFieldFormatter::class
     singleOf(::DirectAuthFieldValidator) bind AuthFieldValidator::class
     singleOf(::AuthConverter)

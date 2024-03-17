@@ -4,6 +4,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthService {
 
+    suspend fun removeUser()
+
     fun currentScope(): Flow<AuthScope?>
 
     fun currentPrivateScope(): Flow<PrivateAuthScope?>

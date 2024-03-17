@@ -27,6 +27,7 @@ import ru.mystreet.uikit.iconpack.uikiticonpack.RatingStar
 import ru.mystreet.uikit.iconpack.uikiticonpack.RatingStarOutline
 import ru.mystreet.uikit.iconpack.uikiticonpack.Remove
 import ru.mystreet.uikit.iconpack.uikiticonpack.Search
+import ru.mystreet.uikit.iconpack.uikiticonpack.Settings
 import ru.mystreet.uikit.iconpack.uikiticonpack.Streetlight
 import ru.mystreet.uikit.iconpack.uikiticonpack.Trash
 import ru.mystreet.uikit.iconpack.uikiticonpack.ZoomIn
@@ -43,8 +44,8 @@ public val UIKitIconPack.AllIcons: ____KtList<ImageVector>
       return __AllIcons!!
     }
     __AllIcons= listOf(NoCamera, Search, CaptureButton, Fountain, Home, RatingStarOutline, PublicWc,
-        ZoomIn, EditIcon, Streetlight, Follow, AddOutlined, Bench, AppIcon, Layers, ArrowUp,
-        RatingStar, Add, GreenZone, Monument, DiskStorage, Trash, Accept, Bower, AccountIcon, Parks,
-        CenterPin, Remove, Playground, ZoomOut)
+        ZoomIn, EditIcon, Streetlight, Follow, AddOutlined, Bench, AppIcon, Settings, Layers,
+        ArrowUp, RatingStar, Add, GreenZone, Monument, DiskStorage, Trash, Accept, Bower,
+        AccountIcon, Parks, CenterPin, Remove, Playground, ZoomOut)
     return __AllIcons!!
   }
