@@ -6,7 +6,6 @@ import ru.mystreet.core.component.SavedStateStore
 
 interface AccountLoginStore :
     SavedStateStore<AccountLoginStore.Intent, AccountLoginStore.State, AccountLoginStore.Label, AccountLoginStore.SavedState> {
-
     @Serializable
     data class SavedState(
         val login: String,
@@ -20,9 +19,10 @@ interface AccountLoginStore :
     }
 
     data class State(
-        val isLoading: Boolean = false,
-        val isContinueAvailable: Boolean = false,
-        val field: LoginField = LoginField(),
+        val isLoading: Boolean,
+        val isContinueAvailable: Boolean,
+        val isCredentialsIncorrect: Boolean,
+        val field: LoginField
     )
 
     sealed interface Label {

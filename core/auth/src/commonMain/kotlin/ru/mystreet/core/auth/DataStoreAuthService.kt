@@ -23,6 +23,10 @@ class DataStoreAuthService(
 
     private val datastore = factory.create("auth", AuthData(null))
 
+    override suspend fun removeUser() {
+        datastore.updateData { it.copy(credentials = null) }
+    }
+
     override fun currentScope(): Flow<AuthScope?> {
         return datastore.data.map { data ->
             data.toScope()
@@ -50,6 +54,7 @@ class DataStoreAuthService(
     private fun AuthData.toScope(): AuthScope? {
         return credentials?.let { AuthScope(it.username) }
     }
+
     private fun AuthData.toPrivateScope(): PrivateAuthScope? {
         return credentials?.let { PrivateAuthScope(it.username, it.password) }
     }

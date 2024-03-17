@@ -3,6 +3,7 @@ package ru.mystreet.account.component.auth
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
+import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Serializable
 import ru.mystreet.core.component.AppComponentContext
@@ -42,7 +43,7 @@ class AccountAuthHostComponent(
                 AccountRegisterComponent(
                     componentContext = diComponentContext,
                     onLogin = this::onBack,
-                    onRegistered = this::onBack,
+                    onRegistered = this::onAuthenticated,
                 )
             )
         }
@@ -57,8 +58,9 @@ class AccountAuthHostComponent(
     }
 
     private fun onBack() {
-
+        navigation.pop()
     }
+
 
     private fun onAuthenticated() {
         onAuthenticated.invoke()

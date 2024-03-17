@@ -1,7 +1,6 @@
 package ru.mystreet.account.ui
 
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,7 +8,10 @@ import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ru.mystreet.account.component.AccountHost
+import ru.mystreet.account.ui.profile.AccountProfileHostUI
+import ru.mystreet.account.ui.profile.AccountProfileInfoUI
 import ru.mystreet.uikit.InfoBottomSheetScreen
+import ru.mystreet.uikit.UIKitChildren
 
 @Composable
 fun AccountHostUI(
@@ -22,7 +24,7 @@ fun AccountHostUI(
         isExpanded = isExpanded,
         onDismiss = component::onDismiss,
         sheetContent = {
-            Children(component.childStack) {
+            UIKitChildren(component.childStack) {
                 AccountHostNavHost(it.instance, modifier = Modifier.fillMaxWidth().fillMaxHeight(0.90f))
             }
         },
@@ -39,6 +41,6 @@ fun AccountHostNavHost(
     when (child) {
         is AccountHost.Child.Auth -> AccountAuthHostUI(child.component, modifier)
         AccountHost.Child.Loading -> TODO()
-        is AccountHost.Child.Profile -> AccountProfileUI(child.component, modifier)
+        is AccountHost.Child.Profile -> AccountProfileHostUI(child.component, modifier)
     }
 }

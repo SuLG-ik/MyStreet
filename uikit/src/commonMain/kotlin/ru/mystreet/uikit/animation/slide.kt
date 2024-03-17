@@ -22,7 +22,10 @@ private fun Modifier.offsetYFactor(factor: Float): Modifier =
         val placeable = measurable.measure(constraints)
 
         layout(placeable.width, placeable.height) {
-            placeable.placeRelative(x = 0, y = (placeable.height.toFloat() * mapFactor(factor)).toInt())
+            placeable.placeRelative(
+                x = 0,
+                y = (placeable.height.toFloat() * mapFactor(factor)).toInt()
+            )
         }
     }
 

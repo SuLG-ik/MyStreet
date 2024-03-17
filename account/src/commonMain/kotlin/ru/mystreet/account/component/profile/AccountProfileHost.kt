@@ -1,13 +1,20 @@
 package ru.mystreet.account.component.profile
 
+import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
-import ru.mystreet.account.domain.entity.AccountProfileFull
-import ru.mystreet.core.component.ValueContainer
 
 interface AccountProfileHost {
 
-    val isLoading: Value<Boolean>
+    val childStack: Value<ChildStack<*, Child>>
 
-    val account: Value<ValueContainer<AccountProfileFull?>>
+    sealed interface Child {
+        class Info(
+            val component: AccountProfileInfo,
+        ) : Child
+
+        class Settings(
+            val component: AccountProfileSettings,
+        ) : Child
+    }
 
 }

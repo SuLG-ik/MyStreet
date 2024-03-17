@@ -9,7 +9,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.mystreet.account.domain.entity.LoginField
+import ru.mystreet.account.domain.exception.UserIncorrectCredentials
+import ru.mystreet.account.domain.usecase.LoginIsContinueAvailableUseCase
 import ru.mystreet.account.domain.usecase.LoginUseCase
+import ru.mystreet.account.domain.usecase.ProvideLoginUseCase
+import ru.mystreet.account.domain.usecase.ProvidePasswordUseCase
+import ru.mystreet.uikit.ValidatedField
 
 @OptIn(ExperimentalMviKotlinApi::class)
 class AccountLoginStoreImpl(
@@ -17,19 +22,39 @@ class AccountLoginStoreImpl(
     storeFactory: StoreFactory,
     savedState: AccountLoginStore.SavedState,
     loginUseCase: LoginUseCase,
+    provideLoginUseCase: ProvideLoginUseCase,
+    providePasswordUseCase: ProvidePasswordUseCase,
+    loginIsContinueAvailableUseCase: LoginIsContinueAvailableUseCase,
 ) : AccountLoginStore,
     Store<AccountLoginStore.Intent, AccountLoginStore.State, AccountLoginStore.Label> by storeFactory.create<_, _, Message, _, _>(
         name = "AccountLoginStoreImpl",
-        initialState = savedState.restore(),
+        initialState = savedState.restore(provideLoginUseCase, providePasswordUseCase),
         reducer = {
             when (it) {
-                is Message.SetLogin ->
-                    copy(field = field.copy(login = it.value))
+                is Message.SetLogin -> {
+                    val newField = field.copy(login = it.value)
+                    copy(
+                        isCredentialsIncorrect = false,
+                        isContinueAvailable = loginIsContinueAvailableUseCase(newField),
+                        field = newField,
+                    )
+                }
 
-                is Message.SetPassword ->
-                    copy(field = field.copy(password = it.value))
+                is Message.SetPassword -> {
+                    val newField = field.copy(password = it.value)
+                    copy(
+                        isCredentialsIncorrect = false,
+                        isContinueAvailable = loginIsContinueAvailableUseCase(newField),
+                        field = newField,
+                    )
+                }
 
                 Message.Loading -> copy(isLoading = true, isContinueAvailable = false)
+                Message.SetCredentialsIncorrect -> copy(
+                    isLoading = false,
+                    isContinueAvailable = false,
+                    isCredentialsIncorrect = true,
+                )
             }
         },
         executorFactory = coroutineExecutorFactory(coroutineDispatcher) {
@@ -39,50 +64,61 @@ class AccountLoginStoreImpl(
                     return@onIntent
                 dispatch(Message.Loading)
                 launch {
-                    val auth = loginUseCase(state.field.login, state.field.password)
-                    withContext(Dispatchers.Main) {
-                        publish(AccountLoginStore.Label.LoginSuccess(auth.username))
+                    try {
+                        val auth = loginUseCase(state.field.login.value, state.field.password.value)
+                        withContext(Dispatchers.Main) {
+                            publish(AccountLoginStore.Label.LoginSuccess(auth.username))
+                        }
+                    } catch (e: UserIncorrectCredentials) {
+                        withContext(Dispatchers.Main) {
+                            dispatch(Message.SetCredentialsIncorrect)
+                        }
                     }
                 }
             }
             onIntent<AccountLoginStore.Intent.LoginInput> { intent ->
-                dispatch(Message.SetLogin(intent.value))
+                dispatch(Message.SetLogin(provideLoginUseCase(intent.value)))
             }
             onIntent<AccountLoginStore.Intent.PasswordInput> { intent ->
-                dispatch(Message.SetPassword(intent.value))
+                dispatch(Message.SetPassword(providePasswordUseCase(intent.value)))
             }
         },
     ) {
 
     sealed interface Message {
         data class SetLogin(
-            val value: String,
+            val value: ValidatedField<LoginField.FieldError>,
         ) : Message
 
         data class SetPassword(
-            val value: String,
+            val value: ValidatedField<LoginField.FieldError>,
         ) : Message
 
         data object Loading : Message
+        data object SetCredentialsIncorrect : Message
     }
 
     override fun getSavedState(): AccountLoginStore.SavedState {
         return AccountLoginStore.SavedState(
-            login = state.field.login,
-            password = state.field.password,
+            login = state.field.login.value,
+            password = state.field.password.value,
         )
     }
 
 }
 
 
-fun AccountLoginStore.SavedState.restore(): AccountLoginStore.State {
+fun AccountLoginStore.SavedState.restore(
+    provideLoginUseCase: ProvideLoginUseCase,
+    providePasswordUseCase: ProvidePasswordUseCase
+): AccountLoginStore.State {
     return AccountLoginStore.State(
         isLoading = false,
-        isContinueAvailable = true,
+        isContinueAvailable = false,
+        isCredentialsIncorrect = false,
         field = LoginField(
-            login = login,
-            password = password
+            login = provideLoginUseCase(login),
+            password = providePasswordUseCase(password),
         )
     )
 }

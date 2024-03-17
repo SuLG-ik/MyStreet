@@ -7,7 +7,7 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Serializable
 import ru.mystreet.account.component.auth.AccountAuthHostComponent
-import ru.mystreet.account.component.profile.AccountProfileHostImpl
+import ru.mystreet.account.component.profile.AccountProfileHostComponent
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildStack
@@ -40,8 +40,8 @@ class AccountHostComponent(
             )
 
             Config.Profile -> AccountHost.Child.Profile(
-                AccountProfileHostImpl(
-                    diComponentContext = diComponentContext,
+                AccountProfileHostComponent(
+                    componentContext = diComponentContext,
                     onNotAuthenticated = this::onNotAuthenticated
                 )
             )

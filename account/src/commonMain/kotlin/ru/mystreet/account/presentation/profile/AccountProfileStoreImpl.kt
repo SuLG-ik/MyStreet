@@ -1,4 +1,4 @@
-package ru.mystreet.account.presentation
+package ru.mystreet.account.presentation.profile
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory

@@ -11,6 +11,8 @@ interface AccountLogin {
 
     val loginField: Value<LoginField>
 
+    val isCredentialsIncorrect: Value<Boolean>
+
     fun onLoginInput(value: String)
     fun onPasswordInput(value: String)
 
