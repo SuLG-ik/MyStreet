@@ -10,7 +10,10 @@ data class AddMapObjectField(
     val point: Point,
     val tags: TagsField,
     val category: MapObjectCategory,
-)
+) {
+
+}
+
 
 @Serializable
 data class TagsField(
@@ -29,13 +32,13 @@ data class TagsField(
 }
 
 @Serializable
-data class TitleField(
+class TitleField(
     val value: String,
     val error: FieldError? = null,
 )
 
 @Serializable
-data class FieldSuggestion<T>(
+class FieldSuggestion<T>(
     val isLoading: Boolean,
     val suggestions: List<T>,
 )

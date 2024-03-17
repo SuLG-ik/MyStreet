@@ -16,10 +16,5 @@ actual class UnknownBaseMapObject(
         set(value) {
             mapObject.zIndex = value
         }
-    override var isVisible: Boolean
-        get() = mapObject.isVisible
-        set(value) {
-            mapObject.isVisible = value
-        }
 
 }

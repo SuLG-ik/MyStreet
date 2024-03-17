@@ -1,7 +1,6 @@
 package ru.mystreet.map
 
-import android.graphics.PointF
-import com.yandex.mapkit.MapKitFactory
+import android.content.Context
 import ru.mystreet.map.geomety.Point
 import ru.mystreet.map.geomety.ScreenPoint
 import com.yandex.mapkit.ScreenPoint as NativeScreenPoint
@@ -10,12 +9,13 @@ import com.yandex.mapkit.map.SizeChangedListener as NativeSizeChangedListener
 
 actual class MapWindow(
     private val nativeMapWindow: NativeMapWindow,
+    context: Context,
 ) {
 
     private val sizeChangedListeners: MutableMap<SizeChangedListener, NativeSizeChangedListener> =
         mutableMapOf()
 
-    actual val map: Map = Map(nativeMapWindow.map)
+    actual val map: Map = Map(nativeMapWindow.map, context)
 
     actual val width: Int
         get() = nativeMapWindow.width()
@@ -31,16 +31,6 @@ actual class MapWindow(
         val nativeListener = MappingSizeChangedListener(this, listener)
         sizeChangedListeners[listener] = nativeListener
         nativeMapWindow.addSizeChangedListener(nativeListener)
-    }
-
-    private val userLocation =
-        MapKitFactory.getInstance().createUserLocationLayer(nativeMapWindow).apply {
-            isAutoZoomEnabled = true
-            isVisible = true
-        }
-
-    actual fun setUserLocationObjectsListener(userLocationObjectListener: UserLocationObjectListener) {
-        userLocation.setObjectListener(userLocationObjectListener)
     }
 
 }

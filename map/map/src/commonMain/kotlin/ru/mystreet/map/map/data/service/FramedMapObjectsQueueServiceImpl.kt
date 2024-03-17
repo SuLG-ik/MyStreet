@@ -4,7 +4,7 @@ import androidx.collection.MutableScatterSet
 import androidx.collection.mutableScatterSetOf
 import kotlinx.atomicfu.atomic
 import kotlinx.atomicfu.update
-import kotlinx.coroutines.flow.Flow
+import kotlinx.atomicfu.updateAndGet
 import ru.mystreet.map.geomety.VisibleArea
 import ru.mystreet.map.map.domain.entity.FramedMapObjects
 import ru.mystreet.map.map.domain.entity.MapFrame
@@ -22,22 +22,22 @@ class FramedMapObjectsQueueServiceImpl(
     override suspend fun loadFramedMapObjects(
         loadedFrames: List<MapFrame>,
         visibleArea: VisibleArea,
-    ): List<Flow<FramedMapObjects>> {
+    ): List<FramedMapObjects> {
         val visibleFrames =
             calculateFramesForVisibleAreaUseCase(visibleArea).filterNot { it in loadedFrames }
         if (visibleFrames.isEmpty()) {
             return emptyList()
         }
-        var requestVisibleFrames: List<MapFrame>? = null
-        mapFramesInLoading.update { frames ->
-            requestVisibleFrames = visibleFrames.filterNot { it in frames }
-            frames.addAll(visibleFrames)
-            frames
+        val newMapFrames = mapFramesInLoading.updateAndGet {
+            it.addAll(visibleFrames)
+            it
         }
-        val requestedFrames = requestVisibleFrames
-        if (requestedFrames.isNullOrEmpty())
-            return emptyList()
-        val frames = requestedFrames.map { getFramedMapObjectsUseCase(it) }
+        val requestVisibleFrames = visibleFrames.filterNot { it in newMapFrames }
+        val frames = getFramedMapObjectsUseCase(visibleFrames)
+        mapFramesInLoading.update {
+            it.removeAll(requestVisibleFrames)
+            it
+        }
         return frames
     }
 }

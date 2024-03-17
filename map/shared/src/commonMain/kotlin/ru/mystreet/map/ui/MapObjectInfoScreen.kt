@@ -1,10 +1,6 @@
 package ru.mystreet.map.ui
 
-import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -24,11 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,7 +33,6 @@ import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.Add
 import ru.mystreet.uikit.iconpack.uikiticonpack.AddOutlined
 import ru.mystreet.uikit.iconpack.uikiticonpack.RatingStar
-import ru.mystreet.uikit.iconpack.uikiticonpack.RatingStarOutline
 import ru.mystreet.uikit.tokens.UIKitSizeTokens
 
 @Composable
@@ -50,7 +40,6 @@ fun MapObjectInfoScreen(
     isLoading: Boolean,
     mapObject: MapObject?,
     onImagePicker: () -> Unit,
-    onFavourite: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -63,7 +52,6 @@ fun MapObjectInfoScreen(
                 MapObjectInfo(
                     mapObject = mapObject,
                     onImagePicker = onImagePicker,
-                    onFavourite = onFavourite,
                     modifier = Modifier.fillMaxWidth()
                         .padding(bottom = 15.dp),
                 )
@@ -76,7 +64,6 @@ fun MapObjectInfoScreen(
 fun MapObjectInfo(
     mapObject: MapObject,
     onImagePicker: () -> Unit,
-    onFavourite: (Boolean) -> Unit,
     modifier: Modifier,
 ) {
     Column(
@@ -94,10 +81,7 @@ fun MapObjectInfo(
                     mapObject = mapObject,
                     modifier = Modifier.fillMaxWidth().weight(1f),
                 )
-                Favourite(
-                    mapObject = mapObject,
-                    onToggle = onFavourite,
-                )
+                Rating()
             }
             Description(
                 mapObject = mapObject,
@@ -254,74 +238,15 @@ fun Reviews(
     mapObject: MapObject,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
-        ReviewsHeader(
-            mapObject = mapObject,
-            modifier = Modifier.fillMaxWidth()
-        )
-    }
-}
-
-@Composable
-fun Favourite(
-    mapObject: MapObject,
-    onToggle: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val forUser = mapObject.forUser
-    if (forUser != null) {
-        var isFavourite by rememberSaveable(forUser) { mutableStateOf(forUser.isFavourite) }
-        Crossfade(isFavourite, animationSpec = tween(225)) {
-            when (it) {
-                true ->
-                    Image(
-                        UIKitIconPack.RatingStar,
-                        contentDescription = null,
-                        modifier = modifier.size(UIKitSizeTokens.DefaultIconSize).clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                        ) {
-                            onToggle(false)
-                            isFavourite = false
-                        },
-                    )
-
-                false ->
-                    Icon(
-                        UIKitIconPack.RatingStarOutline,
-                        contentDescription = null,
-                        modifier = modifier.size(UIKitSizeTokens.DefaultIconSize).clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                        ) {
-                            onToggle(true)
-                            isFavourite = true
-                        },
-                        tint = MaterialTheme.colorScheme.outline
-                    )
-            }
-        }
-    }
-}
-
-@Composable
-fun ReviewsHeader(
-    mapObject: MapObject,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier,
-    ) {
-        Text(
-            text = "Отзывы (3)",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.fillMaxWidth().weight(1f)
-        )
+    Column {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Rating(mapObject = mapObject)
+            Text(
+                text = "Отзывы (3)",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.fillMaxWidth().weight(1f)
+            )
             IconButton(onClick = {}) {
                 Icon(
                     imageVector = UIKitIconPack.Add,
@@ -334,10 +259,7 @@ fun ReviewsHeader(
 }
 
 @Composable
-fun Rating(
-    mapObject: MapObject,
-    modifier: Modifier = Modifier,
-) {
+fun Rating(modifier: Modifier = Modifier) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(5.dp),

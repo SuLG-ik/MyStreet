@@ -2,7 +2,6 @@ package ru.mystreet.map.root.component
 
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.value.Value
-import ru.mystreet.map.component.info.MapObjectInfoHostComponent
 
 interface MapInfo {
 
@@ -13,7 +12,7 @@ interface MapInfo {
     fun onShowMapObjectInfo(id: Long)
 
     sealed interface Child {
-        class MapObjectInfo(val component: MapObjectInfoHostComponent) : Child
+        class MapObjectInfo(val component: ru.mystreet.map.component.MapObjectInfoHostComponent) : Child
     }
 
     fun onDismiss()

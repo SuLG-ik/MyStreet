@@ -17,12 +17,12 @@ class GraphqlRemoteMapObjectsRepository(
     ): FramedMapObjects {
         val response = client.query(
             GetFramedMapObjectsPartQuery(
-                frames = with(converter) { listOf(frames.convert()) }
+                loadedFrames = with(converter) { listOf(frames.convert()) }
             )
         ).execute()
         if (response.exception != null) TODO()
         return with(converter) {
-            response.data?.mapObjects?.framed?.map { it.convert() }?.firstOrNull()
+            response.data?.getFramedMapObjects?.map { it.convert() }?.firstOrNull()
         } ?: TODO()
     }
 

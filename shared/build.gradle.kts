@@ -73,11 +73,9 @@ kotlin {
             api(projects.root)
             api(projects.uikit)
             api(projects.core.graphql)
-            api(projects.core.ktor)
             api(projects.core.coil)
             api(projects.core.db)
             api(projects.core.time)
-            api(projects.core.auth)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

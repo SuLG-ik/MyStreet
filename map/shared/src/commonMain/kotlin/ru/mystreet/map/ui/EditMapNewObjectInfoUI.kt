@@ -32,7 +32,7 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import ru.mystreet.map.MR
-import ru.mystreet.map.component.add.EditMapNewObjectInfo
+import ru.mystreet.map.component.EditMapNewObjectInfo
 import ru.mystreet.map.domain.entity.AddMapObjectField
 import ru.mystreet.map.domain.entity.FieldError
 import ru.mystreet.map.domain.entity.FieldSuggestion

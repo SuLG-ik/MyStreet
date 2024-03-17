@@ -15,7 +15,7 @@ import com.arkivanov.decompose.extensions.compose.stack.Children
 import com.arkivanov.decompose.extensions.compose.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
-import ru.mystreet.map.component.edit.EditMapBottomBar
+import ru.mystreet.map.component.EditMapBottomBar
 import ru.mystreet.uikit.paddingBottomInsets
 import ru.mystreet.uikit.paddingHorizontalInsets
 

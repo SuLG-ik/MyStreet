@@ -2,10 +2,8 @@ package ru.mystreet.uikit.iconpack
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import ru.mystreet.uikit.iconpack.uikiticonpack.Accept
-import ru.mystreet.uikit.iconpack.uikiticonpack.AccountIcon
 import ru.mystreet.uikit.iconpack.uikiticonpack.Add
 import ru.mystreet.uikit.iconpack.uikiticonpack.AddOutlined
-import ru.mystreet.uikit.iconpack.uikiticonpack.AppIcon
 import ru.mystreet.uikit.iconpack.uikiticonpack.ArrowUp
 import ru.mystreet.uikit.iconpack.uikiticonpack.Bench
 import ru.mystreet.uikit.iconpack.uikiticonpack.Bower
@@ -24,7 +22,6 @@ import ru.mystreet.uikit.iconpack.uikiticonpack.Parks
 import ru.mystreet.uikit.iconpack.uikiticonpack.Playground
 import ru.mystreet.uikit.iconpack.uikiticonpack.PublicWc
 import ru.mystreet.uikit.iconpack.uikiticonpack.RatingStar
-import ru.mystreet.uikit.iconpack.uikiticonpack.RatingStarOutline
 import ru.mystreet.uikit.iconpack.uikiticonpack.Remove
 import ru.mystreet.uikit.iconpack.uikiticonpack.Search
 import ru.mystreet.uikit.iconpack.uikiticonpack.Streetlight
@@ -42,9 +39,8 @@ public val UIKitIconPack.AllIcons: ____KtList<ImageVector>
     if (__AllIcons != null) {
       return __AllIcons!!
     }
-    __AllIcons= listOf(NoCamera, Search, CaptureButton, Fountain, Home, RatingStarOutline, PublicWc,
-        ZoomIn, EditIcon, Streetlight, Follow, AddOutlined, Bench, AppIcon, Layers, ArrowUp,
-        RatingStar, Add, GreenZone, Monument, DiskStorage, Trash, Accept, Bower, AccountIcon, Parks,
-        CenterPin, Remove, Playground, ZoomOut)
+    __AllIcons= listOf(NoCamera, Search, CaptureButton, Fountain, Home, PublicWc, ZoomIn, EditIcon,
+        Streetlight, Follow, AddOutlined, Bench, Layers, ArrowUp, RatingStar, Add, GreenZone,
+        Monument, DiskStorage, Trash, Accept, Bower, Parks, CenterPin, Remove, Playground, ZoomOut)
     return __AllIcons!!
   }

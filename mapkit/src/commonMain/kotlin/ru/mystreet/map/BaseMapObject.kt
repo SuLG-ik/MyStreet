@@ -6,5 +6,4 @@ interface BaseMapObject {
 
     var zIndex: Float
 
-    var isVisible: Boolean
 }

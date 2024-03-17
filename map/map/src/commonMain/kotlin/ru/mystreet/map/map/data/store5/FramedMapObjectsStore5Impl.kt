@@ -16,5 +16,10 @@ class SingleFramedSingleMapObjectsStore5Impl(
 ) : SingleFramedMapObjectsStore5, Store<MapFrame, FramedMapObjects> by StoreBuilder.from(
     fetcher = getSingleRemoteFramedMapObjectsSOT,
     sourceOfTruth = getSingleLocalFramedMapObjectSOT,
-).disableCache()
+).cachePolicy(
+    MemoryPolicy.builder<MapFrame, FramedMapObjects>()
+        .setExpireAfterWrite(15.minutes)
+        .setMaxSize(15)
+        .build()
+)
     .build()

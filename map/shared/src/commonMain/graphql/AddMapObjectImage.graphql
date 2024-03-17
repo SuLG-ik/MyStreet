@@ -2,13 +2,10 @@ mutation AddMapObjectImages(
     $id: ID!
     $image: Upload!
 ){
-    mapObjects {
-        edit(id: $id) {
-            images {
-                add(image: $image) {
-                    id
-                }
-            }
-        }
+    addMapObjectImage(
+        id: $id
+        image: $image
+    ) {
+        id
     }
 }

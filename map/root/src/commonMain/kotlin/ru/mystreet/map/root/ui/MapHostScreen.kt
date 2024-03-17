@@ -23,7 +23,6 @@ import ru.mystreet.uikit.DefaultMapAlpha
 import ru.mystreet.uikit.UIKitBottomAppBar
 import ru.mystreet.uikit.UIKitNavigationBarItem
 import ru.mystreet.uikit.iconpack.UIKitIconPack
-import ru.mystreet.uikit.iconpack.uikiticonpack.AccountIcon
 import ru.mystreet.uikit.iconpack.uikiticonpack.Home
 import ru.mystreet.uikit.iconpack.uikiticonpack.Parks
 import ru.mystreet.uikit.iconpack.uikiticonpack.Search
@@ -38,7 +37,6 @@ enum class MapHostNavItem(
     PARKS(UIKitIconPack.Parks, MapHost.Config.Parks),
     TRASH(UIKitIconPack.Trash, MapHost.Config.Trash),
     SEARCH(UIKitIconPack.Search, MapHost.Config.Search),
-    ACCOUNT(UIKitIconPack.AccountIcon, MapHost.Config.Account),
 }
 
 @Composable
@@ -115,6 +113,5 @@ private fun MapHost.Config.toUI(): MapHostNavItem {
         MapHost.Config.Parks -> MapHostNavItem.PARKS
         MapHost.Config.Search -> MapHostNavItem.SEARCH
         MapHost.Config.Trash -> MapHostNavItem.TRASH
-        MapHost.Config.Account -> MapHostNavItem.ACCOUNT
     }
 }

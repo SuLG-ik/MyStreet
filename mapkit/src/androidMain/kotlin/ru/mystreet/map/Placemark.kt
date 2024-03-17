@@ -1,43 +1,36 @@
 package ru.mystreet.map
 
+import android.content.Context
 import com.yandex.mapkit.map.PlacemarkMapObject
+import dev.icerock.moko.resources.ImageResource
 import ru.mystreet.map.geomety.Point
-import ru.mystreet.map.image.ImageProvider
+import ru.mystreet.map.location.toImageProvider
 
 actual class Placemark(
-    val nativePlacemark: PlacemarkMapObject,
+    private val placemark: PlacemarkMapObject,
+    private val context: Context,
 ) : BaseMapObject {
 
     actual var geomety: Point
-        get() = nativePlacemark.geometry.toCommon()
+        get() = placemark.geometry.toCommon()
         set(value) {
-            nativePlacemark.geometry = value.toNative()
+            placemark.geometry = value.toNative()
         }
 
-    actual fun setIcon(icon: ImageProvider) {
-        nativePlacemark.setIcon(icon.toNative())
+    actual fun setIcon(icon: ImageResource) {
+        placemark.setIcon(icon.toImageProvider(context))
     }
 
     actual override var data: Any?
-        get() = nativePlacemark.userData
+        get() = placemark.userData
         set(value) {
-            nativePlacemark.userData = value
+            placemark.userData = value
         }
 
     override var zIndex: Float
-        get() = nativePlacemark.zIndex
+        get() = placemark.zIndex
         set(value) {
-            nativePlacemark.zIndex = value
+            placemark.zIndex = value
         }
-
-    override var isVisible: Boolean
-        get() = nativePlacemark.isVisible
-        set(value) {
-            nativePlacemark.isVisible = value
-        }
-
-    actual fun setIconStyle(style: IconStyle) {
-        nativePlacemark.setIconStyle(style.toNative())
-    }
 
 } 

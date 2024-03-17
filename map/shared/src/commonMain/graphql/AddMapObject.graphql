@@ -1,9 +1,15 @@
 mutation AddMapObject(
-    $input: AddMapObjectInput!
+    $title: String!
+    $description: String!
+    $latitude: Float!
+    $longitude: Float!
+    $category: String!
+    $tags: [String!]!
 ){
-    mapObjects {
-        add(input: $input) {
-            id
-        }
+    addMapObject(
+        title: $title, description: $description, latitude: $latitude,
+        longitude: $longitude, category: $category, tags: $tags
+    ) {
+        id
     }
 }

@@ -23,13 +23,8 @@ kotlin {
         androidMain.dependencies {
         }
         commonMain.dependencies {
+            api(libs.apollo)
             api(libs.koin.core)
-            implementation(libs.ktor.cio)
-            implementation(libs.ktor.auth)
-            api(libs.ktor.core)
-            implementation(libs.ktor.json)
-            implementation(libs.ktor.serialization)
-            implementation(projects.core.auth)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -38,23 +33,32 @@ kotlin {
 }
 
 android {
-    namespace = "ru.mystreet.core.ktor"
+    namespace = "ru.mystreet.core.graphql"
     compileSdk = 34
     defaultConfig {
         minSdk = 24
     }
 }
 
+apollo {
+    service("service") {
+        packageName.set("ru.mystreet.core.graphql")
+        srcDir("src/commonMain/graphql/")
+        generateApolloMetadata.set(true)
+        mapScalarToUpload("Upload")
+    }
+}
+
 
 buildkonfig {
-    packageName = "ru.mystreet.core.ktor"
+    packageName = "ru.mystreet.core.graphql"
     // objectName = 'YourAwesomeConfig'
     // exposeObjectWithName = 'YourAwesomePublicConfig'
     defaultConfigs {
         this.buildConfigField(
             FieldSpec.Type.STRING,
-            "MYSTREET_API_URL",
-            System.getenv()["MYSTREET_API_URL"] ?: "",
+            "MYSTREET_GRAPHQL_URL",
+            System.getenv("MYSTREET_GRAPHQL_URL"),
             const = true,
         )
     }

@@ -2,36 +2,25 @@ package ru.mystreet.map.map.component
 
 import androidx.collection.MutableScatterMap
 import androidx.collection.mutableScatterMapOf
-import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.rx.Observer
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.koin.core.component.get
 import ru.mystreet.app.MapController
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
-import ru.mystreet.core.component.ValueContainer
 import ru.mystreet.core.component.getStore
 import ru.mystreet.map.CameraPosition
-import ru.mystreet.map.ClusterListener
 import ru.mystreet.map.ClusterizedPlacemark
 import ru.mystreet.map.IconStyle
-import ru.mystreet.map.Placemark
 import ru.mystreet.map.domain.entity.MapGeoObject
 import ru.mystreet.map.domain.entity.MapObjectCategory
-import ru.mystreet.map.geomety.Point
 import ru.mystreet.map.geomety.VisibleArea
-import ru.mystreet.map.image.ImageProviderFactory
-import ru.mystreet.map.map.domain.entity.FramedMapObjects
-import ru.mystreet.map.map.domain.entity.MapFrame
 import ru.mystreet.map.map.domain.entity.MapObjectPart
 import ru.mystreet.map.map.presentation.FramedMapObjectsStore
-import ru.mystreet.uikit.MR
 
 class MapObjectsComponent(
     componentContext: DIComponentContext,
@@ -39,46 +28,22 @@ class MapObjectsComponent(
 ) : AppComponentContext(componentContext), MapObjects {
 
 
-    private var selectedCategories = listOf<MapObjectCategory>()
-
-    private val images: ImageProviderFactory = get()
-
-    private val mapObjectsVisibilityVisitor =
-        MapObjectsVisibilityVisitor(isVisible = { it.category in selectedCategories })
-
-    private val framedPlacemarks: MutableScatterMap<MapFrame, Pair<ClusterizedPlacemark, List<Placemark>>> =
+    private val clusterizedPlacemarks: MutableScatterMap<MapObjectCategory, ClusterizedPlacemark> =
         mutableScatterMapOf()
-
-    private var allMapObjects: ru.mystreet.map.MapObjects? = null
 
     private val store: FramedMapObjectsStore = getStore()
 
-    private val userLocationProvider =
-        UserLocationImage(images.forResource(MR.images.user_location))
-
     override fun onBind() {
-        setUserLocation()
-        restoreMapObjects()
-    }
-
-    private fun setUserLocation() {
-        controller.setUserLocationObjectListener(userLocationProvider)
-    }
-
-    override fun onUnbind() {
         clearMapObjects()
     }
 
-    override fun setCategories(categories: List<MapObjectCategory>) {
-        selectedCategories = categories
-        framedPlacemarks.forEach { _, value ->
-            value.second.forEach {
-                mapObjectsVisibilityVisitor.onPlacemarkVisited(it)
-            }
-        }
+    override fun onUnbind() {
+        restoreMapObjects()
     }
 
-    override val userLocationPoint get() = userLocationProvider.iconPoint
+    override fun setCategories(categories: List<MapObjectCategory>) {
+
+    }
 
     init {
         val disposable = store.labels(object : Observer<FramedMapObjectsStore.Label> {
@@ -96,57 +61,33 @@ class MapObjectsComponent(
         lifecycle.doOnDestroy(disposable::dispose)
     }
 
-    private val clusterListener = ClusterListener {
-        it.appearance.setIcon(images.forResource(MR.images.user_location))
-        it.appearance.zIndex = 100f
-    }
-
-    private fun addMapObjects(objects: FramedMapObjects) {
-        val currentClusterizedPlacemark =
-            framedPlacemarks.getOrPut(objects.frame) {
-                (allMapObjects?.addClusterizedPlacemark(clusterListener)
-                    ?: return) to emptyList()
+    private fun addMapObjects(objects: List<MapObjectPart>) {
+        val groupedMapObjects = objects.groupBy(MapObjectPart::category)
+        groupedMapObjects
+            .forEach { (key, placemarks) ->
+                val placemark = clusterizedPlacemarks.getOrPut(key) {
+                    controller.addClusterizedPlacemark() ?: return@forEach
+                }
+                placemark.addPlacemarks(
+                    points = placemarks.map { it.point },
+                    icon = key.image,
+                    iconStyle = IconStyle(),
+                ).forEachIndexed { index, it ->
+                    it.data = MapGeoObject.MapObject(placemarks[index].id)
+                }
+                placemark.clusterPlacemarks(
+                    CLUSTER_RADIUS,
+                    CLUSTER_MIN_ZOOM
+                )
             }
-        val ids = objects.objects.map(MapObjectPart::id)
-        val alreadyCreatedPlacemarks =
-            currentClusterizedPlacemark.second.mapNotNull { placemark ->
-                val data = placemark.data as? MapGeoObject.MapObject ?: run {
-                    currentClusterizedPlacemark.first.remove(placemark)
-                    return@mapNotNull null
-                }
-                if (data.id !in ids) {
-                    currentClusterizedPlacemark.first.remove(placemark)
-                    null
-                } else {
-                    data.id to placemark
-                }
-            }.toMap()
-        val newObjects = objects.objects.filterNot { alreadyCreatedPlacemarks.containsKey(it.id) }
-            .groupBy(MapObjectPart::category)
-            .flatMap { (category, objects) ->
-                currentClusterizedPlacemark.first.addPlacemarks(
-                    objects.map { it.point },
-                    images.forResource(category.image),
-                    IconStyle(isVisible = category in selectedCategories)
-                ).onEachIndexed { index, placemark ->
-                    placemark.data = MapGeoObject.MapObject(objects[index].id, category)
-                }
-            }
-        currentClusterizedPlacemark.first.clusterPlacemarks(CLUSTER_RADIUS, CLUSTER_MIN_ZOOM)
-        framedPlacemarks[objects.frame] =
-            currentClusterizedPlacemark.first to alreadyCreatedPlacemarks.values + newObjects
     }
 
     private fun restoreMapObjects() {
-        allMapObjects = controller.addCollection()
-        store.state.loadedObjects.forEach {
-            addMapObjects(it)
-        }
+        addMapObjects(store.state.loadedObjects.flatMap { it.objects })
     }
 
     private fun clearMapObjects() {
-        allMapObjects = null
-        framedPlacemarks.clear()
+        clusterizedPlacemarks.clear()
     }
 
     init {
@@ -165,8 +106,8 @@ class MapObjectsComponent(
 
 
     companion object {
-        const val CLUSTER_RADIUS = 60.0
-        const val CLUSTER_MIN_ZOOM = 15
+        private const val CLUSTER_RADIUS = 60.0
+        private const val CLUSTER_MIN_ZOOM = 15
     }
 
 

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import ru.mystreet.imagepicker.ui.ImagePickerUI
-import ru.mystreet.map.component.info.MapObjectInfoHost
+import ru.mystreet.map.component.MapObjectInfoHost
 
 @Composable
 fun MapObjectInfoHostUI(

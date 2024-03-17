@@ -11,7 +11,5 @@ expect class MapObjects {
     fun addTapListener(listener: MapObjectTapListener)
 
     fun removePlacemarks(clusterizedPlacemark: ClusterizedPlacemark)
-    fun visit(visitor: MapObjectVisitor)
-    fun addMapObjects(): MapObjects
 
 }

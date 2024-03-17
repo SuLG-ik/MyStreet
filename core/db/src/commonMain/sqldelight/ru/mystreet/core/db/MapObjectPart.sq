@@ -11,10 +11,12 @@ CREATE TABLE mapObjectPart (
 CREATE UNIQUE INDEX mapObjectPart_id ON mapObjectPart(id);
 CREATE INDEX mapObjectPart_frame_id ON mapObjectPart(frameId);
 
-deleteAllByFrame:
-    DELETE FROM mapObjectPart WHERE frameId = :frameId;
+deleteAndInsertMapObjectParts {
+    DELETE FROM mapObjectPart WHERE id = :id;
 
-
+    INSERT INTO mapObjectPart (id, title, category, latitude, longitude, frameId)
+    VALUES (:id, :title,  :category, :latitude, :longitude, :frameId);
+}
 
 insertMapObjectParts:
 INSERT INTO mapObjectPart (id, title,category, latitude, longitude, frameId)

@@ -2,10 +2,8 @@ query GetMapObjectTags(
     $category: ID!
     $query: String
 ) {
-    mapObjectTags {
-        query(category: $category query: $query) {
-            id
-            title
-        }
+    getMapObjectTags(category: $category, query: $query) {
+        id
+        title
     }
 }
