@@ -23,15 +23,16 @@ class MapControlComponent(
 
     override val mapObjects: MapObjects = MapObjectsComponent(componentContext, controller)
 
-    override val mapCamera: MapCamera = MapCameraComponent(componentContext, controller)
+    override val mapCamera: MapCamera =
+        MapCameraComponent(componentContext, controller, { mapObjects.userLocationPoint })
 
     private fun onBind() {
-        mapObjects.onUnbind()
+        mapObjects.onBind()
         mapCamera.onBind()
     }
 
     private fun onUnbind() {
-        mapObjects.onBind()
+        mapObjects.onUnbind()
         mapCamera.onUnbind()
     }
 

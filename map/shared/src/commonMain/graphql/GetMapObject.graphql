@@ -1,6 +1,8 @@
 query GetMapObject($id: ID!){
-    getMapObject(id: $id) {
-        ...MapObjectFull
+    mapObjects {
+        info(id: $id) {
+            ...MapObjectFull
+        }
     }
 }
 
@@ -8,8 +10,10 @@ fragment MapObjectFull on MapObjectType {
     id
     title
     description
-    latitude
-    longitude
+    point {
+        latitude
+        longitude
+    }
     category {
         id
     }
@@ -19,5 +23,10 @@ fragment MapObjectFull on MapObjectType {
     }
     images {
         path
+    }
+    forUser {
+        favourite {
+            isFavourite
+        }
     }
 }

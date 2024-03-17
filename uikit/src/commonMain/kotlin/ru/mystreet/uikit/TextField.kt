@@ -31,12 +31,106 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+
+data class ValidatedField<T>(
+    val value: String,
+    val error: T?
+)
+
+val KeyboardActionsNext: KeyboardActions
+    @Composable
+    get() {
+        val focusManager = LocalFocusManager.current
+        return KeyboardActions(onNext = {
+            focusManager.moveFocus(FocusDirection.Next)
+        })
+    }
+
+val KeyboardOptionsNext: KeyboardOptions
+    get() {
+        return KeyboardOptions(imeAction = ImeAction.Next)
+    }
+
+val KeyboardActionsDone: KeyboardActions
+    @Composable
+    get() {
+        val focusManager = LocalFocusManager.current
+        return KeyboardActions(onNext = {
+            focusManager.clearFocus()
+        })
+    }
+
+val KeyboardOptionsDone: KeyboardOptions
+    get() {
+        return KeyboardOptions(imeAction = ImeAction.Done)
+    }
+
+@Composable
+fun <T> UIKitValidatedOutlinedTextField(
+    title: String,
+    value: ValidatedField<T>,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
+    textStyle: TextStyle = LocalTextStyle.current,
+    label: @Composable (() -> Unit)? = null,
+    placeholder: @Composable (() -> Unit)? = null,
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    prefix: @Composable (() -> Unit)? = null,
+    suffix: @Composable (() -> Unit)? = null,
+    supportingText: @Composable (() -> Unit)? = null,
+    errorText: @Composable ((T) -> Unit)? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    singleLine: Boolean = false,
+    maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
+    minLines: Int = 1,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(),
+) {
+    UIKitOutlineTextField(
+        title = title,
+        value = value.value,
+        onValueChange = onValueChange,
+        modifier = modifier,
+        enabled = enabled,
+        readOnly = readOnly,
+        textStyle = textStyle,
+        label = label,
+        placeholder = placeholder,
+        leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        prefix = prefix,
+        suffix = suffix,
+        supportingText = supportingText,
+        errorText = {
+            if (value.error != null) {
+                errorText?.invoke(value.error)
+            }
+        },
+        isError = value.error != null,
+        visualTransformation = visualTransformation,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        singleLine = singleLine,
+        maxLines = maxLines,
+        minLines = minLines,
+        interactionSource = interactionSource,
+        colors = colors,
+    )
+}
 
 @Composable
 fun UIKitOutlineTextField(

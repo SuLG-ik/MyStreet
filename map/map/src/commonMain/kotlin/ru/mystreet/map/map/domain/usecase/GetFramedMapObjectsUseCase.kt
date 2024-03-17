@@ -1,9 +1,11 @@
 package ru.mystreet.map.map.domain.usecase
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import org.mobilenativefoundation.store.store5.impl.extensions.get
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filterNot
+import kotlinx.coroutines.flow.map
+import org.mobilenativefoundation.store.store5.StoreReadRequest
+import org.mobilenativefoundation.store.store5.StoreReadResponse
 import ru.mystreet.map.map.domain.entity.FramedMapObjects
 import ru.mystreet.map.map.domain.entity.MapFrame
 import ru.mystreet.map.map.domain.store5.SingleFramedMapObjectsStore5
@@ -13,12 +15,16 @@ class GetFramedMapObjectsUseCase(
 ) {
 
     suspend operator fun invoke(
-        frames: List<MapFrame>,
-    ): List<FramedMapObjects> {
+        frame: MapFrame,
+    ): Flow<FramedMapObjects> {
         return coroutineScope {
-            frames.map {
-                async { singleFramedMapObjectsStore5.get(it) }
-            }.awaitAll()
+            singleFramedMapObjectsStore5.stream(
+                StoreReadRequest.cached(
+                    key = frame,
+                    refresh = true,
+                )
+            ).filterNot { it is StoreReadResponse.Loading || it is StoreReadResponse.NoNewData }
+                .map { it.requireData() }
         }
     }
 

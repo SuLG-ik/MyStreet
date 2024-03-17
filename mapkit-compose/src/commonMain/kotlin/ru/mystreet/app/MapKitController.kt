@@ -3,7 +3,6 @@ package ru.mystreet.app
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import dev.icerock.moko.resources.ImageResource
 import kotlinx.coroutines.flow.MutableStateFlow
 import ru.mystreet.map.BaseMapObject
 import ru.mystreet.map.CameraListener
@@ -12,12 +11,15 @@ import ru.mystreet.map.ClusterListener
 import ru.mystreet.map.ClusterizedPlacemark
 import ru.mystreet.map.MapAnimation
 import ru.mystreet.map.MapObjectTapListener
+import ru.mystreet.map.MapObjects
 import ru.mystreet.map.MapWindow
 import ru.mystreet.map.Placemark
 import ru.mystreet.map.SizeChangedListener
+import ru.mystreet.map.UserLocationObjectListener
 import ru.mystreet.map.geomety.Point
 import ru.mystreet.map.geomety.ScreenPoint
 import ru.mystreet.map.geomety.VisibleArea
+import ru.mystreet.map.image.ImageProvider
 
 class MapController(
     val initialCameraPosition: CameraPosition?,
@@ -33,12 +35,9 @@ class MapController(
     val cameraPosition: MutableStateFlow<CameraPosition?> = MutableStateFlow(null)
     val currentTarget: MutableStateFlow<Point> = MutableStateFlow(Point())
 
-    private var userImage: ImageResource? = null
-
     private var pin: Placemark? = null
 
     var isFollowLocation by mutableStateOf(false)
-
 
     private inline fun <T : Any> withAnchor(block: MapWindow.() -> T): T? {
         return anchor.value?.run(block)
@@ -104,7 +103,7 @@ class MapController(
     }
 
 
-    fun addPlacemark(position: Point, image: ImageResource): Placemark? {
+    fun addPlacemark(position: Point, image: ImageProvider): Placemark? {
         return withAnchor {
             map.mapObjects.addPlacemark().apply {
                 geomety = position
@@ -113,7 +112,7 @@ class MapController(
         }
     }
 
-    fun addCenterAlignedPin(image: ImageResource): Placemark? {
+    fun addCenterAlignedPin(image: ImageProvider): Placemark? {
         return pin ?: withAnchor {
             val screenPoint = ScreenPoint(
                 width / 2f,
@@ -127,7 +126,10 @@ class MapController(
         }
     }
 
-    fun setUserLocation(image: ImageResource) {
+    fun setUserLocationObjectListener(userLocationObjectListener: UserLocationObjectListener) {
+        withAnchor {
+            setUserLocationObjectsListener(userLocationObjectListener)
+        }
     }
 
     fun followUserLocation() {
@@ -136,7 +138,7 @@ class MapController(
     fun unfollowUserLocation() {
     }
 
-    private var icon: ImageResource? = null
+    private var icon: ImageProvider? = null
 
     private val clusterListener = ClusterListener {
         val icon = icon
@@ -216,6 +218,12 @@ class MapController(
     fun visibleArea(cameraPosition: CameraPosition): VisibleArea? {
         return withAnchor {
             map.visibleArea(cameraPosition)
+        }
+    }
+
+    fun addCollection(): MapObjects? {
+        return withAnchor {
+            map.mapObjects.addMapObjects()
         }
     }
 
