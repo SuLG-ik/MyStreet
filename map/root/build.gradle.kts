@@ -35,6 +35,7 @@ kotlin {
             implementation(projects.map.trash)
             implementation(projects.map.parks)
             implementation(projects.map.shared)
+            implementation(projects.account)
             implementation(projects.uikit)
         }
         commonTest.dependencies {

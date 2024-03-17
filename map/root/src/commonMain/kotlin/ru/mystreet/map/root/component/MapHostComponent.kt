@@ -4,12 +4,14 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
+import ru.mystreet.account.component.AccountHost
+import ru.mystreet.account.component.AccountHostComponent
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildContext
 import ru.mystreet.core.component.diChildStack
-import ru.mystreet.map.component.EditMap
-import ru.mystreet.map.component.EditMapComponent
+import ru.mystreet.map.component.edit.EditMap
+import ru.mystreet.map.component.edit.EditMapComponent
 import ru.mystreet.map.domain.entity.MapConfig
 import ru.mystreet.map.general.component.GeneralMapComponent
 import ru.mystreet.map.map.component.FramedMapComponent
@@ -34,6 +36,7 @@ class MapHostComponent(
     }
 
     override val mapInfo: MapInfo = MapInfoComponent(diChildContext("map_info"))
+    override val account: AccountHost = AccountHostComponent(diChildContext("account_host"))
 
     private val navigation = StackNavigation<MapHost.Config>()
 
@@ -58,8 +61,8 @@ class MapHostComponent(
             )
 
             MapHost.Config.Parks -> MapHost.Child.Parks(ParksMapComponent(componentContext))
-            MapHost.Config.Search -> MapHost.Child.Search
             MapHost.Config.Trash -> MapHost.Child.Trash(TrashMapComponent(componentContext))
+            else -> throw IllegalArgumentException("No childStack navigation for $config")
         }
     }
 
@@ -68,7 +71,20 @@ class MapHostComponent(
     }
 
     override fun onNavigate(config: MapHost.Config) {
-        navigation.bringToFront(config)
+        if (!showExternalScreen(config))
+            navigation.bringToFront(config)
+    }
+
+    private fun showExternalScreen(config: MapHost.Config): Boolean {
+        return when (config) {
+            MapHost.Config.Account -> {
+                account.onExpand()
+                true
+            }
+
+            MapHost.Config.Search -> TODO()
+            else -> false
+        }
     }
 
 }

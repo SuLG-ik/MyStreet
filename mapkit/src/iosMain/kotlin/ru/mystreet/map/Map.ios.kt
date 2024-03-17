@@ -79,7 +79,7 @@ actual class Map(
             )
     }
 
-    actual val mapObjects: MapObjects = MapObjects(map.mapObjects)
+    actual val mapObjects: MapObjects = map.mapObjects
 
 }
 

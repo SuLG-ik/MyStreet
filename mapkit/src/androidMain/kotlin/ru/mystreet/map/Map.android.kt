@@ -1,50 +1,17 @@
 package ru.mystreet.map
 
-import android.content.Context
 import com.yandex.mapkit.Animation
-import com.yandex.mapkit.layers.ObjectEvent
+import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.map.Map
 import com.yandex.mapkit.map.VisibleRegion
-import com.yandex.mapkit.user_location.UserLocationObjectListener
-import com.yandex.mapkit.user_location.UserLocationView
-import dev.icerock.moko.resources.ImageResource
 import ru.mystreet.map.geomety.Latitude
 import ru.mystreet.map.geomety.Longitude
 import ru.mystreet.map.geomety.Point
 import ru.mystreet.map.geomety.VisibleArea
-import ru.mystreet.map.location.toImageProvider
 import com.yandex.mapkit.map.CameraListener as NativeCameraListener
-
-
-fun RGBA(r: Int, g: Int, b: Int, a: Int): Int {
-    return a shl 24 or (r and 255 shl 16) or (g and 255 shl 8) or (b and 255)
-}
-
-class UserLocationImage(
-    private val image: ImageResource,
-    private val context: Context,
-) : UserLocationObjectListener {
-    override fun onObjectAdded(p0: UserLocationView) {
-        p0.arrow.setIcon(image.toImageProvider(context))
-        p0.pin.setIcon(image.toImageProvider(context))
-        p0.accuracyCircle.fillColor = RGBA(108, 176, 244, 50)
-    }
-
-    override fun onObjectRemoved(p0: UserLocationView) {
-    }
-
-    override fun onObjectUpdated(p0: UserLocationView, p1: ObjectEvent) {
-        p0.arrow.setIcon(image.toImageProvider(context))
-        p0.pin.setIcon(image.toImageProvider(context))
-        p0.accuracyCircle.fillColor = RGBA(108, 176, 244, 50)
-    }
-
-}
-
 
 actual class Map(
     private val map: Map,
-    context: Context,
 ) {
 
     private val cameraListeners = mutableMapOf<CameraListener, NativeCameraListener>()
@@ -65,7 +32,7 @@ actual class Map(
     actual val cameraPosition: CameraPosition
         get() = map.cameraPosition.toCommon()
 
-    actual val mapObjects: MapObjects = MapObjects(map.mapObjects, context)
+    actual val mapObjects: MapObjects = map.mapObjects.toCommon()
 
     actual fun addCameraListener(listener: CameraListener) {
         val nativeListener = MappingCameraListener(this, listener)

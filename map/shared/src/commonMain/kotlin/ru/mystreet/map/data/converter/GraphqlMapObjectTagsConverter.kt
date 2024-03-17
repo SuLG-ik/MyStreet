@@ -5,14 +5,14 @@ import ru.mystreet.map.domain.entity.MapObjectTag
 
 class GraphqlMapObjectTagsConverter {
 
-    fun convert(tag: GetMapObjectTagsQuery.GetMapObjectTag): MapObjectTag {
+    fun convert(tag: GetMapObjectTagsQuery.Query): MapObjectTag {
         return MapObjectTag(
             tag.id.toLong(),
-            tag.title,
+            tag.title
         )
     }
 
-    fun convert(tags: List<GetMapObjectTagsQuery.GetMapObjectTag>): List<MapObjectTag> {
+    fun convert(tags: List<GetMapObjectTagsQuery.Query>): List<MapObjectTag> {
         return tags.map(::convert)
     }
 
