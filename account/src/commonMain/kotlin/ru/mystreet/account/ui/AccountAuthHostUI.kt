@@ -4,13 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.stack.Children
 import ru.mystreet.account.component.auth.AccountAuthHost
+import ru.mystreet.uikit.UIKitChildren
 
 @Composable
 fun AccountAuthHostUI(
     component: AccountAuthHost,
     modifier: Modifier = Modifier,
 ) {
-    Children(component.childStack) {
+    UIKitChildren(component.childStack) {
         AccountAuthHostNavHost(it.instance, modifier)
     }
 }
