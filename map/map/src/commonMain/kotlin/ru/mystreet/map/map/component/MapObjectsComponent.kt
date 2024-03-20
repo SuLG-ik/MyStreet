@@ -2,12 +2,10 @@ package ru.mystreet.map.map.component
 
 import androidx.collection.MutableScatterMap
 import androidx.collection.mutableScatterMapOf
-import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.rx.Observer
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -15,7 +13,6 @@ import org.koin.core.component.get
 import ru.mystreet.app.MapController
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
-import ru.mystreet.core.component.ValueContainer
 import ru.mystreet.core.component.getStore
 import ru.mystreet.map.CameraPosition
 import ru.mystreet.map.ClusterListener
@@ -24,7 +21,6 @@ import ru.mystreet.map.IconStyle
 import ru.mystreet.map.Placemark
 import ru.mystreet.map.domain.entity.MapGeoObject
 import ru.mystreet.map.domain.entity.MapObjectCategory
-import ru.mystreet.map.geomety.Point
 import ru.mystreet.map.geomety.VisibleArea
 import ru.mystreet.map.image.ImageProviderFactory
 import ru.mystreet.map.map.domain.entity.FramedMapObjects
@@ -37,7 +33,6 @@ class MapObjectsComponent(
     componentContext: DIComponentContext,
     private val controller: MapController,
 ) : AppComponentContext(componentContext), MapObjects {
-
 
     private var selectedCategories = listOf<MapObjectCategory>()
 

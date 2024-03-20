@@ -14,6 +14,7 @@ fun MapUI(
         onZoomIn = map::onZoomInPress,
         onZoomOut = map::onZoomOutPress,
         onFollowLocation = map::onFollowLocation,
+        onLocationPermissionGranted = map::onLocationPermissionGranted,
         modifier = modifier,
     )
 }

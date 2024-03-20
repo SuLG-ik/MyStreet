@@ -30,7 +30,7 @@ compressor = "3.0.1"
 atomicfu = "0.23.2"
 sqldelight = "2.0.1"
 store5 = "5.0.0-beta02"
-calf = "0.3.1"
+calf = "0.4.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
