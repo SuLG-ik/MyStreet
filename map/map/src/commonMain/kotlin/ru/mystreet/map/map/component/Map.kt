@@ -16,4 +16,5 @@ interface Map {
     fun onZoomInPress(isStart: Boolean)
 
 
+    fun onLocationPermissionGranted()
 }

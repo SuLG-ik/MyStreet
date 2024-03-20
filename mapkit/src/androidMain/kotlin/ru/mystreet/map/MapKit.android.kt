@@ -8,6 +8,10 @@ actual class MapKit {
             MapKitFactory.setApiKey(apiKey)
             MapKitFactory.setLocale(locale)
         }
+
+        actual fun resetLocationManager() {
+            MapKitFactory.getInstance().resetLocationManagerToDefault()
+        }
     }
 
 

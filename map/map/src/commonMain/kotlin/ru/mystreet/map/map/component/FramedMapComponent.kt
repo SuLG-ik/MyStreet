@@ -25,6 +25,10 @@ class FramedMapComponent(
         mapControl.mapObjects.setCategories(categories)
     }
 
+    override fun onLocationPermissionGranted() {
+        mapController.resetLocationManager()
+    }
+
     override fun onFollowLocation() {
         mapControl.mapCamera.onFollowLocation()
     }

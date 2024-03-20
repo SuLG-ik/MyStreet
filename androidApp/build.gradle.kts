@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-//    implementation(libs.gms.location)
+    implementation(libs.gms.location)
     implementation(compose.ui)
     implementation(compose.material3)
     implementation(projects.shared)

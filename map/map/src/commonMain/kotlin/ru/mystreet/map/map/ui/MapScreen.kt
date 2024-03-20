@@ -13,6 +13,7 @@ fun MapScreen(
     onZoomIn: (Boolean) -> Unit,
     onZoomOut: (Boolean) -> Unit,
     onFollowLocation: () -> Unit,
+    onLocationPermissionGranted: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box {
@@ -22,6 +23,7 @@ fun MapScreen(
         )
         MapOverlay(
             onFollowLocation = onFollowLocation,
+            onLocationPermissionGranted = onLocationPermissionGranted,
             onZoomInPress = onZoomIn,
             onZoomOutPress = onZoomOut,
             modifier = modifier,

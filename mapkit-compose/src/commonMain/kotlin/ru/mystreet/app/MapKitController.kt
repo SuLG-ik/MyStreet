@@ -10,6 +10,7 @@ import ru.mystreet.map.CameraPosition
 import ru.mystreet.map.ClusterListener
 import ru.mystreet.map.ClusterizedPlacemark
 import ru.mystreet.map.MapAnimation
+import ru.mystreet.map.MapKit
 import ru.mystreet.map.MapObjectTapListener
 import ru.mystreet.map.MapObjects
 import ru.mystreet.map.MapWindow
@@ -132,10 +133,8 @@ class MapController(
         }
     }
 
-    fun followUserLocation() {
-    }
-
-    fun unfollowUserLocation() {
+    fun resetLocationManager() {
+        MapKit.resetLocationManager()
     }
 
     private var icon: ImageProvider? = null

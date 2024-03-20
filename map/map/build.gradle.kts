@@ -33,6 +33,7 @@ kotlin {
             api(libs.decompose.core)
             implementation(projects.uikit)
             implementation(libs.decompose.ui)
+            implementation(libs.calf.permissions)
             api(libs.essenty.lifecycle)
             api(libs.essenty.coroutines)
             api(libs.store5)

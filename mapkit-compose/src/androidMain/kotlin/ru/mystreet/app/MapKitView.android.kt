@@ -27,9 +27,10 @@ actual fun MapView(
     val mapView = remember { MapView(context) }
     val mapKit = remember {
         MapKitFactory.initialize(context)
-        MapKitFactory.getInstance()
+        val mapKit = MapKitFactory.getInstance()
+        mapKit.resetLocationManagerToDefault()
+        mapKit
     }
-    val compositionContext = rememberCompositionContext()
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
