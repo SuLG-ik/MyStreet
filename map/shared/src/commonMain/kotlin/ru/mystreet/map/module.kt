@@ -19,14 +19,21 @@ import ru.mystreet.map.domain.repository.LocalMapConfigRepository
 import ru.mystreet.map.domain.repository.MapObjectTagRepository
 import ru.mystreet.map.domain.repository.MapObjectsRepository
 import ru.mystreet.map.domain.usecase.AddMapObjectUseCase
+import ru.mystreet.map.domain.usecase.AddTagToFieldUseCase
+import ru.mystreet.map.domain.usecase.EditMapObjectUseCase
+import ru.mystreet.map.domain.usecase.FormatAndValidateDescriptionUseCase
 import ru.mystreet.map.domain.usecase.FormatAndValidateTitleUseCase
+import ru.mystreet.map.domain.usecase.FormatDescriptionUseCase
 import ru.mystreet.map.domain.usecase.FormatTitleUseCase
 import ru.mystreet.map.domain.usecase.LoadLocalMapConfigUseCase
 import ru.mystreet.map.domain.usecase.LoadMapObjectTagsWithTitleUseCase
 import ru.mystreet.map.domain.usecase.LoadMapObjectUseCase
+import ru.mystreet.map.domain.usecase.DeleteMapObjectUseCase
+import ru.mystreet.map.domain.usecase.RemoveTagFromFieldUseCase
 import ru.mystreet.map.domain.usecase.SaveMapInitialCameraPositionUseCase
 import ru.mystreet.map.domain.usecase.SetMapObjectFavouriteUseCase
 import ru.mystreet.map.domain.usecase.UploadMapObjectImagesUseCase
+import ru.mystreet.map.domain.usecase.ValidateDescriptionUseCase
 import ru.mystreet.map.domain.usecase.ValidateTitleUseCase
 import ru.mystreet.map.domain.validator.MapObjectFieldValidator
 import ru.mystreet.map.presentation.add.EditMapNewObjectInfoStore
@@ -39,6 +46,8 @@ import ru.mystreet.map.presentation.edit.EditMapStore
 import ru.mystreet.map.presentation.edit.EditMapStoreImpl
 import ru.mystreet.map.presentation.add.MapObjectImageLoaderStore
 import ru.mystreet.map.presentation.add.MapObjectImageLoaderStoreImpl
+import ru.mystreet.map.presentation.edit.MapObjectEditStore
+import ru.mystreet.map.presentation.edit.MapObjectEditStoreImpl
 import ru.mystreet.map.presentation.info.MapObjectInfoStore
 import ru.mystreet.map.presentation.info.MapObjectInfoStoreImpl
 
@@ -51,18 +60,26 @@ val mapSharedModule = module {
     factoryOf(::EditMapNewObjectLoadingStoreImpl) bind EditMapNewObjectLoadingStore::class
     factoryOf(::MapObjectInfoStoreImpl) bind MapObjectInfoStore::class
     factoryOf(::MapObjectImageLoaderStoreImpl) bind MapObjectImageLoaderStore::class
+    factoryOf(::EditMapObjectUseCase)
     factoryOf(::AddMapObjectUseCase)
+    factoryOf(::DeleteMapObjectUseCase)
     factoryOf(::SetMapObjectFavouriteUseCase)
     factoryOf(::LoadLocalMapConfigUseCase)
     factoryOf(::SaveMapInitialCameraPositionUseCase)
     factoryOf(::FormatAndValidateTitleUseCase)
     factoryOf(::ValidateTitleUseCase)
     factoryOf(::FormatTitleUseCase)
+    factoryOf(::ValidateDescriptionUseCase)
+    factoryOf(::FormatDescriptionUseCase)
+    factoryOf(::FormatAndValidateDescriptionUseCase)
     factoryOf(::LoadMapObjectTagsWithTitleUseCase)
     factoryOf(::LoadMapObjectUseCase)
+    factoryOf(::AddTagToFieldUseCase)
+    factoryOf(::RemoveTagFromFieldUseCase)
     factoryOf(::UploadMapObjectImagesUseCase)
     factoryOf(::RegexMapObjectFieldValidator) bind MapObjectFieldValidator::class
     factoryOf(::RawMapObjectFieldFormatter) bind MapObjectFieldFormatter::class
+    factoryOf(::MapObjectEditStoreImpl) bind MapObjectEditStore::class
     singleOf(::GraphqlMapObjectsConverter)
     singleOf(::GraphqlMapObjectTagsConverter)
     singleOf(::GraphqlMapObjectsRepository) bind MapObjectsRepository::class

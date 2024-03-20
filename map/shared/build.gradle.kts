@@ -39,6 +39,7 @@ kotlin {
             api(projects.imagepicker)
             implementation(projects.core.datastore)
             implementation(libs.moko.resources)
+            implementation(libs.kotlinx.collections)
             implementation(libs.peekaboo.imagepicker)
         }
         commonTest.dependencies {

@@ -31,7 +31,7 @@ class EditMapNewObjectInfoComponent(
         initialSavedState = {
             EditMapNewObjectInfoStore.SavedState(
                 title = field?.title?.value ?: "",
-                description = field?.description ?: "",
+                description = field?.description?.value ?: "",
                 point = currentTarget.value,
                 category = category,
             )

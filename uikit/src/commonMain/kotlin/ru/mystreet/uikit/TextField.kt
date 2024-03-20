@@ -26,12 +26,14 @@ import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.internal.StabilityInferred
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalDensity
@@ -40,10 +42,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableCollection
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ValidatedField<T>(
     val value: String,
-    val error: T?
+    val error: T?,
 )
 
 val KeyboardActionsNext: KeyboardActions
@@ -222,7 +228,7 @@ fun UIKitOutlineTextField(
 fun <T> UIKitOutlineTextFieldWithChips(
     title: String,
     value: String,
-    chips: List<T>,
+    chips: ImmutableCollection<T>,
     completePainter: Painter,
     placeholder: String,
     onComplete: () -> Unit,
@@ -263,7 +269,11 @@ fun <T> UIKitOutlineTextFieldWithChips(
                 BasicTextField(
                     value = value,
                     onValueChange = onValueChange,
-                    modifier = Modifier,
+                    modifier = Modifier.onFocusChanged {
+                        if (!it.hasFocus) {
+                            onComplete()
+                        }
+                    },
                     enabled = enabled,
                     readOnly = readOnly,
                     textStyle = textStyle,
@@ -305,7 +315,7 @@ fun <T> UIKitOutlineTextFieldWithChips(
                                     .align(Alignment.CenterEnd)
                             )
                         }
-                    }
+                    },
                 )
         }
         Row(

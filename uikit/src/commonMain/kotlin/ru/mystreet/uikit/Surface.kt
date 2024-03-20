@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -37,6 +39,7 @@ fun UIKitTitledSurfaceColumn(
     tonalElevation: Dp = 0.dp,
     shadowElevation: Dp = 0.dp,
     border: BorderStroke? = null,
+    actions: @Composable RowScope.() -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
     UIKitTitledSurfaceColumn(
@@ -49,6 +52,7 @@ fun UIKitTitledSurfaceColumn(
         shadowElevation = shadowElevation,
         border = border,
         navigationAction = { BackNavigation(onBack) },
+        actions = actions,
         content = content
     )
 }
@@ -64,6 +68,7 @@ private fun BackNavigation(onBack: () -> Unit, modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UIKitTitledSurfaceColumn(
     title: String,
@@ -74,7 +79,8 @@ fun UIKitTitledSurfaceColumn(
     tonalElevation: Dp = 0.dp,
     shadowElevation: Dp = 0.dp,
     border: BorderStroke? = null,
-    navigationAction: @Composable () -> Unit,
+    navigationAction: @Composable () -> Unit = {},
+    actions: @Composable RowScope.() -> Unit = {},
     content: @Composable ColumnScope.() -> Unit,
 ) {
     UIKitSurface(
@@ -90,12 +96,17 @@ fun UIKitTitledSurfaceColumn(
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
+            CenterAlignedTopAppBar(
+                navigationIcon = navigationAction,
+                actions = actions,
+                title = {
+                    Text(title, style = MaterialTheme.typography.titleLarge)
+                }
+            )
             Row(
                 horizontalArrangement = Arrangement.spacedBy(5.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                navigationAction()
-                Text(title, style = MaterialTheme.typography.titleLarge)
             }
             Column(
                 modifier = Modifier.padding(horizontal = 15.dp).padding(bottom = 15.dp),

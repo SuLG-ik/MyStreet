@@ -1,19 +1,23 @@
 package ru.mystreet.map.data.validator
 
+import ru.mystreet.map.domain.entity.FieldError
 import ru.mystreet.map.domain.entity.FieldError.FieldIsEmpty
 import ru.mystreet.map.domain.entity.FieldError.IncorrectInput
-import ru.mystreet.map.domain.entity.TitleField
 import ru.mystreet.map.domain.validator.MapObjectFieldValidator
 
 class RegexMapObjectFieldValidator : MapObjectFieldValidator {
 
-    override fun validateTitle(value: String): TitleField {
+    override fun validateTitle(value: String): FieldError? {
         if (value.isEmpty())
-            return TitleField(value, FieldIsEmpty)
+            return FieldIsEmpty
         if (!value.matches(TITLE_REGEX))
-            return TitleField(value, IncorrectInput)
+            return IncorrectInput
 
-        return TitleField(value)
+        return null
+    }
+
+    override fun validateDescription(value: String): FieldError? {
+        return null
     }
 
     companion object {

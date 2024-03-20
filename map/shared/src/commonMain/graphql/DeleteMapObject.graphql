@@ -1,0 +1,7 @@
+mutation DeleteMapObject(
+    $id: ID!
+) {
+    mapObjects {
+        delete(id: $id)
+    }
+}

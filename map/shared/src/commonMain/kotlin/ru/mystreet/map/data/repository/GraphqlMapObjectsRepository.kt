@@ -4,11 +4,14 @@ import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.DefaultUpload
 import ru.mystreet.core.graphql.type.AddFavouriteMapObjectInput
 import ru.mystreet.core.graphql.type.AddMapObjectInput
+import ru.mystreet.core.graphql.type.MapObjectEditInput
 import ru.mystreet.core.graphql.type.PointInput
 import ru.mystreet.map.data.converter.GraphqlMapObjectsConverter
 import ru.mystreet.map.data.model.AddMapObjectFavouriteMutation
 import ru.mystreet.map.data.model.AddMapObjectImagesMutation
 import ru.mystreet.map.data.model.AddMapObjectMutation
+import ru.mystreet.map.data.model.DeleteMapObjectMutation
+import ru.mystreet.map.data.model.EditMapObjectMutation
 import ru.mystreet.map.data.model.GetMapObjectQuery
 import ru.mystreet.map.data.model.RemoveMapObjectFavouriteMutation
 import ru.mystreet.map.domain.entity.MapObject
@@ -67,6 +70,34 @@ class GraphqlMapObjectsRepository(
         ).execute()
         if (response.exception != null)
             TODO()
+    }
+
+    override suspend fun deleteMapObject(
+        id: Long
+    ) {
+        apolloClient.mutation(
+            DeleteMapObjectMutation(id.toString())
+        ).execute()
+    }
+
+    override suspend fun editMapObject(
+        id: Long,
+        title: String,
+        description: String,
+        category: MapObjectCategory,
+        tags: List<String>
+    ) {
+        apolloClient.mutation(
+            EditMapObjectMutation(
+                id.toString(),
+                MapObjectEditInput(
+                    category = category.id,
+                    title = title,
+                    description = description,
+                    tags = tags
+                )
+            )
+        ).execute()
     }
 
     override suspend fun uploadMapObjectImages(

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.moko.resources)
+    alias(libs.plugins.kotlinxSerialization)
 }
 
 kotlin {
@@ -24,6 +25,7 @@ kotlin {
             api(compose.material3)
             api(libs.decompose.core)
             api(libs.decompose.ui)
+            api(libs.kotlinx.collections)
             api(libs.moko.resources)
             api(libs.moko.resources.compose)
             api(projects.core.coil)

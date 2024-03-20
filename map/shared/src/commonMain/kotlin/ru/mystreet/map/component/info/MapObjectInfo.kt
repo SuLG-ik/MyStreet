@@ -14,4 +14,6 @@ interface MapObjectInfo {
 
     fun onFavourite(value: Boolean)
 
+    fun onEdit()
+
 }

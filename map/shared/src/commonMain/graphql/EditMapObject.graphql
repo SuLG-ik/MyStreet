@@ -1,0 +1,14 @@
+mutation EditMapObject(
+    $id: ID!
+    $input: MapObjectEditInput!
+) {
+    mapObjects {
+        edit(id: $id) {
+            info {
+                edit(input: $input) {
+                    id
+                }
+            }
+        }
+    }
+}

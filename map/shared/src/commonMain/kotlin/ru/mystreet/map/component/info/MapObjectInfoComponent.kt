@@ -14,6 +14,7 @@ class MapObjectInfoComponent(
     componentContext: DIComponentContext,
     mapObjectId: Long,
     private val onImagePicker: () -> Unit,
+    private val onEdit: () -> Unit,
 ) : AppComponentContext(componentContext), MapObjectInfo {
 
     private val store: MapObjectInfoStore =
@@ -28,6 +29,10 @@ class MapObjectInfoComponent(
 
     override fun onFavourite(value: Boolean) {
         store.accept(MapObjectInfoStore.Intent.SetFavourite(value))
+    }
+
+    override fun onEdit() {
+        onEdit.invoke()
     }
 
     private val state = store.values(this)

@@ -20,5 +20,14 @@ interface MapObjectsRepository {
         tags: List<String>,
     )
 
+    suspend fun editMapObject(
+        id: Long,
+        title: String,
+        description: String,
+        category: MapObjectCategory,
+        tags: List<String>,
+    )
+
     suspend fun uploadMapObjectImages(mapObjectId: Long, images: List<ByteArray>)
+    suspend fun deleteMapObject(id: Long)
 }

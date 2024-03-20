@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -34,11 +35,14 @@ import dev.icerock.moko.resources.compose.stringResource
 import ru.mystreet.map.MR
 import ru.mystreet.map.component.add.EditMapNewObjectInfo
 import ru.mystreet.map.domain.entity.AddMapObjectField
+import ru.mystreet.map.domain.entity.EditMapObjectField
 import ru.mystreet.map.domain.entity.FieldError
 import ru.mystreet.map.domain.entity.FieldSuggestion
-import ru.mystreet.uikit.UIKitOutlineTextField
+import ru.mystreet.map.domain.entity.TagsField
+import ru.mystreet.uikit.KeyboardOptionsNext
 import ru.mystreet.uikit.UIKitOutlineTextFieldWithChips
 import ru.mystreet.uikit.UIKitTitledSurfaceColumn
+import ru.mystreet.uikit.UIKitValidatedOutlinedTextField
 import ru.mystreet.uikit.clickableIfNoNull
 import ru.mystreet.uikit.tokens.UIKitSizeTokens
 
@@ -75,68 +79,39 @@ private fun EditMapNewObjectScreen(
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
         UIKitTitledSurfaceColumn(
-            title = stringResource(ru.mystreet.map.MR.strings.map_edit_add_title),
+            title = stringResource(MR.strings.map_edit_add_title),
             onBack = onBack,
             modifier = Modifier.fillMaxWidth()
         ) {
-            UIKitOutlineTextField(
-                stringResource(ru.mystreet.map.MR.strings.map_edit_add_title_field),
-                value = field.title.value,
+            UIKitValidatedOutlinedTextField(
+                stringResource(MR.strings.map_edit_add_title_field),
+                value = field.title,
                 onValueChange = onTitleInput,
                 enabled = true,
                 singleLine = true,
-                isError = field.title.error != null,
                 errorText = {
-                    TitleError(field.title.error)
+                    TitleError(it)
                 },
                 modifier = Modifier.fillMaxWidth(),
             )
-            UIKitOutlineTextField(
+            UIKitValidatedOutlinedTextField(
                 stringResource(MR.strings.map_edit_add_description_field),
                 value = field.description,
                 onValueChange = onDescriptionInput,
                 enabled = true,
+                singleLine = true,
+                errorText = {
+                    TitleError(it)
+                },
                 modifier = Modifier.fillMaxWidth(),
             )
-            var isTagsSuggestionsExpanded by rememberSaveable { mutableStateOf(false) }
-            TagsSuggestion(
-                isExpanded = field.tags.value.isNotBlank() && isTagsSuggestionsExpanded,
-                suggestion = field.tags.suggestion,
-                onTagInput = {
-                    onTagInput(it)
-                    onTagAdd()
-                },
-                onDismissRequest = {
-                    isTagsSuggestionsExpanded = false
-                },
-                supportingText = {
-                    Text("${field.tags.tags.tags.size}/${field.tags.tags.maxTags}")
-                },
+            TagsInput(
+                field = field.tags,
+                onTagInput = onTagInput,
+                onTagAdd = onTagAdd,
+                onTagRemove = onTagRemove,
                 modifier = Modifier.fillMaxWidth(),
-            ) {
-                UIKitOutlineTextFieldWithChips(
-                    stringResource(MR.strings.map_edit_add_tags_field),
-                    value = field.tags.value,
-                    placeholder = stringResource(MR.strings.map_edit_add_tags_placeholder),
-                    completePainter = painterResource(ru.mystreet.uikit.MR.images.add),
-                    chips = field.tags.tags.tags,
-                    chip = {
-                        Chip(
-                            text = it,
-                            icon = painterResource(imageResource = ru.mystreet.uikit.MR.images.remove),
-                            onClick = { onTagRemove(it) },
-                            modifier = Modifier,
-                        )
-                    },
-                    enabled = field.tags.isInputAvailable,
-                    onValueChange = {
-                        isTagsSuggestionsExpanded = true
-                        onTagInput(it)
-                    },
-                    onComplete = onTagAdd,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
+            )
         }
         FilledTonalButton(
             onClick = onContinue,
@@ -144,6 +119,60 @@ private fun EditMapNewObjectScreen(
         ) {
             Text(stringResource(MR.strings.map_edit_add_continue_button))
         }
+    }
+}
+
+
+@Composable
+fun TagsInput(
+    field: TagsField,
+    onTagInput: (String) -> Unit,
+    onTagAdd: () -> Unit,
+    onTagRemove: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var isTagsSuggestionsExpanded by rememberSaveable { mutableStateOf(false) }
+    TagsSuggestion(
+        isExpanded = field.value.isNotBlank() && isTagsSuggestionsExpanded,
+        suggestion = field.suggestion,
+        onTagInput = {
+            onTagInput(it)
+            onTagAdd()
+        },
+        onDismissRequest = {
+            isTagsSuggestionsExpanded = false
+        },
+        supportingText = {
+            Text("${field.tags.tags.size}/${field.tags.maxTags}")
+        },
+        modifier = modifier
+    ) {
+        UIKitOutlineTextFieldWithChips(
+            stringResource(MR.strings.map_edit_add_tags_field),
+            value = field.value,
+            placeholder = stringResource(MR.strings.map_edit_add_tags_placeholder),
+            completePainter = painterResource(ru.mystreet.uikit.MR.images.add),
+            chips = field.tags.tags,
+            chip = {
+                Chip(
+                    text = it,
+                    icon = painterResource(imageResource = ru.mystreet.uikit.MR.images.remove),
+                    onClick = { onTagRemove(it) },
+                    modifier = Modifier,
+                )
+            },
+            keyboardOptions = KeyboardOptionsNext,
+            keyboardActions = KeyboardActions(onNext = {
+                onTagAdd()
+            }),
+            enabled = field.isInputAvailable,
+            onValueChange = {
+                isTagsSuggestionsExpanded = true
+                onTagInput(it)
+            },
+            onComplete = onTagAdd,
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
 
@@ -235,14 +264,13 @@ fun TagSuggestionItem(
 
 @Composable
 fun TitleError(
-    error: FieldError?,
+    error: FieldError,
     modifier: Modifier = Modifier,
 ) {
-    if (error != null)
-        Text(
-            text = error.formatTitleError(),
-            modifier = modifier,
-        )
+    Text(
+        text = error.formatTitleError(),
+        modifier = modifier,
+    )
 }
 
 private fun FieldError.formatTitleError(): String {

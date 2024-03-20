@@ -1,5 +1,7 @@
 package ru.mystreet.map.presentation.add
 
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.serialization.Serializable
 import ru.mystreet.core.component.SavedStateStore
 import ru.mystreet.map.domain.entity.AddMapObjectField
@@ -14,7 +16,7 @@ interface EditMapNewObjectInfoStore :
         val title: String = "",
         val description: String = "",
         val tag: String = "",
-        val tags: List<String> = emptyList(),
+        val tags: PersistentList<String> = persistentListOf(),
         val point: Point,
         val category: MapObjectCategory,
     )
