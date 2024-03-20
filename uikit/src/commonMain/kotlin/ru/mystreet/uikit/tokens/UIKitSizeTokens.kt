@@ -1,6 +1,5 @@
 package ru.mystreet.uikit.tokens
 
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.unit.dp
 
 object UIKitSizeTokens {
@@ -13,4 +12,5 @@ object UIKitSizeTokens {
     val ButtonVerticalPadding = 8.dp
     val ButtonMinWidth = 58.dp
     val ButtonMinHeight = 40.dp
+    val BottomBarHeight = 60.dp
 }

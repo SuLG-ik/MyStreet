@@ -11,6 +11,7 @@ import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildStack
 import ru.mystreet.core.component.getStore
 import ru.mystreet.imagepicker.component.ImagePickerComponent
+import ru.mystreet.map.component.edit.MapObjectEditComponent
 import ru.mystreet.map.presentation.add.MapObjectImageLoaderStore
 
 class MapObjectInfoHostComponent(
@@ -40,6 +41,7 @@ class MapObjectInfoHostComponent(
                 MapObjectInfoComponent(
                     componentContext = diComponentContext,
                     mapObjectId = config.id,
+                    onEdit = { onEdit(config.id) },
                     onImagePicker = { onImagePicker(config.id) },
                 )
             )
@@ -51,11 +53,29 @@ class MapObjectInfoHostComponent(
                     loadStore = loadImageStore,
                 )
             )
+
+            is Config.Edit -> MapObjectInfoHost.Child.Edit(
+                MapObjectEditComponent(
+                    componentContext = diComponentContext,
+                    mapObjectId = config.id,
+                    onBack = this::onBack,
+                    onCompleted = { onInfo(config.id) },
+                    onDelete = onBack,
+                )
+            )
         }
     }
 
     private fun onBack() {
         navigation.pop { if (!it) onBack.invoke() }
+    }
+
+    private fun onEdit(id: Long) {
+        navigation.bringToFront(Config.Edit(id))
+    }
+
+    private fun onInfo(id: Long) {
+        navigation.bringToFront(Config.Info(id))
     }
 
     private fun onImagePicker(id: Long) {
@@ -66,6 +86,9 @@ class MapObjectInfoHostComponent(
     sealed interface Config {
         @Serializable
         data class Info(val id: Long) : Config
+
+        @Serializable
+        data class Edit(val id: Long) : Config
 
         @Serializable
         data class ImagePicker(val id: Long) : Config

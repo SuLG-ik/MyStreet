@@ -4,4 +4,5 @@ interface MapObjectFieldFormatter {
 
     fun formatTitle(value: String): String
 
+    fun formatDescription(value: String): String
 }

@@ -10,8 +10,8 @@ import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildContext
 import ru.mystreet.core.component.diChildStack
-import ru.mystreet.map.component.edit.EditMap
-import ru.mystreet.map.component.edit.EditMapComponent
+import ru.mystreet.map.component.editmap.EditMap
+import ru.mystreet.map.component.editmap.EditMapComponent
 import ru.mystreet.map.domain.entity.MapConfig
 import ru.mystreet.map.general.component.GeneralMapComponent
 import ru.mystreet.map.map.component.FramedMapComponent

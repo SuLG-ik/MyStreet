@@ -4,7 +4,7 @@ import com.arkivanov.decompose.value.subscribe
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildContext
-import ru.mystreet.map.component.edit.EditMap
+import ru.mystreet.map.component.editmap.EditMap
 
 class GeneralMapComponent(
     componentContext: DIComponentContext,

@@ -1,4 +1,4 @@
-package ru.mystreet.map.component.edit
+package ru.mystreet.map.component.editmap
 
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation

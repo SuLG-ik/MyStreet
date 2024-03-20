@@ -311,14 +311,34 @@ type MapObjectCategoriesQuery {
   list: [CategoryType!]!
 }
 
+input MapObjectEditInput {
+  category: ID!
+
+  title: String!
+
+  description: String!
+
+  tags: [String!]!
+}
+
 type MapObjectEditMutation {
+  info: MapObjectInfoMutation!
+
   images: MapObjectImagesMutation!
 
-  reviews: MapObjectReviewsMutation!
+  rating: MapObjectRatingMutation!
 }
 
 type MapObjectImagesMutation {
   add(image: Upload!): MapObjectType!
+}
+
+type MapObjectInfoMutation {
+  edit(input: MapObjectEditInput!): MapObjectType!
+}
+
+type MapObjectRatingMutation {
+  reviews: MapObjectReviewsMutation!
 }
 
 type MapObjectRatingType {
@@ -381,6 +401,8 @@ type MapObjectsMutation {
   add(input: AddMapObjectInput!): MapObjectType!
 
   edit(id: ID!): MapObjectEditMutation!
+
+  delete(id: ID!): Boolean!
 }
 
 type MapObjectsQuery {

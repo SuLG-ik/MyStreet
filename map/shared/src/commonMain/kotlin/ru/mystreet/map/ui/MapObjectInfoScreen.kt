@@ -6,6 +6,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -38,9 +40,11 @@ import androidx.compose.ui.unit.dp
 import ru.mystreet.map.domain.entity.MapObject
 import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.uikit.UIKitAsyncImage
+import ru.mystreet.uikit.UIKitBottomBar
 import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.Add
 import ru.mystreet.uikit.iconpack.uikiticonpack.AddOutlined
+import ru.mystreet.uikit.iconpack.uikiticonpack.EditIcon
 import ru.mystreet.uikit.iconpack.uikiticonpack.RatingStar
 import ru.mystreet.uikit.iconpack.uikiticonpack.RatingStarOutline
 import ru.mystreet.uikit.tokens.UIKitSizeTokens
@@ -51,6 +55,7 @@ fun MapObjectInfoScreen(
     mapObject: MapObject?,
     onImagePicker: () -> Unit,
     onFavourite: (Boolean) -> Unit,
+    onEdit: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -64,54 +69,78 @@ fun MapObjectInfoScreen(
                     mapObject = mapObject,
                     onImagePicker = onImagePicker,
                     onFavourite = onFavourite,
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(bottom = 15.dp),
+                    onEdit = onEdit,
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapObjectInfo(
     mapObject: MapObject,
     onImagePicker: () -> Unit,
     onFavourite: (Boolean) -> Unit,
+    onEdit: () -> Unit,
     modifier: Modifier,
 ) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+    Box(
+        modifier = modifier
     ) {
-        Images(mapObject.images, onImagePicker, modifier = Modifier.fillMaxWidth())
         Column(
-            modifier = Modifier.padding(horizontal = 15.dp)
+            modifier = Modifier.fillMaxWidth().padding(bottom = UIKitSizeTokens.BottomBarHeight),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            Images(mapObject.images, onImagePicker, modifier = Modifier.fillMaxWidth())
+            Column(
+                modifier = Modifier.padding(horizontal = 15.dp)
             ) {
-                Title(
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Title(
+                        mapObject = mapObject,
+                        modifier = Modifier.fillMaxWidth().weight(1f),
+                    )
+                    Favourite(
+                        mapObject = mapObject,
+                        onToggle = onFavourite,
+                    )
+                }
+                Description(
                     mapObject = mapObject,
-                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    modifier = Modifier.fillMaxWidth(),
                 )
-                Favourite(
+                Tags(
                     mapObject = mapObject,
-                    onToggle = onFavourite,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                Reviews(
+                    mapObject = mapObject,
+                    modifier = modifier,
                 )
             }
-            Description(
-                mapObject = mapObject,
-                modifier = Modifier.fillMaxWidth(),
-            )
-            Tags(
-                mapObject = mapObject,
-                modifier = Modifier.fillMaxWidth(),
-            )
-            Reviews(
-                mapObject = mapObject,
-                modifier = modifier,
-            )
         }
+        UIKitBottomBar(
+            actions = {
+                EditButton(onEdit)
+            },
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
+    }
+
+}
+
+@Composable
+private fun EditButton(onEdit: () -> Unit) {
+    IconButton(onClick = onEdit) {
+        Icon(
+            UIKitIconPack.EditIcon,
+            contentDescription = null,
+            modifier = Modifier.size(UIKitSizeTokens.DefaultIconSize)
+        )
     }
 }
 

@@ -1,12 +1,17 @@
 package ru.mystreet.map.domain.entity
 
+import androidx.compose.runtime.internal.StabilityInferred
+import kotlinx.collections.immutable.ImmutableCollection
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.serialization.Serializable
 import ru.mystreet.map.geomety.Point
+import ru.mystreet.uikit.ValidatedField
 
 @Serializable
 data class AddMapObjectField(
-    val title: TitleField,
-    val description: String,
+    val title: ValidatedField<FieldError>,
+    val description: ValidatedField<FieldError>,
     val point: Point,
     val tags: TagsField,
     val category: MapObjectCategory,
@@ -22,22 +27,16 @@ data class TagsField(
 
     @Serializable
     data class Tags(
-        val tags: List<String>,
+        val tags: PersistentList<String>,
         val maxTags: Int,
     )
 
 }
 
 @Serializable
-data class TitleField(
-    val value: String,
-    val error: FieldError? = null,
-)
-
-@Serializable
 data class FieldSuggestion<T>(
     val isLoading: Boolean,
-    val suggestions: List<T>,
+    val suggestions: ImmutableCollection<T>,
 )
 
 @Serializable
