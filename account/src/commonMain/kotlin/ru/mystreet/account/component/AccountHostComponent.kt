@@ -56,17 +56,6 @@ class AccountHostComponent(
         navigation.bringToFront(Config.Auth)
     }
 
-    override val isExpanded: MutableValue<Boolean> =
-        savedValue("is_expanded", defaultValue = { false })
-
-    override fun onDismiss() {
-        isExpanded.value = false
-    }
-
-    override fun onExpand() {
-        isExpanded.value = true
-    }
-
     private fun onBack() {
 
     }

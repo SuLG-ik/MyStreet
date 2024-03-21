@@ -93,7 +93,7 @@ fun UIKitBottomSheetScaffold(
 
 @Composable
 @ExperimentalMaterial3Api
-private fun rememberSheetState(
+fun rememberSheetState(
     skipPartiallyExpanded: Boolean = false,
     confirmValueChange: (SheetValue) -> Boolean = { true },
     initialValue: SheetValue = SheetValue.Hidden,

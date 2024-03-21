@@ -23,6 +23,7 @@ include(":mapkit-compose")
 include(":root")
 include(":imagepicker")
 include(":account")
+include(":sheet")
 
 include(":map:root")
 include(":map:map")

@@ -5,6 +5,7 @@ import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 import ru.mystreet.account.component.AccountHost
+import ru.mystreet.bottomsheet.host.component.SheetHost
 import ru.mystreet.map.component.editmap.EditMap
 import ru.mystreet.map.general.component.GeneralMap
 import ru.mystreet.map.map.component.Map
@@ -71,7 +72,8 @@ interface MapHost {
 
     fun onNavigate(config: Config)
 
+    val sheetHost: SheetHost<*>
+
     val editMap: EditMap
-    val mapInfo: MapInfo
-    val account: AccountHost
+
 }
