@@ -17,8 +17,14 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.ListSerializer
 import org.koin.core.component.KoinComponent
 
+data class AppComponentContextConfig(
+    val id: String,
+)
+
 abstract class AppComponentContext(componentContext: DIComponentContext) :
-    DIComponentContext by componentContext
+    DIComponentContext by componentContext {
+    open val config: AppComponentContextConfig? = null
+}
 
 interface DIComponentContext : ComponentContext, KoinComponent
 

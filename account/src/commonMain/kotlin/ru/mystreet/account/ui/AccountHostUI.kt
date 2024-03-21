@@ -1,36 +1,19 @@
 package ru.mystreet.account.ui
 
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.arkivanov.decompose.extensions.compose.stack.Children
-import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ru.mystreet.account.component.AccountHost
 import ru.mystreet.account.ui.profile.AccountProfileHostUI
-import ru.mystreet.account.ui.profile.AccountProfileInfoUI
-import ru.mystreet.uikit.InfoBottomSheetScreen
 import ru.mystreet.uikit.UIKitChildren
 
 @Composable
 fun AccountHostUI(
     component: AccountHost,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
 ) {
-    val isExpanded by component.isExpanded.subscribeAsState()
-    InfoBottomSheetScreen(
-        isExpanded = isExpanded,
-        onDismiss = component::onDismiss,
-        sheetContent = {
-            UIKitChildren(component.childStack) {
-                AccountHostNavHost(it.instance, modifier = Modifier.fillMaxWidth().fillMaxHeight(0.90f))
-            }
-        },
-        modifier = modifier,
-        content = content,
-    )
+    UIKitChildren(component.childStack) {
+        AccountHostNavHost(it.instance, modifier = modifier)
+    }
 }
 
 @Composable

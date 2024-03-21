@@ -7,11 +7,6 @@ import ru.mystreet.account.component.profile.AccountProfileHost
 
 interface AccountHost {
 
-    val isExpanded: Value<Boolean>
-
-    fun onDismiss()
-
-
     val childStack: Value<ChildStack<*, Child>>
 
     sealed interface Child {
@@ -20,5 +15,4 @@ interface AccountHost {
         class Profile(val component: AccountProfileHost) : Child
     }
 
-    fun onExpand()
 }

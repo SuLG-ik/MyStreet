@@ -1,11 +1,10 @@
 package ru.mystreet.map.root.component
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
-import ru.mystreet.account.component.AccountHost
-import ru.mystreet.account.component.AccountHostComponent
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildContext
@@ -17,6 +16,7 @@ import ru.mystreet.map.general.component.GeneralMapComponent
 import ru.mystreet.map.map.component.FramedMapComponent
 import ru.mystreet.map.map.component.Map
 import ru.mystreet.map.parks.component.ParksMapComponent
+import ru.mystreet.map.root.component.external.MapExternalSheetHostComponent
 import ru.mystreet.map.trash.component.TrashMapComponent
 
 class MapHostComponent(
@@ -34,9 +34,6 @@ class MapHostComponent(
     override val uiConfig: Value<MapHost.UIConfig> = editMap.isEnabled.map {
         MapHost.UIConfig(!it)
     }
-
-    override val mapInfo: MapInfo = MapInfoComponent(diChildContext("map_info"))
-    override val account: AccountHost = AccountHostComponent(diChildContext("account_host"))
 
     private val navigation = StackNavigation<MapHost.Config>()
 
@@ -59,7 +56,6 @@ class MapHostComponent(
                     map = map,
                 )
             )
-
             MapHost.Config.Parks -> MapHost.Child.Parks(ParksMapComponent(componentContext))
             MapHost.Config.Trash -> MapHost.Child.Trash(TrashMapComponent(componentContext))
             else -> throw IllegalArgumentException("No childStack navigation for $config")
@@ -67,7 +63,7 @@ class MapHostComponent(
     }
 
     private fun onMapObjectInfo(id: Long) {
-        mapInfo.onShowMapObjectInfo(id)
+        sheetHost.onMapObjectInfo(id)
     }
 
     override fun onNavigate(config: MapHost.Config) {
@@ -75,10 +71,13 @@ class MapHostComponent(
             navigation.bringToFront(config)
     }
 
+    override val sheetHost = MapExternalSheetHostComponent(diChildContext("map_external"))
+
+
     private fun showExternalScreen(config: MapHost.Config): Boolean {
         return when (config) {
             MapHost.Config.Account -> {
-                account.onExpand()
+                sheetHost.onAccount()
                 true
             }
 
