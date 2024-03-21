@@ -1,15 +1,27 @@
 package ru.mystreet.map.map.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.mohamedrejeb.calf.permissions.ExperimentalPermissionsApi
 import com.mohamedrejeb.calf.permissions.Permission
 import com.mohamedrejeb.calf.permissions.rememberMultiplePermissionsState
@@ -24,6 +36,7 @@ import ru.mystreet.uikit.iconpack.uikiticonpack.ZoomOut
 
 @Composable
 fun MapOverlay(
+    isNecessaryZoomAlert: Boolean,
     onFollowLocation: () -> Unit,
     onLocationPermissionGranted: () -> Unit,
     onZoomInPress: (Boolean) -> Unit,
@@ -31,6 +44,10 @@ fun MapOverlay(
     modifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
+        ZoomMapAlert(
+            isNecessaryZoomAlert = isNecessaryZoomAlert,
+            modifier = Modifier.padding(top = 30.dp).align(Alignment.TopCenter)
+        )
         MapControls(
             onFollowLocation = onFollowLocation,
             onLocationPermissionGranted = onLocationPermissionGranted,
@@ -38,6 +55,30 @@ fun MapOverlay(
             onZoomOutPress = onZoomOutPress,
             modifier = Modifier.align(Alignment.CenterEnd).graphicsLayer(alpha = DefaultMapAlpha),
         )
+    }
+}
+
+@Composable
+fun ZoomMapAlert(
+    isNecessaryZoomAlert: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.TopCenter,
+    ) {
+        AnimatedVisibility(isNecessaryZoomAlert, enter = slideInVertically() + fadeIn(), exit = slideOutVertically() + fadeOut()) {
+            Text(
+                text = "Приблизьте, чтобы отобразить объекты",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleSmall.copy(
+                    fontSize = 16.sp,
+                    color = Color.White,
+                    shadow = Shadow(blurRadius = 12f)
+                ),
+                modifier = modifier,
+            )
+        }
     }
 }
 

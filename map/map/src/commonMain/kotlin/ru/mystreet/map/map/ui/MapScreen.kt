@@ -10,6 +10,7 @@ import ru.mystreet.app.MapView
 @Composable
 fun MapScreen(
     mapController: MapController,
+    isNecessaryZoomAlert: Boolean,
     onZoomIn: (Boolean) -> Unit,
     onZoomOut: (Boolean) -> Unit,
     onFollowLocation: () -> Unit,
@@ -22,6 +23,7 @@ fun MapScreen(
             modifier = Modifier.fillMaxSize(),
         )
         MapOverlay(
+            isNecessaryZoomAlert = isNecessaryZoomAlert,
             onFollowLocation = onFollowLocation,
             onLocationPermissionGranted = onLocationPermissionGranted,
             onZoomInPress = onZoomIn,
