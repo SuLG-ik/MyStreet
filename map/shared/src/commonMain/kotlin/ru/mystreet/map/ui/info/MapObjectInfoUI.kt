@@ -1,4 +1,4 @@
-package ru.mystreet.map.ui
+package ru.mystreet.map.ui.info
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
