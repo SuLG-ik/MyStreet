@@ -37,26 +37,26 @@ import ru.mystreet.uikit.tokens.UIKitSizeTokens
 
 @Composable
 fun MapObjectEditUI(component: MapObjectEdit, modifier: Modifier = Modifier) {
-    val field by component.field.subscribeAsState()
-    val fieldValue = field.value
-    Crossfade(fieldValue) {
-        if (it != null)
-            MapObjectEditScreen(
-                field = it,
-                onTitleInput = component::onTitleInput,
-                onDescriptionInput = component::onDescriptionInput,
-                onTagAdd = component::onTagAdd,
-                onTagInput = component::onTagInput,
-                onContinue = component::onContinue,
-                onTagRemove = component::onTagRemove,
-                onBack = component::onBack,
-                onDelete = component::onDelete,
-                modifier = modifier
-            )
-        else
-            MapObjectEditPlaceholder(
-                modifier = modifier
-            )
+    Crossfade(component.isLoading.subscribeAsState().value) {
+        if (it) {
+            MapObjectEditPlaceholder(modifier = modifier)
+        } else {
+            val field by component.field.subscribeAsState()
+            val fieldValue = field.value
+            if (fieldValue != null)
+                MapObjectEditScreen(
+                    field = fieldValue,
+                    onTitleInput = component::onTitleInput,
+                    onDescriptionInput = component::onDescriptionInput,
+                    onTagAdd = component::onTagAdd,
+                    onTagInput = component::onTagInput,
+                    onContinue = component::onContinue,
+                    onTagRemove = component::onTagRemove,
+                    onBack = component::onBack,
+                    onDelete = component::onDelete,
+                    modifier = modifier
+                )
+        }
     }
 }
 
