@@ -9,4 +9,6 @@ plugins {
     alias(libs.plugins.kotlinxSerialization).apply(false)
     alias(libs.plugins.buildKonfig).apply(false)
     alias(libs.plugins.moko.resources).apply(false)
+    alias(libs.plugins.gms).apply(false)
+    alias(libs.plugins.firebase.crashlytics).apply(false)
 }

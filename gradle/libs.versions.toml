@@ -31,6 +31,9 @@ atomicfu = "0.23.2"
 sqldelight = "2.0.1"
 store5 = "5.0.0-beta02"
 calf = "0.4.0"
+gms = "4.4.1"
+firebase-crashlytics = "2.9.9"
+firebase = "32.7.4"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -86,6 +89,9 @@ sqldelight-driver-android = { module = "app.cash.sqldelight:android-driver", ver
 sqldelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 store5 = { module = "org.mobilenativefoundation.store:store5", version.ref = "store5" }
 calf-permissions = { module = "com.mohamedrejeb.calf:calf-permissions", version.ref = "calf" }
+firebase = { module = "com.google.firebase:firebase-bom", version.ref="firebase" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
@@ -100,6 +106,9 @@ moko-resources = { id = "dev.icerock.mobile.multiplatform-resources", version.re
 apollo = { id = "com.apollographql.apollo3", version.ref = "apollo" }
 atomicfu = { id = "org.jetbrains.kotlin.plugin.atomicfu", version.ref = "kotlin" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
+gms = { id = "com.google.gms.google-services", version.ref = "gms" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
+
 
 [bundles]
 koin-test = ["koin-test", "koin-test-junit4"]

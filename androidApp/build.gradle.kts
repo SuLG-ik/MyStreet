@@ -2,13 +2,15 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.gms)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 android {
-    namespace = "ru.mystreet.app.android"
+    namespace = "ru.mystreet.app"
     compileSdk = 34
     defaultConfig {
-        applicationId = "ru.mystreet.app.android"
+        applicationId = "ru.mystreet.app"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -45,5 +47,8 @@ dependencies {
     implementation(projects.shared)
     implementation(libs.splash)
     implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.firebase))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
     debugImplementation(libs.compose.ui.tooling)
 }
