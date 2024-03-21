@@ -75,6 +75,8 @@ fun UIKitTitledSurfaceColumn(
     modifier: Modifier = Modifier,
     shape: Shape = MaterialTheme.shapes.medium,
     color: Color = MaterialTheme.colorScheme.surface,
+    verticalArrangement: Arrangement.Vertical = Arrangement.Top,
+    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     contentColor: Color = contentColorFor(color),
     tonalElevation: Dp = 0.dp,
     shadowElevation: Dp = 0.dp,
@@ -110,6 +112,8 @@ fun UIKitTitledSurfaceColumn(
             }
             Column(
                 modifier = Modifier.padding(horizontal = 15.dp).padding(bottom = 15.dp),
+                verticalArrangement = verticalArrangement,
+                horizontalAlignment = horizontalAlignment,
                 content = content
             )
         }

@@ -1,5 +1,6 @@
-package ru.mystreet.map.ui
+package ru.mystreet.map.ui.edit
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -24,6 +25,8 @@ import dev.icerock.moko.resources.compose.stringResource
 import ru.mystreet.map.MR
 import ru.mystreet.map.component.edit.MapObjectEdit
 import ru.mystreet.map.domain.entity.EditMapObjectField
+import ru.mystreet.map.ui.TagsInput
+import ru.mystreet.map.ui.TitleError
 import ru.mystreet.uikit.KeyboardActionsNext
 import ru.mystreet.uikit.KeyboardOptionsNext
 import ru.mystreet.uikit.UIKitTitledSurfaceColumn
@@ -36,19 +39,25 @@ import ru.mystreet.uikit.tokens.UIKitSizeTokens
 fun MapObjectEditUI(component: MapObjectEdit, modifier: Modifier = Modifier) {
     val field by component.field.subscribeAsState()
     val fieldValue = field.value
-    if (fieldValue != null)
-        MapObjectEditScreen(
-            field = fieldValue,
-            onTitleInput = component::onTitleInput,
-            onDescriptionInput = component::onDescriptionInput,
-            onTagAdd = component::onTagAdd,
-            onTagInput = component::onTagInput,
-            onContinue = component::onContinue,
-            onTagRemove = component::onTagRemove,
-            onBack = component::onBack,
-            onDelete = component::onDelete,
-            modifier = modifier
-        )
+    Crossfade(fieldValue) {
+        if (it != null)
+            MapObjectEditScreen(
+                field = it,
+                onTitleInput = component::onTitleInput,
+                onDescriptionInput = component::onDescriptionInput,
+                onTagAdd = component::onTagAdd,
+                onTagInput = component::onTagInput,
+                onContinue = component::onContinue,
+                onTagRemove = component::onTagRemove,
+                onBack = component::onBack,
+                onDelete = component::onDelete,
+                modifier = modifier
+            )
+        else
+            MapObjectEditPlaceholder(
+                modifier = modifier
+            )
+    }
 }
 
 @Composable
