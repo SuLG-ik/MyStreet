@@ -11,7 +11,10 @@ interface LocalFramedMapObjectsRepository {
 
     suspend fun saveMapObject(frame: MapFrame, mapObject: MapObjectPart)
 
+    suspend fun deleteMapObject(mapObjectId: Long)
+
     suspend fun getMapObjects(frame: MapFrame): FramedMapObjects?
+
     fun getMapObjectsFlow(frame: MapFrame): Flow<FramedMapObjects>?
 
 }

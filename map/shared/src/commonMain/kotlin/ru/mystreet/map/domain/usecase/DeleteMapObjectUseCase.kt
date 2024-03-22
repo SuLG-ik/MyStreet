@@ -1,14 +1,12 @@
 package ru.mystreet.map.domain.usecase
 
-import ru.mystreet.map.domain.repository.MapObjectsRepository
-
 class DeleteMapObjectUseCase(
-    private val mapObjectsRepository: MapObjectsRepository,
+    private val deleteRemoteMapObjectUseCase: DeleteRemoteMapObjectUseCase,
+    private val deleteLocalMapObjectUseCase: DeleteLocalMapObjectUseCase,
 ) {
-
-
     suspend operator fun invoke(id: Long) {
-        mapObjectsRepository.deleteMapObject(id)
+        deleteRemoteMapObjectUseCase(id)
+        deleteLocalMapObjectUseCase(id)
     }
-
 }
+

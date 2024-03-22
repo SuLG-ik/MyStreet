@@ -14,6 +14,8 @@ CREATE INDEX mapObjectPart_frame_id ON mapObjectPart(frameId);
 deleteAllByFrame:
     DELETE FROM mapObjectPart WHERE frameId = :frameId;
 
+deleteById:
+    DELETE FROM mapObjectPart WHERE id = :id;
 
 
 insertMapObjectParts:

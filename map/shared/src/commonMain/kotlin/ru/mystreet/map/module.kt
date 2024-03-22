@@ -32,9 +32,12 @@ import ru.mystreet.map.domain.store5.GetSingleRemoteFramedMapObjectsSOT
 import ru.mystreet.map.domain.store5.SingleFramedMapObjectsStore5
 import ru.mystreet.map.domain.usecase.AddLocalFramedMapObjectUseCase
 import ru.mystreet.map.domain.usecase.AddMapObjectUseCase
+import ru.mystreet.map.domain.usecase.AddRemoteMapObjectUseCase
 import ru.mystreet.map.domain.usecase.CalculateFrameForPointUseCase
 import ru.mystreet.map.domain.usecase.CalculateFramesForVisibleAreaUseCase
+import ru.mystreet.map.domain.usecase.DeleteLocalMapObjectUseCase
 import ru.mystreet.map.domain.usecase.DeleteMapObjectUseCase
+import ru.mystreet.map.domain.usecase.DeleteRemoteMapObjectUseCase
 import ru.mystreet.map.domain.usecase.EditMapObjectUseCase
 import ru.mystreet.map.domain.usecase.FlowLocalFramedMapObjectUseCase
 import ru.mystreet.map.domain.usecase.GetFramedMapObjectsUseCase
@@ -70,6 +73,9 @@ val mapSharedModule = module {
     factoryOf(::EditMapObjectUseCase)
     factoryOf(::AddLocalFramedMapObjectUseCase)
     factoryOf(::AddMapObjectUseCase)
+    factoryOf(::AddRemoteMapObjectUseCase)
+    factoryOf(::DeleteLocalMapObjectUseCase)
+    factoryOf(::DeleteRemoteMapObjectUseCase)
     factoryOf(::DeleteMapObjectUseCase)
     factoryOf(::CalculateFrameForPointUseCase)
     factoryOf(::SetMapObjectFavouriteUseCase)

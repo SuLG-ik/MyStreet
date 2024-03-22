@@ -86,4 +86,8 @@ class SQLDelightLocalFramedMapObjectsRepository(
         }
     }
 
+    override suspend fun deleteMapObject(mapObjectId: Long) {
+        mapObjectPartQueries.deleteById(mapObjectId)
+    }
+
 }
