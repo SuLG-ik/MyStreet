@@ -18,7 +18,7 @@ interface MapObjectsRepository {
         latitude: Latitude,
         longitude: Longitude,
         tags: List<String>,
-    )
+    ): MapObject
 
     suspend fun editMapObject(
         id: Long,

@@ -1,0 +1,8 @@
+<resources>
+    <string name="map_edit_add_title">Добавление объекта</string>
+    <string name="map_edit_add_title_field">Название*</string>
+    <string name="map_edit_add_description_field">Описание</string>
+    <string name="map_edit_add_tags_field">Теги</string>
+    <string name="map_edit_add_tags_placeholder">Введите теги</string>
+    <string name="map_edit_add_continue_button">Добавить</string>
+</resources>

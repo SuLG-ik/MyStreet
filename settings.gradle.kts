@@ -31,6 +31,7 @@ include(":map:general")
 include(":map:shared")
 include(":map:trash")
 include(":map:parks")
+include(":map:mapobject")
 
 include(":core:component")
 include(":core:datastore")

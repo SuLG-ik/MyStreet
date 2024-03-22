@@ -1,8 +1,6 @@
 package ru.mystreet.map.domain.entity
 
-import androidx.compose.runtime.internal.StabilityInferred
 import kotlinx.collections.immutable.ImmutableCollection
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.serialization.Serializable
 import ru.mystreet.map.geomety.Point

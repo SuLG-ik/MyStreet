@@ -34,10 +34,8 @@ kotlin {
             implementation(libs.decompose.core)
             implementation(projects.core.component)
             implementation(projects.mapkitCompose)
-            api(libs.store5)
             implementation(projects.uikit)
-            implementation(projects.core.db)
-            implementation(projects.core.time)
+            implementation(projects.map.shared)
             api(projects.core.graphql)
             api(projects.imagepicker)
             implementation(projects.core.datastore)
@@ -68,5 +66,5 @@ apollo {
 }
 
 multiplatformResources {
-    resourcesPackage = "ru.mystreet.map"
+    resourcesPackage = "ru.mystreet.map.mapobject"
 }

@@ -37,6 +37,7 @@ kotlin {
             implementation(libs.moko.resources)
             implementation(libs.moko.resources.compose)
             implementation(projects.map.shared)
+            implementation(projects.map.mapobject)
             implementation(projects.core.datastore)
             implementation(projects.map.map)
         }

@@ -35,6 +35,7 @@ kotlin {
             implementation(projects.map.trash)
             implementation(projects.map.parks)
             implementation(projects.map.shared)
+            implementation(projects.map.mapobject)
             implementation(projects.account)
             implementation(projects.uikit)
             implementation(projects.sheet)

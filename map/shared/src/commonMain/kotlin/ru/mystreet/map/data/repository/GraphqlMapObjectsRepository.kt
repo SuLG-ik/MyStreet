@@ -29,7 +29,7 @@ class GraphqlMapObjectsRepository(
         val response = apolloClient.query(GetMapObjectQuery(id.toString())).execute()
         val mapObject =
             response.data?.mapObjects?.info?.mapObjectFull ?: TODO(response.exception.toString())
-        return converter.convert(mapObject)
+        return with(converter) { mapObject.convert() }
     }
 
     override suspend fun setMapObjectFavourite(id: Long, isFavourite: Boolean) {
@@ -53,7 +53,7 @@ class GraphqlMapObjectsRepository(
         latitude: Latitude,
         longitude: Longitude,
         tags: List<String>,
-    ) {
+    ): MapObject {
         val response = apolloClient.mutation(
             AddMapObjectMutation(
                 AddMapObjectInput(
@@ -70,6 +70,7 @@ class GraphqlMapObjectsRepository(
         ).execute()
         if (response.exception != null)
             TODO()
+        return with(converter) { response.data?.mapObjects?.add?.mapObjectFull?.convert() } ?: TODO()
     }
 
     override suspend fun deleteMapObject(
