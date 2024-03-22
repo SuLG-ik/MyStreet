@@ -7,7 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ru.mystreet.map.root.component.MapInfo
-import ru.mystreet.map.ui.MapObjectInfoHostUI
+import ru.mystreet.map.ui.edit.MapObjectInfoHostUI
 import ru.mystreet.uikit.InfoBottomSheetScreen
 
 @OptIn(ExperimentalMaterial3Api::class)

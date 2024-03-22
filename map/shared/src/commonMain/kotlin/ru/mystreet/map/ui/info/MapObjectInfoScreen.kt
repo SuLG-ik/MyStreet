@@ -1,4 +1,4 @@
-package ru.mystreet.map.ui
+package ru.mystreet.map.ui.info
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ru.mystreet.map.domain.entity.MapObject
 import ru.mystreet.map.domain.entity.MapObjectCategory
+import ru.mystreet.map.ui.Chip
 import ru.mystreet.uikit.UIKitAsyncImage
 import ru.mystreet.uikit.UIKitBottomBar
 import ru.mystreet.uikit.iconpack.UIKitIconPack
@@ -58,11 +59,9 @@ fun MapObjectInfoScreen(
     onEdit: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier,
-    ) {
-        if (isLoading) {
-            Text("Загрузка")
+    Crossfade(isLoading, modifier = modifier) {
+        if (it) {
+            MapObjectInfoPlaceholder(modifier = Modifier.fillMaxWidth())
         } else {
             if (mapObject != null) {
                 MapObjectInfo(
