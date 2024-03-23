@@ -12,6 +12,8 @@ com.example.myapplication.HasNamedCompanion2
     static <1>$$serializer INSTANCE;
 }
 
+-dontwarn org.slf4j.impl.StaticLoggerBinder
+
 # Keep both serializer and serializable classes to save the attribute InnerClasses
 -keepclasseswithmembers, allowshrinking, allowobfuscation, allowaccessmodification class
 com.example.myapplication.HasNamedCompanion, # <-- List serializable classes with named companions.
