@@ -9,7 +9,7 @@ class AddTagToFieldUseCase {
             return field
         val newTagValue = field.value.trim()
         if (newTagValue.isEmpty())
-            return field.copy(value = newTagValue)
+            return field.copy(value = "")
         if (field.value in field.tags.tags)
             return field.copy(value = "")
         val newCurrentTags = field.tags.tags.add(newTagValue)

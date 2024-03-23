@@ -33,6 +33,7 @@ import ru.mystreet.map.domain.store5.SingleFramedMapObjectsStore5
 import ru.mystreet.map.domain.usecase.AddLocalFramedMapObjectUseCase
 import ru.mystreet.map.domain.usecase.AddMapObjectUseCase
 import ru.mystreet.map.domain.usecase.AddRemoteMapObjectUseCase
+import ru.mystreet.map.domain.usecase.AddTagToFieldUseCase
 import ru.mystreet.map.domain.usecase.CalculateFrameForPointUseCase
 import ru.mystreet.map.domain.usecase.CalculateFramesForVisibleAreaUseCase
 import ru.mystreet.map.domain.usecase.DeleteLocalMapObjectUseCase
@@ -47,6 +48,7 @@ import ru.mystreet.map.domain.usecase.LoadLocalMapConfigUseCase
 import ru.mystreet.map.domain.usecase.LoadMapObjectTagsWithTitleUseCase
 import ru.mystreet.map.domain.usecase.LoadMapObjectUseCase
 import ru.mystreet.map.domain.usecase.QueueFramedMapObjectsUseCase
+import ru.mystreet.map.domain.usecase.RemoteEditMapObjectUseCase
 import ru.mystreet.map.domain.usecase.RemoveTagFromFieldUseCase
 import ru.mystreet.map.domain.usecase.SaveLocalFramedMapObjectUseCase
 import ru.mystreet.map.domain.usecase.SaveMapInitialCameraPositionUseCase
@@ -74,6 +76,7 @@ val mapSharedModule = module {
     factoryOf(::AddLocalFramedMapObjectUseCase)
     factoryOf(::AddMapObjectUseCase)
     factoryOf(::AddRemoteMapObjectUseCase)
+    factoryOf(::RemoteEditMapObjectUseCase)
     factoryOf(::DeleteLocalMapObjectUseCase)
     factoryOf(::DeleteRemoteMapObjectUseCase)
     factoryOf(::DeleteMapObjectUseCase)
@@ -83,6 +86,8 @@ val mapSharedModule = module {
     factoryOf(::SaveMapInitialCameraPositionUseCase)
     factoryOf(::CalculateFramesForVisibleAreaUseCase)
     factoryOf(::LoadMapObjectTagsWithTitleUseCase)
+    factoryOf(::AddTagToFieldUseCase)
+    factoryOf(::RemoveTagFromFieldUseCase)
     factoryOf(::LoadMapObjectUseCase)
     factoryOf(::RemoveTagFromFieldUseCase)
     factoryOf(::UploadMapObjectImagesUseCase)

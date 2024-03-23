@@ -1,23 +1,12 @@
 package ru.mystreet.map.mapobject
 
 import org.koin.core.module.dsl.factoryOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import ru.mystreet.imagepicker.imagePickerModule
-import ru.mystreet.map.data.converter.GraphqlMapObjectTagsConverter
-import ru.mystreet.map.data.converter.GraphqlMapObjectsConverter
 import ru.mystreet.map.data.formatter.RawMapObjectFieldFormatter
-import ru.mystreet.map.data.repository.DataStoreLayersConfigRepositoryImpl
-import ru.mystreet.map.data.repository.DataStoreLocalMapConfigRepository
-import ru.mystreet.map.data.repository.GraphqlMapObjectTagRepository
-import ru.mystreet.map.data.repository.GraphqlMapObjectsRepository
 import ru.mystreet.map.data.validator.RegexMapObjectFieldValidator
 import ru.mystreet.map.domain.formatter.MapObjectFieldFormatter
-import ru.mystreet.map.domain.repository.LayersConfigRepository
-import ru.mystreet.map.domain.repository.LocalMapConfigRepository
-import ru.mystreet.map.domain.repository.MapObjectTagRepository
-import ru.mystreet.map.domain.repository.MapObjectsRepository
 import ru.mystreet.map.domain.usecase.AddTagToFieldUseCase
 import ru.mystreet.map.domain.usecase.FormatAndValidateDescriptionUseCase
 import ru.mystreet.map.domain.usecase.FormatAndValidateTitleUseCase
@@ -57,8 +46,6 @@ val mapObjectModule = module {
     factoryOf(::ValidateDescriptionUseCase)
     factoryOf(::FormatDescriptionUseCase)
     factoryOf(::FormatAndValidateDescriptionUseCase)
-    factoryOf(::AddTagToFieldUseCase)
-    factoryOf(::RemoveTagFromFieldUseCase)
     factoryOf(::UploadMapObjectImagesUseCase)
     factoryOf(::RegexMapObjectFieldValidator) bind MapObjectFieldValidator::class
     factoryOf(::RawMapObjectFieldFormatter) bind MapObjectFieldFormatter::class
