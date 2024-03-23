@@ -1,20 +1,22 @@
 package ru.mystreet.map.domain.usecase
 
 import ru.mystreet.map.domain.entity.AddMapObjectField
-import ru.mystreet.map.domain.repository.MapObjectsRepository
+import ru.mystreet.map.domain.entity.MapObjectPart
 
 class AddMapObjectUseCase(
-    private val repository: MapObjectsRepository,
+    private val addRemoteMapObjectUseCase: AddRemoteMapObjectUseCase,
+    private val addLocalFramedMapObjectUseCase: AddLocalFramedMapObjectUseCase,
 ) {
 
     suspend operator fun invoke(field: AddMapObjectField) {
-        repository.addMapObject(
-            title = field.title.value,
-            description = field.description.value,
-            category = field.category,
-            latitude = field.point.latitude,
-            longitude = field.point.longitude,
-            tags = field.tags.tags.tags,
+        val mapObject = addRemoteMapObjectUseCase(field)
+        addLocalFramedMapObjectUseCase(
+            MapObjectPart(
+                id = mapObject.id,
+                title = mapObject.title,
+                point = mapObject.point,
+                category = mapObject.category
+            )
         )
     }
 

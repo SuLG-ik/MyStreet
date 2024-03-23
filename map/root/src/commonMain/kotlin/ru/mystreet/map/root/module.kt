@@ -5,6 +5,7 @@ import ru.mystreet.account.accountModule
 import ru.mystreet.map.general.mapGeneralModule
 import ru.mystreet.map.map.mapModule
 import ru.mystreet.map.mapSharedModule
+import ru.mystreet.map.mapobject.mapObjectModule
 
 val mapHostModule = module {
     includes(
@@ -12,5 +13,6 @@ val mapHostModule = module {
         mapSharedModule,
         mapModule,
         accountModule,
+        mapObjectModule,
     )
 }

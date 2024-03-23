@@ -19,13 +19,13 @@ import ru.mystreet.map.ClusterListener
 import ru.mystreet.map.ClusterizedPlacemark
 import ru.mystreet.map.IconStyle
 import ru.mystreet.map.Placemark
+import ru.mystreet.map.domain.entity.FramedMapObjects
+import ru.mystreet.map.domain.entity.MapFrame
 import ru.mystreet.map.domain.entity.MapGeoObject
 import ru.mystreet.map.domain.entity.MapObjectCategory
+import ru.mystreet.map.domain.entity.MapObjectPart
 import ru.mystreet.map.geomety.VisibleArea
 import ru.mystreet.map.image.ImageProviderFactory
-import ru.mystreet.map.map.domain.entity.FramedMapObjects
-import ru.mystreet.map.map.domain.entity.MapFrame
-import ru.mystreet.map.map.domain.entity.MapObjectPart
 import ru.mystreet.map.map.presentation.FramedMapObjectsStore
 import ru.mystreet.uikit.MR
 

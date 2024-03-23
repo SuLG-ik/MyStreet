@@ -11,10 +11,10 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.mystreet.core.component.onIntentWithDebounce
+import ru.mystreet.map.domain.entity.FramedMapObjects
 import ru.mystreet.map.domain.usecase.SaveMapInitialCameraPositionUseCase
 import ru.mystreet.map.geomety.VisibleArea
-import ru.mystreet.map.map.domain.entity.FramedMapObjects
-import ru.mystreet.map.map.domain.usecase.QueueFramedMapObjectsUseCase
+import ru.mystreet.map.domain.usecase.QueueFramedMapObjectsUseCase
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMviKotlinApi::class)

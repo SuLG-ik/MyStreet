@@ -11,21 +11,21 @@ import ru.mystreet.map.geomety.Point
 
 class GraphqlMapObjectsConverter {
 
-    fun convert(mapObject: MapObjectFull): MapObject {
+    fun MapObjectFull.convert(): MapObject {
         return MapObject(
-            id = mapObject.id.toLong(),
-            title = mapObject.title,
-            description = mapObject.description,
+            id = id.toLong(),
+            title = title,
+            description = description,
             point = Point(
-                latitude = Latitude(mapObject.point.latitude),
-                longitude = Longitude(mapObject.point.longitude),
+                latitude = Latitude(point.latitude),
+                longitude = Longitude(point.longitude),
             ),
-            category = mapObject.category.id.convertToCategory(),
-            tags = mapObject.tags.map { tag ->
+            category = category.id.convertToCategory(),
+            tags = tags.map { tag ->
                 MapObjectTag(tag.id.toLong(), tag.title)
             },
-            images = mapObject.images.map { it.path },
-            forUser = mapObject.forUser?.convert()
+            images = images.map { it.path },
+            forUser = forUser?.convert()
         )
     }
 

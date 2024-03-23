@@ -3,7 +3,7 @@ mutation AddMapObject(
 ){
     mapObjects {
         add(input: $input) {
-            id
+            ...MapObjectFull
         }
     }
 }
