@@ -65,6 +65,18 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    flavorDimensions += "dnevnikx"
+    productFlavors {
+        create("dev") {
+            dimension = "dnevnikx"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+        }
+        create("production") {
+            dimension = "dnevnikx"
+            applicationId = "ru.sulgik.dnevnikx"
+        }
+    }
 }
 
 dependencies {
