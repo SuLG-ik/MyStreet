@@ -4,7 +4,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.slot.SlotNavigation
-import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.KSerializer
 import ru.mystreet.bottomsheet.child.SheetChildContent
@@ -32,6 +31,8 @@ class SheetHostComponent<Config : Any, Child : SheetChild>(
     private val mergingAnchor = MergingSheetAnchor()
 
     override val currentValue: SheetValue = mergingAnchor.currentValue
+    override val forceValue: SheetValue
+        get() = mergingAnchor.forceValue
 
     override val currentChild: Value<ChildSlot<*, Child>> = diChildSlot(
         key = id,
