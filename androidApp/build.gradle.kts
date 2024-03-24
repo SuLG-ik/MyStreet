@@ -1,5 +1,3 @@
-import com.android.build.OutputFile
-
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
@@ -56,6 +54,8 @@ android {
         }
         getByName("debug") {
             resValue("string", "mystreet_host", env["MYSTREET_HOST"] ?: "")
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
         }
     }
     compileOptions {
@@ -64,18 +64,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
-    }
-    flavorDimensions += "dnevnikx"
-    productFlavors {
-        create("dev") {
-            dimension = "dnevnikx"
-            applicationIdSuffix = ".dev"
-            versionNameSuffix = "-dev"
-        }
-        create("production") {
-            dimension = "dnevnikx"
-            applicationId = "ru.sulgik.dnevnikx"
-        }
     }
 }
 
