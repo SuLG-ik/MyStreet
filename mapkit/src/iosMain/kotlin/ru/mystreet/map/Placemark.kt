@@ -4,6 +4,7 @@ import cocoapods.YandexMapsMobile.YMKPlacemarkMapObject
 import dev.icerock.moko.resources.ImageResource
 import kotlinx.cinterop.ExperimentalForeignApi
 import ru.mystreet.map.geomety.Point
+import ru.mystreet.map.image.ImageProvider
 
 @OptIn(ExperimentalForeignApi::class)
 actual class Placemark(
@@ -15,9 +16,12 @@ actual class Placemark(
             placemark.geometry = value.toNative()
         }
 
-    actual fun setIcon(icon: ImageResource) {
-        icon.toUIImage()?.let { placemark.setIconWithImage(it) }
+    actual var data: Any? get() = placemark.userData
+
+    actual fun setIcon(icon: ImageProvider) {
+        placemark.setIconWithImage(icon.toNative()!!)
     }
-
-
+    fun setIconStyle(style: IconStyle) {
+        TODO()
+    }
 }
