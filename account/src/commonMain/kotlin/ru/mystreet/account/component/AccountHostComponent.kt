@@ -3,6 +3,7 @@ package ru.mystreet.account.component
 import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
+import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Serializable
@@ -49,11 +50,11 @@ class AccountHostComponent(
     }
 
     private fun onAuthenticated() {
-        navigation.bringToFront(Config.Profile)
+        navigation.replaceAll(Config.Profile)
     }
 
     private fun onNotAuthenticated() {
-        navigation.bringToFront(Config.Auth)
+        navigation.replaceAll(Config.Auth)
     }
 
     private fun onBack() {
