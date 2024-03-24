@@ -1,6 +1,7 @@
 package ru.mystreet.map.component.editmap
 
 import com.arkivanov.decompose.value.Value
+import ru.mystreet.map.domain.entity.MapObjectCategory
 
 interface EditMap {
 
@@ -8,6 +9,6 @@ interface EditMap {
 
     val isEnabled: Value<Boolean>
 
-    fun onToggleEnabled()
+    fun onToggleEnabled(categories: List<MapObjectCategory>)
 
 }

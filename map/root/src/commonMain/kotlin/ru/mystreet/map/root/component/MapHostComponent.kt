@@ -1,6 +1,5 @@
 package ru.mystreet.map.root.component
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.value.Value
@@ -56,8 +55,16 @@ class MapHostComponent(
                     map = map,
                 )
             )
+
             MapHost.Config.Parks -> MapHost.Child.Parks(ParksMapComponent(componentContext))
-            MapHost.Config.Trash -> MapHost.Child.Trash(TrashMapComponent(componentContext))
+            MapHost.Config.Trash -> MapHost.Child.Trash(
+                TrashMapComponent(
+                    componentContext = componentContext,
+                    editMap = editMap,
+                    map = map,
+                )
+            )
+
             else -> throw IllegalArgumentException("No childStack navigation for $config")
         }
     }

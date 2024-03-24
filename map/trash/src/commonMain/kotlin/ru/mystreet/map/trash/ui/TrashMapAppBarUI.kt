@@ -11,7 +11,10 @@ fun TrashMapAppBarUI(
     component: TrashMapAppBar,
     modifier: Modifier = Modifier,
 ) {
+    val isInEditMode by component.isInEditMode.subscribeAsState()
     TrashMapAppBarScreen(
+        isInEditMode = isInEditMode,
+        onToggleMode = component::onToggleMode,
         modifier = modifier,
     )
 }

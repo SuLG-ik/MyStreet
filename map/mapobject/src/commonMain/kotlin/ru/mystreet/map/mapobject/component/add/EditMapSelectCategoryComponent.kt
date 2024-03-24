@@ -13,6 +13,7 @@ import ru.mystreet.map.presentation.add.EditMapSelectCategoryStore
 
 class EditMapSelectCategoryComponent(
     componentContext: DIComponentContext,
+    categories: List<MapObjectCategory>,
     category: MapObjectCategory?,
     private val onContinue: (MapObjectCategory) -> Unit,
 ) : AppComponentContext(componentContext), EditMapSelectCategory {
@@ -21,6 +22,7 @@ class EditMapSelectCategoryComponent(
         "edit_map_select_category",
         initialSavedState = {
             EditMapSelectCategoryStore.SavedState(
+                categories = categories,
                 selectedCategoryType = category ?: MapObjectCategory.Bench,
             )
         })

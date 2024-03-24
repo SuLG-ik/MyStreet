@@ -34,6 +34,8 @@ kotlin {
             api(libs.essenty.coroutines)
             api(libs.koin.core)
             api(projects.core.component)
+            api(projects.map.map)
+            api(projects.map.mapobject)
             implementation(libs.moko.resources)
             implementation(libs.moko.resources.compose)
             implementation(projects.map.shared)
