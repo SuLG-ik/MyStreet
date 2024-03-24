@@ -5,7 +5,6 @@ import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.bringToFront
 import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.value.Value
-import com.arkivanov.decompose.value.subscribe
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.serialization.Serializable
 import ru.mystreet.core.component.AppComponentContext
@@ -25,21 +24,21 @@ class EditMapBottomBarComponent(
     private val onObjectAdded: () -> Unit,
 ) : AppComponentContext(componentContext), EditMapBottomBar {
 
-    init {
-        isVisible.subscribe(lifecycle) {
-            if (!it)
-                resetProgress()
-        }
-    }
-
     private val navigation = StackNavigation<Config>()
 
     override val childStack: Value<ChildStack<*, EditMapBottomBar.Child>> = diChildStack(
         source = navigation,
-        initialConfiguration = Config.SelectCategory(),
+        initialConfiguration = Config.SelectCategory(emptyList()),
         serializer = Config.serializer(),
         childFactory = this::createChild,
     )
+
+    override fun setCategories(categories: List<MapObjectCategory>) {
+        if (categories.size == 1)
+            navigation.replaceAll(Config.InfoInput(categories, categories.first(), null))
+        else
+            navigation.replaceAll(Config.SelectCategory(categories))
+    }
 
     private fun createChild(
         config: Config,
@@ -49,8 +48,9 @@ class EditMapBottomBarComponent(
             is Config.SelectCategory -> EditMapBottomBar.Child.SelectCategory(
                 EditMapSelectCategoryComponent(
                     componentContext = diComponentContext,
+                    categories = config.categories,
                     category = config.field?.category,
-                    onContinue = { onCategorySelected(it, config.field) },
+                    onContinue = { onCategorySelected(config.categories, it, config.field) },
                 )
             )
 
@@ -61,7 +61,7 @@ class EditMapBottomBarComponent(
                     field = config.field,
                     currentTarget = currentTarget,
                     onContinue = this::onInfoSelected,
-                    onBack = this::onBackToCategory,
+                    onBack = { onBackToCategory(config.categories, it) },
                 )
             )
 
@@ -75,8 +75,8 @@ class EditMapBottomBarComponent(
         }
     }
 
-    private fun onBackToCategory(field: AddMapObjectField) {
-        navigation.replaceAll(Config.SelectCategory(field))
+    private fun onBackToCategory(categories: List<MapObjectCategory>, field: AddMapObjectField) {
+        navigation.replaceAll(Config.SelectCategory(categories, field))
     }
 
     private fun onObjectAdded() {
@@ -84,12 +84,12 @@ class EditMapBottomBarComponent(
     }
 
 
-    private fun resetProgress() {
-        navigation.replaceAll(Config.SelectCategory())
-    }
-
-    private fun onCategorySelected(category: MapObjectCategory, field: AddMapObjectField?) {
-        navigation.bringToFront(Config.InfoInput(category, field))
+    private fun onCategorySelected(
+        categories: List<MapObjectCategory>,
+        category: MapObjectCategory,
+        field: AddMapObjectField?
+    ) {
+        navigation.bringToFront(Config.InfoInput(categories, category, field))
     }
 
     private fun onInfoSelected(field: AddMapObjectField) {
@@ -101,10 +101,11 @@ class EditMapBottomBarComponent(
 
         @Serializable
         data class SelectCategory(
+            val categories: List<MapObjectCategory>,
             val field: AddMapObjectField? = null,
         ) : Config {
             override fun equals(other: Any?): Boolean {
-                return other is SelectCategory
+                return other is SelectCategory && categories == other.categories
             }
 
             override fun hashCode(): Int {
@@ -113,7 +114,11 @@ class EditMapBottomBarComponent(
         }
 
         @Serializable
-        data class InfoInput(val category: MapObjectCategory, val field: AddMapObjectField?) :
+        data class InfoInput(
+            val categories: List<MapObjectCategory>,
+            val category: MapObjectCategory,
+            val field: AddMapObjectField?
+        ) :
             Config
 
         @Serializable

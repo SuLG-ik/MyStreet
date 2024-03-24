@@ -8,6 +8,7 @@ import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildContext
 import ru.mystreet.core.component.getSavedStateStore
 import ru.mystreet.core.component.values
+import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.presentation.edit.EditMapStore
 
 class EditMapComponent(
@@ -33,7 +34,8 @@ class EditMapComponent(
             onObjectAdded = this::onToggleDisabled,
         )
 
-    override fun onToggleEnabled() {
+    override fun onToggleEnabled(categories: List<MapObjectCategory>) {
+        bottomBar.setCategories(categories)
         store.accept(EditMapStore.Intent.Toggle(!state.value.isEnabled))
     }
 

@@ -10,6 +10,7 @@ interface EditMapSelectCategoryStore :
 
     @Serializable
     data class SavedState(
+        val categories: List<MapObjectCategory>,
         val selectedCategoryType: MapObjectCategory = MapObjectCategory.Bench,
     )
 

@@ -105,6 +105,7 @@ fun EditButton(
     }
 }
 
+
 private fun defaultEnterAnimation(): EnterTransition {
     return fadeIn() + expandIn(expandFrom = Alignment.TopEnd) + scaleIn(
         transformOrigin = TransformOrigin(

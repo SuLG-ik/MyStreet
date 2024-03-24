@@ -5,12 +5,15 @@ import com.arkivanov.decompose.value.Value
 import ru.mystreet.map.component.add.EditMapNewObjectInfo
 import ru.mystreet.map.component.add.EditMapNewObjectLoading
 import ru.mystreet.map.component.add.EditMapSelectCategory
+import ru.mystreet.map.domain.entity.MapObjectCategory
 
 interface EditMapBottomBar {
 
     val childStack: Value<ChildStack<*, Child>>
 
     val isVisible: Value<Boolean>
+
+    fun setCategories(categories: List<MapObjectCategory>)
 
     sealed interface Child {
 

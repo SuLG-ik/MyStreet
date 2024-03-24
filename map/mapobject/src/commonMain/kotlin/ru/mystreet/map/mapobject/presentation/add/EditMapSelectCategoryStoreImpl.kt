@@ -18,8 +18,8 @@ class EditMapSelectCategoryStoreImpl(
     Store<EditMapSelectCategoryStore.Intent, EditMapSelectCategoryStore.State, EditMapSelectCategoryStore.Label> by storeFactory.create<_, Action, Message, _, _>(
         name = "EditMapSelectCategoryStoreImpl",
         initialState = EditMapSelectCategoryStore.State(
-            defaultSelectableCategories(savedState.selectedCategoryType),
-            savedState.selectedCategoryType
+            defaultSelectableCategories(savedState.categories, savedState.selectedCategoryType),
+            savedState.selectedCategoryType,
         ),
         reducer = {
             when (it) {
@@ -32,7 +32,6 @@ class EditMapSelectCategoryStoreImpl(
         bootstrapper = coroutineBootstrapper(coroutineDispatcher) { dispatch(Action.Setup) },
         executorFactory = coroutineExecutorFactory(coroutineDispatcher) {
             onAction<Action.Setup> {
-
             }
             onIntent<EditMapSelectCategoryStore.Intent.SelectCategory> { intent ->
                 val newCategories =
@@ -54,12 +53,18 @@ class EditMapSelectCategoryStoreImpl(
     }
 
     override fun getSavedState(): EditMapSelectCategoryStore.SavedState {
-        return EditMapSelectCategoryStore.SavedState(state.selectedCategory)
+        return EditMapSelectCategoryStore.SavedState(
+            state.categories.map { it.type },
+            state.selectedCategory
+        )
     }
 }
 
-private fun defaultSelectableCategories(selectedCategory: MapObjectCategory): List<SelectableCategory> {
-    return MapObjectCategory.entries.mapIndexed { index, type ->
+private fun defaultSelectableCategories(
+    categories: List<MapObjectCategory>,
+    selectedCategory: MapObjectCategory
+): List<SelectableCategory> {
+    return categories.mapIndexed { index, type ->
         SelectableCategory(
             isSelected = type == selectedCategory,
             position = index + 1,
