@@ -25,8 +25,6 @@ import ru.mystreet.uikit.UIKitNavigationBarItem
 import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.AccountIcon
 import ru.mystreet.uikit.iconpack.uikiticonpack.Home
-import ru.mystreet.uikit.iconpack.uikiticonpack.Parks
-import ru.mystreet.uikit.iconpack.uikiticonpack.Search
 import ru.mystreet.uikit.iconpack.uikiticonpack.Trash
 import ru.mystreet.uikit.paddingVerticalInsets
 
@@ -35,9 +33,11 @@ enum class MapHostNavItem(
     val config: MapHost.Config,
 ) {
     GENERAL(UIKitIconPack.Home, MapHost.Config.General),
-    PARKS(UIKitIconPack.Parks, MapHost.Config.Parks),
+
+    //    PARKS(UIKitIconPack.Parks, MapHost.Config.Parks),
     TRASH(UIKitIconPack.Trash, MapHost.Config.Trash),
-    SEARCH(UIKitIconPack.Search, MapHost.Config.Search),
+
+    //    SEARCH(UIKitIconPack.Search, MapHost.Config.Search),
     ACCOUNT(UIKitIconPack.AccountIcon, MapHost.Config.Account),
 }
 
@@ -112,8 +112,8 @@ private fun Navigation(
 private fun MapHost.Config.toUI(): MapHostNavItem {
     return when (this) {
         MapHost.Config.General -> MapHostNavItem.GENERAL
-        MapHost.Config.Parks -> MapHostNavItem.PARKS
-        MapHost.Config.Search -> MapHostNavItem.SEARCH
+        MapHost.Config.Parks -> TODO("MapHostNavItem.PARKS")
+        MapHost.Config.Search -> TODO("MapHostNavItem.SEARCH")
         MapHost.Config.Trash -> MapHostNavItem.TRASH
         MapHost.Config.Account -> MapHostNavItem.ACCOUNT
     }
