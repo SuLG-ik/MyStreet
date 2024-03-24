@@ -139,14 +139,7 @@ fun AccountRegisterFields(
         modifier = modifier,
     ) {
         UIKitOutlineTextField(
-            title = "Имя",
-            value = field.name,
-            onValueChange = onNameInput,
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-        )
-        UIKitOutlineTextField(
-            title = "Псевдоним",
+            title = "Логин",
             value = field.username,
             onValueChange = onLoginInput,
             singleLine = true,
@@ -156,6 +149,13 @@ fun AccountRegisterFields(
             title = "Почта",
             value = field.email,
             onValueChange = onEmailInput,
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+        )
+        UIKitOutlineTextField(
+            title = "Отображаемое имя",
+            value = field.name,
+            onValueChange = onNameInput,
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
         )

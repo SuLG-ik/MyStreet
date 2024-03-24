@@ -90,7 +90,7 @@ fun AccountLoginScreen(
             )
             AnimatedVisibility(isCredentialsIncorrect) {
                 Text(
-                    "Неправильное имя пользователя или пароль",
+                    "Неправильный логин или пароль",
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.error,
                     textAlign = TextAlign.Center,
@@ -134,7 +134,7 @@ fun AccountLoginFields(
         modifier = modifier,
     ) {
         UIKitValidatedOutlinedTextField(
-            title = "Имя пользователя",
+            title = "Логин",
             value = field.login,
             onValueChange = onLoginInput,
             singleLine = true,
