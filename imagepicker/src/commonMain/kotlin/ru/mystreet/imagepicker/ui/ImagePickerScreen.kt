@@ -114,12 +114,10 @@ fun ImagePickerScreen(
             )
         }
     ) {
-        val cameraState = rememberPeekabooCameraState(onCapture = remember(scope, onPick) {
-            {
-                if (it != null) {
-                    scope.launch(Dispatchers.Main) {
-                        onPick(listOf(it))
-                    }
+        val cameraState = rememberPeekabooCameraState(onCapture = {
+            if (it != null) {
+                scope.launch(Dispatchers.Main) {
+                    onPick(listOf(it))
                 }
             }
         })
@@ -131,9 +129,11 @@ fun ImagePickerScreen(
                 modifier = Modifier.fillMaxSize(),
                 permissionDeniedContent = {
                     NoCameraPermission(
+                        isContinueAvailable = isContinueAvailable,
                         images = images,
                         onRemove = onRemove,
                         onLoadFromDisk = imagePickerLauncher::launch,
+                        onContinue = onLoad,
                         modifier = Modifier.fillMaxSize()
                     )
                 }
@@ -146,7 +146,7 @@ fun ImagePickerScreen(
                 images = images,
                 onRemove = onRemove,
                 onLoadFromDisk = imagePickerLauncher::launch,
-                onAccept = { onLoad() },
+                onAccept = onLoad,
                 onCancel = onBack,
                 modifier = Modifier.fillMaxSize().padding(bottom = 15.dp),
             )
@@ -395,9 +395,11 @@ fun Image(
 
 @Composable
 fun NoCameraPermission(
+    isContinueAvailable: Boolean,
     images: SelectedImages,
     onRemove: (index: Int) -> Unit,
     onLoadFromDisk: () -> Unit,
+    onContinue: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -414,8 +416,10 @@ fun NoCameraPermission(
             modifier = Modifier.fillMaxSize().padding(it)
         ) {
             CameraPermissionRequest(
+                isContinueAvailable = isContinueAvailable,
                 isLoadFromDiskAvailable = images.count < images.maxCount,
                 onLoadFromDisk = onLoadFromDisk,
+                onContinue = onContinue,
                 modifier = Modifier.fillMaxWidth().align(Alignment.Center),
             )
         }
@@ -425,8 +429,10 @@ fun NoCameraPermission(
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraPermissionRequest(
+    isContinueAvailable: Boolean,
     isLoadFromDiskAvailable: Boolean,
     onLoadFromDisk: () -> Unit,
+    onContinue: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val permissionState = rememberPermissionState(Permission.Camera)
@@ -456,13 +462,21 @@ fun CameraPermissionRequest(
             OutlinedButton(
                 onClick = {
                     if (permissionState.status.shouldShowRationale)
-                        permissionState.launchPermissionRequest()
-                    else
                         permissionState.openAppSettings()
+                    else
+                        permissionState.launchPermissionRequest()
                 },
                 modifier = Modifier.width(200.dp)
             ) {
                 Text("Дать разрешение")
+            }
+            AnimatedVisibility(isContinueAvailable) {
+                OutlinedButton(
+                    onClick = onContinue,
+                    modifier = Modifier.width(200.dp)
+                ) {
+                    Text("Продолжить")
+                }
             }
         }
     }
