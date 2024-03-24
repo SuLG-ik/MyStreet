@@ -10,3 +10,4 @@ local.properties
 xcuserdata
 *.secret.kt
 google-services.json
+*.podspec
