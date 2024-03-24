@@ -29,4 +29,9 @@ jobs:
         DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
       run: echo $DATA > /home/runner/work/MyStreet/MyStreet/androidApp/google-services.json
     - name: Build with Gradle
+      env: 
+        MAP_API_KEY: ${{ secrets.MAP_API_KEY }}
+        MYSTREET_API_URL: ${{ secrets.MYSTREET_API_URL }}
+        MYSTREET_GRAPHQL_URL: ${{ secrets.MYSTREET_GRAPHQL_URL }}
+        MYSTREET_HOST: ${{ secrets.MYSTREET_HOST }}
       run: ./gradlew build
