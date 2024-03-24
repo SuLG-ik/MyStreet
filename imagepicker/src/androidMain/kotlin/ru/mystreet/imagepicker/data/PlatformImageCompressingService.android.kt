@@ -8,7 +8,8 @@ import java.io.ByteArrayOutputStream
 actual class PlatformImageCompressingService : ImageCompressingService {
     override suspend fun compress(image: ByteArray): ByteArray {
         val bitmap = BitmapFactory.decodeByteArray(image, 0, image.size)
-        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, 1000, 1000, true)
+        val factor = bitmap.width / 1000
+        val scaledBitmap = Bitmap.createScaledBitmap(bitmap, 1000, bitmap.height / factor, true)
         bitmap.recycle()
         val newImageBytes = ByteArrayOutputStream()
         scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 85, newImageBytes)
