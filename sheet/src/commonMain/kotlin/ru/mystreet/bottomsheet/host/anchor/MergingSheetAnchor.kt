@@ -29,15 +29,20 @@ internal class MergingSheetAnchor : SheetAnchor {
         anchor = NoAnchorSheetAnchor(anchor)
     }
 
+    var forceValue: SheetValue = SheetValue.Hidden
+        private set
+
     override val currentValue: SheetValue get() = anchor.currentValue
 
     override val targetValue: SheetValue get() = anchor.targetValue
 
     override fun hide() {
+        forceValue = SheetValue.Hidden
         anchor.hide()
     }
 
     override fun show() {
+        forceValue = SheetValue.Expanded
         anchor.show()
     }
 

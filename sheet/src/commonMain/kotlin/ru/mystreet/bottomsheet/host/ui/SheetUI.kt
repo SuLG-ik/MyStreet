@@ -87,14 +87,12 @@ private fun rememberSheetState(
         confirmValueChange = sheetHost::confirmValueChange,
     )
     val coroutineScope = rememberCoroutineScope()
-    LaunchedEffect(state.targetValue) {
-        if (state.targetValue == SheetValue.PartiallyExpanded) {
-            state.hide()
-        }
-    }
     LaunchedEffect(state.currentValue) {
         if (state.currentValue == SheetValue.PartiallyExpanded) {
-            state.hide()
+            if (sheetHost.forceValue == SheetValue.Expanded)
+                state.expand()
+            else
+                state.hide()
         }
     }
     DisposableEffect(state, sheetHost) {

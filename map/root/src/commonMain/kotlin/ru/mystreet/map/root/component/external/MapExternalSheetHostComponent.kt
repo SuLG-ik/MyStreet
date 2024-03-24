@@ -67,6 +67,9 @@ class MapExternalSheetHostComponent(
 
     override val currentValue: SheetValue
         get() = sheet.currentValue
+    override val forceValue: SheetValue
+        get() = sheet.forceValue
+
     override val childContent: SheetChildContent<MapExternalSheetHost.Child>
         get() = sheet.childContent
     override val currentChild: Value<ChildSlot<*, MapExternalSheetHost.Child>>

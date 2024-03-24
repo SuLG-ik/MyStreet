@@ -13,6 +13,8 @@ interface SheetHost<Child: SheetChild> {
 
     val currentValue: SheetValue
 
+    val forceValue: SheetValue
+
     val childContent: SheetChildContent<Child>
 
     val currentChild: Value<ChildSlot<*, Child>>
@@ -24,4 +26,5 @@ interface SheetHost<Child: SheetChild> {
     fun confirmValueChange(state: SheetValue): Boolean
 
     fun show()
+
 }
