@@ -245,8 +245,8 @@ fun TagsSuggestion(
             Column {
                 Text("Предложенные теги", style = MaterialTheme.typography.titleMedium)
                 FlowRow(
-                    verticalArrangement = Arrangement.spacedBy(2.5.dp),
-                    horizontalArrangement = Arrangement.spacedBy(2.5.dp)
+                    verticalArrangement = Arrangement.spacedBy(5.dp),
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
                 ) {
                     suggestion.suggestions.forEach {
                         TagSuggestionItem(
