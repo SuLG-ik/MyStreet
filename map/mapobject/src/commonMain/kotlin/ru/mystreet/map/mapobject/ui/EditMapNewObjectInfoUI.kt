@@ -19,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -37,6 +38,7 @@ import ru.mystreet.map.component.add.EditMapNewObjectInfo
 import ru.mystreet.map.domain.entity.AddMapObjectField
 import ru.mystreet.map.domain.entity.FieldError
 import ru.mystreet.map.domain.entity.FieldSuggestion
+import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.domain.entity.TagsField
 import ru.mystreet.uikit.KeyboardOptionsNext
 import ru.mystreet.uikit.UIKitOutlineTextFieldWithChips
@@ -73,6 +75,11 @@ private fun EditMapNewObjectScreen(
     onBack: () -> Unit,
     modifier: Modifier,
 ) {
+    LaunchedEffect(Unit) {
+        if (field.title.value.isEmpty()) {
+            onTitleInput(field.category.toTitle())
+        }
+    }
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(15.dp)
@@ -118,6 +125,20 @@ private fun EditMapNewObjectScreen(
         ) {
             Text(stringResource(MR.strings.map_edit_add_continue_button))
         }
+    }
+}
+
+private fun MapObjectCategory.toTitle(): String {
+    return when(this) {
+        MapObjectCategory.Bench -> "Лавочка"
+        MapObjectCategory.Playground -> "Площадка"
+        MapObjectCategory.StreetLight -> "Фонарь"
+        MapObjectCategory.Monument -> "Памятник"
+        MapObjectCategory.Fountain -> "Фонтан"
+        MapObjectCategory.Bower -> "Беседка"
+        MapObjectCategory.GreenArea -> "Растение"
+        MapObjectCategory.PublicWC -> "Туалет"
+        MapObjectCategory.Trash -> "Урна для мусора"
     }
 }
 
@@ -223,7 +244,10 @@ fun TagsSuggestion(
         AnimatedVisibility(isExpanded && suggestion.suggestions.isNotEmpty()) {
             Column {
                 Text("Предложенные теги", style = MaterialTheme.typography.titleMedium)
-                FlowRow {
+                FlowRow(
+                    verticalArrangement = Arrangement.spacedBy(5.dp),
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                ) {
                     suggestion.suggestions.forEach {
                         TagSuggestionItem(
                             text = it,
