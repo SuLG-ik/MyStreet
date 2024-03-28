@@ -1,8 +1,6 @@
-package ru.mystreet.map.map.component
+package ru.mystreet.map.component
 
-import com.arkivanov.decompose.value.Value
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
 import ru.mystreet.app.MapController
 import ru.mystreet.map.domain.entity.MapObjectCategory
 
@@ -22,4 +20,7 @@ interface Map {
 
 
     fun onLocationPermissionGranted()
+
+    fun setSelected(mapObjectId: Long?)
+
 }

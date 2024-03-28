@@ -1,4 +1,4 @@
-package ru.mystreet.map.map.component
+package ru.mystreet.map.component
 
 import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.geomety.Point
@@ -12,5 +12,7 @@ interface MapObjects {
     fun setCategories(categories: List<MapObjectCategory>)
 
     val userLocationPoint: Point?
+
+    fun setSelected(mapObjectId: Long?)
 
 }

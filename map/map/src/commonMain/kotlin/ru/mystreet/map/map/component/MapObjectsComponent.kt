@@ -19,6 +19,7 @@ import ru.mystreet.map.ClusterListener
 import ru.mystreet.map.ClusterizedPlacemark
 import ru.mystreet.map.IconStyle
 import ru.mystreet.map.Placemark
+import ru.mystreet.map.component.MapObjects
 import ru.mystreet.map.domain.entity.FramedMapObjects
 import ru.mystreet.map.domain.entity.MapFrame
 import ru.mystreet.map.domain.entity.MapGeoObject
@@ -35,11 +36,20 @@ class MapObjectsComponent(
 ) : AppComponentContext(componentContext), MapObjects {
 
     private var selectedCategories = listOf<MapObjectCategory>()
+    private var selectedMapObjectId: Long? = null
 
     private val images: ImageProviderFactory = get()
 
     private val mapObjectsVisibilityVisitor =
-        MapObjectsVisibilityVisitor(isVisible = { it.category in selectedCategories })
+        MapObjectsVisibilityVisitor(isVisible = this::isVisible, isSelected = this::isSelected)
+
+    private fun isVisible(mapObject: MapGeoObject.MapObject): Boolean {
+        return mapObject.category in selectedCategories
+    }
+
+    private fun isSelected(mapObject: MapGeoObject.MapObject): Boolean {
+        return mapObject.id == selectedMapObjectId
+    }
 
     private val framedPlacemarks: MutableScatterMap<MapFrame, Pair<ClusterizedPlacemark, List<Placemark>>> =
         mutableScatterMapOf()
@@ -66,11 +76,20 @@ class MapObjectsComponent(
 
     override fun setCategories(categories: List<MapObjectCategory>) {
         selectedCategories = categories
+        visitPlacemarks()
+    }
+
+    private fun visitPlacemarks() {
         framedPlacemarks.forEach { _, value ->
             value.second.forEach {
                 mapObjectsVisibilityVisitor.onPlacemarkVisited(it)
             }
         }
+    }
+
+    override fun setSelected(mapObjectId: Long?) {
+        selectedMapObjectId = mapObjectId
+        visitPlacemarks()
     }
 
     override val userLocationPoint get() = userLocationProvider.iconPoint

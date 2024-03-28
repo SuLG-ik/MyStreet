@@ -5,13 +5,14 @@ import com.arkivanov.decompose.value.subscribe
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildContext
+import ru.mystreet.map.component.Map
 import ru.mystreet.map.component.editmap.EditMap
 import ru.mystreet.map.domain.entity.MapObjectCategory
 
 class GeneralMapComponent(
     componentContext: DIComponentContext,
     private val editMap: EditMap,
-    private val map: ru.mystreet.map.map.component.Map,
+    private val map: Map,
 ) : AppComponentContext(componentContext), GeneralMap {
 
     override val appBar: GeneralMapAppBar =
