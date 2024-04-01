@@ -4,6 +4,9 @@ import ru.mystreet.app.MapController
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.map.BaseMapObject
+import ru.mystreet.map.component.MapCamera
+import ru.mystreet.map.component.MapControl
+import ru.mystreet.map.component.MapObjects
 import ru.mystreet.map.domain.entity.MapConfig
 import ru.mystreet.map.domain.entity.MapGeoObject
 

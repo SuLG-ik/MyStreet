@@ -2,11 +2,15 @@ package ru.mystreet.map.component.info
 
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
+import com.arkivanov.essenty.lifecycle.doOnCreate
+import com.arkivanov.essenty.lifecycle.doOnResume
+import com.arkivanov.essenty.lifecycle.doOnStop
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.ValueContainer
 import ru.mystreet.core.component.getSavedStateStore
 import ru.mystreet.core.component.values
+import ru.mystreet.map.component.Map
 import ru.mystreet.map.domain.entity.MapObject
 import ru.mystreet.map.presentation.info.MapObjectInfoStore
 
@@ -15,7 +19,17 @@ class MapObjectInfoComponent(
     mapObjectId: Long,
     private val onImagePicker: () -> Unit,
     private val onEdit: () -> Unit,
+    private val map: Map,
 ) : AppComponentContext(componentContext), MapObjectInfo {
+
+    init {
+        lifecycle.doOnResume {
+            map.setSelected(mapObjectId)
+        }
+        lifecycle.doOnStop {
+            map.setSelected(null)
+        }
+    }
 
     private val store: MapObjectInfoStore =
         getSavedStateStore(

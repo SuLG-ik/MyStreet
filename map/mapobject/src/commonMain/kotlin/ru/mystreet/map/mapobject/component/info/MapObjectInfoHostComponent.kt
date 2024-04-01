@@ -11,6 +11,7 @@ import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildStack
 import ru.mystreet.core.component.getStore
 import ru.mystreet.imagepicker.component.ImagePickerComponent
+import ru.mystreet.map.component.Map
 import ru.mystreet.map.component.edit.MapObjectEditComponent
 import ru.mystreet.map.presentation.add.MapObjectImageLoaderStore
 
@@ -18,6 +19,7 @@ class MapObjectInfoHostComponent(
     componentContext: DIComponentContext,
     private val onBack: () -> Unit,
     mapObjectId: Long,
+    private val map: Map,
 ) : AppComponentContext(componentContext), MapObjectInfoHost {
 
     private val navigation = StackNavigation<Config>()
@@ -43,6 +45,7 @@ class MapObjectInfoHostComponent(
                     mapObjectId = config.id,
                     onEdit = { onEdit(config.id) },
                     onImagePicker = { onImagePicker(config.id) },
+                    map = map,
                 )
             )
 

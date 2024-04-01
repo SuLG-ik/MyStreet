@@ -43,7 +43,7 @@ internal fun IconStyle.toNative(): com.yandex.mapkit.map.IconStyle {
         null,
         null,
         isVisible,
-        null,
+        scale,
         null
     )
 }

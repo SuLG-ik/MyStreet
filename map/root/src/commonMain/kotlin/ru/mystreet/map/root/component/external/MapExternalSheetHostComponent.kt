@@ -8,22 +8,25 @@ import com.arkivanov.decompose.router.slot.activate
 import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Serializable
 import ru.mystreet.account.component.AccountHostComponent
+import ru.mystreet.app.MapController
 import ru.mystreet.bottomsheet.child.SheetChildContent
 import ru.mystreet.bottomsheet.host.anchor.SheetAnchor
 import ru.mystreet.bottomsheet.host.component.SheetHost
 import ru.mystreet.bottomsheet.host.component.SheetHostComponent
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildContext
+import ru.mystreet.map.component.Map
 import ru.mystreet.map.component.info.MapObjectInfoHostComponent
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MapExternalSheetHostComponent(
     diComponentContext: DIComponentContext,
-    private val navigation: SlotNavigation<Config> = SlotNavigation()
+    private val navigation: SlotNavigation<Config> = SlotNavigation(),
+    private val map: Map,
 ) : MapExternalSheetHost {
 
     private val sheet: SheetHost<MapExternalSheetHost.Child> = SheetHostComponent(
-        diComponentContext.diChildContext("map_sheet_host"),
+        componentContext = diComponentContext.diChildContext("map_sheet_host"),
         navigation = navigation,
         serializer = Config.serializer(),
         childFactory = { config, context ->
@@ -33,7 +36,7 @@ class MapExternalSheetHostComponent(
                 )
 
                 is Config.MapInfo -> MapExternalSheetHost.Child.MapObjectInfo(
-                    MapObjectInfoHostComponent(context, this::onBack, config.mapObjectId)
+                    MapObjectInfoHostComponent(context, this::onBack, config.mapObjectId, map = map)
                 )
             }
         },

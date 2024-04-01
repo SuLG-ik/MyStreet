@@ -4,11 +4,10 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
-import ru.mystreet.account.component.AccountHost
 import ru.mystreet.bottomsheet.host.component.SheetHost
 import ru.mystreet.map.component.editmap.EditMap
 import ru.mystreet.map.general.component.GeneralMap
-import ru.mystreet.map.map.component.Map
+import ru.mystreet.map.component.Map
 import ru.mystreet.map.parks.component.ParksMap
 import ru.mystreet.map.trash.component.TrashMap
 

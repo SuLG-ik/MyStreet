@@ -8,11 +8,13 @@ import ru.mystreet.map.domain.entity.MapGeoObject
 
 class MapObjectsVisibilityVisitor(
     private val isVisible: (MapGeoObject.MapObject) -> Boolean,
+    private val isSelected: (MapGeoObject.MapObject) -> Boolean,
 ) : MapObjectVisitor() {
 
     override fun onPlacemarkVisited(placemark: Placemark) {
         val data = placemark.data as? MapGeoObject.MapObject ?: return
-        placemark.setIconStyle(IconStyle(isVisible = isVisible(data)))
+        val scale = if (isSelected(data)) 1.5f else 1f
+        placemark.setIconStyle(IconStyle(isVisible = isVisible(data), scale = scale))
     }
 
     override fun onClusterizedPlacemarkVisitStart(clusterizedPlacemark: ClusterizedPlacemark): Boolean {
