@@ -3,7 +3,7 @@ package ru.mystreet.map.map.ui
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import ru.mystreet.map.map.component.Map
+import ru.mystreet.map.component.Map
 
 @Composable
 fun MapUI(

@@ -1,4 +1,4 @@
-package ru.mystreet.map.map.component
+package ru.mystreet.map.component
 
 import ru.mystreet.app.MapController
 

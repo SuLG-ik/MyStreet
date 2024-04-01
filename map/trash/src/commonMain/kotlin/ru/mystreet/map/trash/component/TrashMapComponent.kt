@@ -6,7 +6,7 @@ import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildContext
 import ru.mystreet.map.component.editmap.EditMap
 import ru.mystreet.map.domain.entity.MapObjectCategory
-import ru.mystreet.map.map.component.Map
+import ru.mystreet.map.component.Map
 
 class TrashMapComponent(
     componentContext: DIComponentContext,
