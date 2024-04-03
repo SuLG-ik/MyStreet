@@ -1,10 +1,11 @@
-package ru.mystreet.map.ui.edit
+package ru.mystreet.map.mapobject.ui.edit
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ru.mystreet.imagepicker.ui.ImagePickerUI
 import ru.mystreet.map.component.info.MapObjectInfoHost
-import ru.mystreet.map.ui.info.MapObjectInfoUI
+import ru.mystreet.map.mapobject.ui.info.MapObjectInfoUI
+import ru.mystreet.map.ui.edit.MapObjectEditUI
 import ru.mystreet.uikit.UIKitChildren
 
 @Composable

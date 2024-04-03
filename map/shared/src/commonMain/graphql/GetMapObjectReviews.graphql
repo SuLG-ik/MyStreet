@@ -1,0 +1,21 @@
+query GetMapObjectReviews($id: ID!, $pageable: PageableInput!) {
+    mapObjects {
+        info(id: $id) {
+            rating {
+                reviews(pageable: $pageable) {
+                    ...MapObjectReviewFull
+                }
+            }
+        }
+    }
+}
+
+fragment MapObjectReviewFull on ReviewType {
+    id
+    title
+    author {
+        name
+    }
+    rating
+    text
+}

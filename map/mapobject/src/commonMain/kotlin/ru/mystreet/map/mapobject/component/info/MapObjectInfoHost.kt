@@ -4,6 +4,7 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import ru.mystreet.imagepicker.component.ImagePicker
 import ru.mystreet.map.component.edit.MapObjectEdit
+import ru.mystreet.map.mapobject.component.info.MapObjectInfo
 
 interface MapObjectInfoHost {
 

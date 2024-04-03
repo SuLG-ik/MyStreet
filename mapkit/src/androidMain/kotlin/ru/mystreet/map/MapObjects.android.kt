@@ -13,7 +13,11 @@ actual class MapObjects(
 
 
     actual fun addPlacemark(): Placemark {
-        return mapObjects.addPlacemark().toCommon()
+        return mapObjects.addPlacemark()
+            .apply {
+                this.setScaleFunction()
+            }
+            .toCommon()
     }
 
     actual fun addClusterizedPlacemark(clusterListener: ClusterListener): ClusterizedPlacemark {

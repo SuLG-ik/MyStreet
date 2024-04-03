@@ -1,4 +1,4 @@
-package ru.mystreet.map.component.info
+package ru.mystreet.map.mapobject.component.info
 
 import com.arkivanov.decompose.value.Value
 import ru.mystreet.core.component.ValueContainer
@@ -9,6 +9,8 @@ interface MapObjectInfo {
     val isLoading: Value<Boolean>
 
     val mapObjectInfo: Value<ValueContainer<MapObject?>>
+
+    val reviews: MapObjectReviews
 
     fun onImagePicker()
 

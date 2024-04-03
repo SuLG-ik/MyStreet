@@ -34,6 +34,7 @@ calf = "0.4.0"
 gms = "4.4.1"
 firebase-crashlytics = "2.9.9"
 firebase = "32.7.4"
+paging = "3.3.0-alpha02-0.5.1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -92,6 +93,8 @@ calf-permissions = { module = "com.mohamedrejeb.calf:calf-permissions", version.
 firebase = { module = "com.google.firebase:firebase-bom", version.ref="firebase" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+paging-common = { module = "app.cash.paging:paging-common", version.ref = "paging" }
+paging-compose = { module = "app.cash.paging:paging-compose-common", version.ref = "paging" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
