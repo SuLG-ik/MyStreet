@@ -25,6 +25,7 @@ fun MapObjectInfoUI(
         mapObject = mapObject.value,
         onImagePicker = component::onImagePicker,
         onFavourite = component::onFavourite,
+        onAddReview = component::onAddReview,
         onEdit = component::onEdit,
         modifier = modifier
     )

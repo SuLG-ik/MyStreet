@@ -9,4 +9,6 @@ interface MapObjectReviews {
 
     val pagingData: Flow<PagingData<MapObjectReview>>
 
+    fun onAddReview()
+
 }

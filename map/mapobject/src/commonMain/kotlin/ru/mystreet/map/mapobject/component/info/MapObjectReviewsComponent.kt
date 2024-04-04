@@ -14,14 +14,18 @@ import ru.mystreet.map.mapobject.presentation.info.MapObjectReviewsStore
 class MapObjectReviewsComponent(
     componentContext: DIComponentContext,
     mapObjectId: Long,
+   private val onAddReview: () -> Unit,
 ) : AppComponentContext(componentContext), MapObjectReviews {
 
     private val store: MapObjectReviewsStore = getStore(MapObjectReviewsStore.Params(mapObjectId))
-
 
     private val states = store.states
 
     override val pagingData: Flow<PagingData<MapObjectReview>> =
         states.map { it.pagingData }.filterNotNull()
+
+    override fun onAddReview() {
+        onAddReview.invoke()
+    }
 
 }

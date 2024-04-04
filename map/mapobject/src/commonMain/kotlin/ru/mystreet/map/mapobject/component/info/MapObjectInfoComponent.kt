@@ -1,4 +1,4 @@
-package ru.mystreet.map.component.info
+package ru.mystreet.map.mapobject.component.info
 
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.operator.map
@@ -12,9 +12,6 @@ import ru.mystreet.core.component.getSavedStateStore
 import ru.mystreet.core.component.values
 import ru.mystreet.map.component.Map
 import ru.mystreet.map.domain.entity.MapObject
-import ru.mystreet.map.mapobject.component.info.MapObjectInfo
-import ru.mystreet.map.mapobject.component.info.MapObjectReviews
-import ru.mystreet.map.mapobject.component.info.MapObjectReviewsComponent
 import ru.mystreet.map.presentation.info.MapObjectInfoStore
 
 class MapObjectInfoComponent(
@@ -22,6 +19,7 @@ class MapObjectInfoComponent(
     mapObjectId: Long,
     private val onImagePicker: () -> Unit,
     private val onEdit: () -> Unit,
+    private val onAddReview: () -> Unit,
     private val map: Map,
 ) : AppComponentContext(componentContext), MapObjectInfo {
 
@@ -41,7 +39,11 @@ class MapObjectInfoComponent(
         )
 
     override val reviews: MapObjectReviews =
-        MapObjectReviewsComponent(diChildContext("map_object_reviews"), mapObjectId)
+        MapObjectReviewsComponent(
+            diChildContext("map_object_reviews"),
+            mapObjectId,
+            onAddReview = this::onAddReview,
+        )
 
     override fun onImagePicker() {
         onImagePicker.invoke()
@@ -53,6 +55,15 @@ class MapObjectInfoComponent(
 
     override fun onEdit() {
         onEdit.invoke()
+    }
+
+
+    override fun onAddReview() {
+        onAddReview.invoke()
+    }
+
+    override fun onRefresh() {
+        store.accept(MapObjectInfoStore.Intent.Refresh)
     }
 
     private val state = store.values(this)

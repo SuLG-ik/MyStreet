@@ -29,6 +29,7 @@ fun MapObjectReviewsUI(
     val paging = component.pagingData.collectAsLazyPagingItems()
     MapObjectReviewsScreen(
         data = paging,
+        onAddReview = component::onAddReview,
         modifier = modifier,
     )
 }
@@ -63,9 +64,9 @@ fun MapObjectReview(
     Card(
         modifier = modifier
     ) {
-        Text("Author: ${mapObjectReview.author.name}")
-        Text(mapObjectReview.title, style = MaterialTheme.typography.titleLarge)
-        Text(mapObjectReview.text)
+        Text("Author: ${mapObjectReview.author?.name}")
+        Text(mapObjectReview.title ?: "empty title", style = MaterialTheme.typography.titleLarge)
+        Text(mapObjectReview.text ?: "empty text")
     }
 }
 
@@ -73,10 +74,12 @@ fun MapObjectReview(
 @Composable
 fun MapObjectReviewsScreen(
     data: LazyPagingItems<MapObjectReview>,
+    onAddReview: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         ReviewsHeader(
+            onAddReview = onAddReview,
             modifier = Modifier.fillMaxWidth()
         )
         MapObjectReviewsList(
@@ -88,6 +91,7 @@ fun MapObjectReviewsScreen(
 
 @Composable
 fun ReviewsHeader(
+    onAddReview: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -102,7 +106,7 @@ fun ReviewsHeader(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            IconButton(onClick = {}) {
+            IconButton(onClick = onAddReview) {
                 Icon(
                     imageVector = UIKitIconPack.Add,
                     contentDescription = null,

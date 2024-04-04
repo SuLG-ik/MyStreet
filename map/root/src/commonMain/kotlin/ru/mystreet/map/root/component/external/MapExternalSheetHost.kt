@@ -4,7 +4,7 @@ import ru.mystreet.account.component.AccountHost
 import ru.mystreet.bottomsheet.SheetConfig
 import ru.mystreet.bottomsheet.child.component.SheetChild
 import ru.mystreet.bottomsheet.host.component.SheetHost
-import ru.mystreet.map.component.info.MapObjectInfoHost
+import ru.mystreet.map.mapobject.component.info.MapObjectInfoHost
 
 interface MapExternalSheetHost : SheetHost<MapExternalSheetHost.Child> {
 
