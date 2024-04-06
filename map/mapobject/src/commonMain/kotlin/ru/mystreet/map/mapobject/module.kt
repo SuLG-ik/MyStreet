@@ -17,6 +17,8 @@ import ru.mystreet.map.domain.usecase.UploadMapObjectImagesUseCase
 import ru.mystreet.map.domain.usecase.ValidateDescriptionUseCase
 import ru.mystreet.map.domain.usecase.ValidateTitleUseCase
 import ru.mystreet.map.domain.validator.MapObjectFieldValidator
+import ru.mystreet.map.mapobject.presentation.info.MapObjectReviewAddStore
+import ru.mystreet.map.mapobject.presentation.info.MapObjectReviewAddStoreImpl
 import ru.mystreet.map.mapobject.presentation.info.MapObjectReviewsStore
 import ru.mystreet.map.mapobject.presentation.info.MapObjectReviewsStoreImpl
 import ru.mystreet.map.presentation.add.EditMapNewObjectInfoStore
@@ -53,4 +55,5 @@ val mapObjectModule = module {
     factoryOf(::RawMapObjectFieldFormatter) bind MapObjectFieldFormatter::class
     factoryOf(::MapObjectEditStoreImpl) bind MapObjectEditStore::class
     factoryOf(::MapObjectReviewsStoreImpl) bind MapObjectReviewsStore::class
+    factoryOf(::MapObjectReviewAddStoreImpl) bind MapObjectReviewAddStore::class
 }

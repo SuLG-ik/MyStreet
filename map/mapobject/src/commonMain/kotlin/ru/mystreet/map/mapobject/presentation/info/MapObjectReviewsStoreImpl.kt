@@ -1,9 +1,9 @@
 package ru.mystreet.map.mapobject.presentation.info
 
+import androidx.paging.cachedIn
 import app.cash.paging.Pager
 import app.cash.paging.PagingConfig
 import app.cash.paging.PagingData
-import app.cash.paging.cachedIn
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
@@ -23,7 +23,7 @@ class MapObjectReviewsStoreImpl(
     coroutineDispatcher: CoroutineDispatcher,
     storeFactory: StoreFactory,
     getMapObjectReviewsPagingSourceUseCase: GetMapObjectReviewsPagingSourceUseCase,
-    params: MapObjectReviewsPagingSource.Params,
+    params: MapObjectReviewsStore.Params,
 ) : MapObjectReviewsStore,
     Store<MapObjectReviewsStore.Intent, MapObjectReviewsStore.State, MapObjectReviewsStore.Label> by storeFactory.create<_, Action, Message, _, _>(
         name = "MapObjectReviewsStoreImpl",

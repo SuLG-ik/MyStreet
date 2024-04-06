@@ -8,7 +8,6 @@ plugins {
 }
 
 kotlin {
-    androidTarget()
     androidTarget {
         compilations.all {
             kotlinOptions {

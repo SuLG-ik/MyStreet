@@ -24,8 +24,11 @@ fragment MapObjectFull on MapObjectType {
     images {
         path
     }
-    rating {
-        rating
+    score {
+        rating {
+            value
+            formattedValue
+        }
     }
     forUser {
         favourite {

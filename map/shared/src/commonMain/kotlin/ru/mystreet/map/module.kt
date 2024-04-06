@@ -39,6 +39,7 @@ import ru.mystreet.map.domain.usecase.AddRemoteMapObjectUseCase
 import ru.mystreet.map.domain.usecase.AddTagToFieldUseCase
 import ru.mystreet.map.domain.usecase.CalculateFrameForPointUseCase
 import ru.mystreet.map.domain.usecase.CalculateFramesForVisibleAreaUseCase
+import ru.mystreet.map.domain.usecase.CalculateNextPageUseCase
 import ru.mystreet.map.domain.usecase.DeleteLocalMapObjectUseCase
 import ru.mystreet.map.domain.usecase.DeleteMapObjectUseCase
 import ru.mystreet.map.domain.usecase.DeleteRemoteMapObjectUseCase
@@ -48,6 +49,7 @@ import ru.mystreet.map.domain.usecase.GetFramedMapObjectsUseCase
 import ru.mystreet.map.domain.usecase.GetLocalFramedMapObjectUseCase
 import ru.mystreet.map.domain.usecase.GetMapObjectReviewsPagingSourceUseCase
 import ru.mystreet.map.domain.usecase.GetRemoteFramedMapObjectsUseCase
+import ru.mystreet.map.domain.usecase.GetRemotePagingMapObjectsUseCase
 import ru.mystreet.map.domain.usecase.LoadLocalMapConfigUseCase
 import ru.mystreet.map.domain.usecase.LoadMapObjectTagsWithTitleUseCase
 import ru.mystreet.map.domain.usecase.LoadMapObjectUseCase
@@ -59,17 +61,6 @@ import ru.mystreet.map.domain.usecase.SaveMapInitialCameraPositionUseCase
 import ru.mystreet.map.domain.usecase.SetMapObjectFavouriteUseCase
 import ru.mystreet.map.domain.usecase.UploadMapObjectImagesUseCase
 import ru.mystreet.map.map.data.service.FramesServiceImpl
-
-val mapSharedModule = module {
-    includes(
-        imagePickerModule,
-        mapSharedConverterModule,
-        mapSharedServiceModule,
-        mapSharedStore5Module,
-        mapSharedRepositoryModule,
-        mapSharedUseCaseModule,
-    )
-}
 
 private val mapSharedConverterModule = module {
     singleOf(::GraphqlMapObjectsConverter)
@@ -126,5 +117,18 @@ private val mapSharedUseCaseModule = module {
     factoryOf(::FlowLocalFramedMapObjectUseCase)
     factoryOf(::QueueFramedMapObjectsUseCase)
     factoryOf(::SaveLocalFramedMapObjectUseCase)
+    factoryOf(::CalculateNextPageUseCase)
+    factoryOf(::GetRemotePagingMapObjectsUseCase)
     factoryOf(::GetMapObjectReviewsPagingSourceUseCaseImpl) bind GetMapObjectReviewsPagingSourceUseCase::class
+}
+
+val mapSharedModule = module {
+    includes(
+        imagePickerModule,
+        mapSharedConverterModule,
+        mapSharedServiceModule,
+        mapSharedStore5Module,
+        mapSharedRepositoryModule,
+        mapSharedUseCaseModule,
+    )
 }

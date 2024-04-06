@@ -17,7 +17,7 @@ class MapObjectReviewAddComponent(
 
     private val store: MapObjectReviewAddStore = getSavedStateStore(
         key = "review_add",
-        initialSavedState = { MapObjectReviewAddStore.SavedState(title = "", content = "") },
+        initialSavedState = { MapObjectReviewAddStore.SavedState() },
     )
 
     val state = store.values(this)
@@ -26,7 +26,7 @@ class MapObjectReviewAddComponent(
 
     override val isLoading: Value<Boolean> = state.map { it.isLoading }
 
-    override val isContinueAvailable: Value<Boolean> = state.map { it.isLoading }
+    override val isContinueAvailable: Value<Boolean> = state.map { it.isContinueAvailable }
 
     override fun onContinue() {
         store.accept(MapObjectReviewAddStore.Intent.Continue)
@@ -43,5 +43,14 @@ class MapObjectReviewAddComponent(
     override fun onContentInput(value: String) {
         store.accept(MapObjectReviewAddStore.Intent.ContentInput(value))
     }
+
+    override fun onRatingInput(value: Int) {
+        store.accept(MapObjectReviewAddStore.Intent.RatingInput(value))
+    }
+
+    override fun onAuthorHiddenInput(value: Boolean) {
+        store.accept(MapObjectReviewAddStore.Intent.AuthorHiddenInput(value))
+    }
+
 
 }

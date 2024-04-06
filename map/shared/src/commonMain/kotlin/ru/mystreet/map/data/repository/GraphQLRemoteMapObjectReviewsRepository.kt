@@ -20,7 +20,7 @@ class GraphQLRemoteMapObjectReviewsRepository(
             )
         ).execute()
         return with(converter) {
-            response.data?.mapObjects?.info?.rating?.reviews?.map { it.mapObjectReviewFull.convert() }
+            response.data?.mapObjects?.info?.score?.reviews?.reviews?.map { it.mapObjectReviewFull.convert() }
                 ?: TODO()
         }
     }

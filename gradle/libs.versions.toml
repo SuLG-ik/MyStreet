@@ -6,11 +6,11 @@ agp = "8.3.1"
 kotlin = "1.9.23"
 kotlinx-serialization = "1.6.2"
 kotlinx-coroutines = "1.8.0"
-kotlinx-datetime = "0.5.0"
+kotlinx-datetime = "0.6.0-RC.2"
 kotlinx-collections = "0.3.7"
 compose-material3 = "1.2.1"
 androidx-activityCompose = "1.8.2"
-yandex-mapkit = "4.5.0-lite"
+yandex-mapkit = "4.5.1-lite"
 decompose = "3.0.0-alpha09"
 essenty = "2.0.0-alpha07"
 haze = "0.6.2"
@@ -20,7 +20,7 @@ buildKonfig = "0.15.1"
 moko-resources = "0.24.0-alpha-5"
 gms-location = "21.2.0"
 mvikotlin = "4.0.0-alpha02"
-datastore = "1.1.0-beta02"
+datastore = "1.1.0-rc01"
 apollo = "4.0.0-beta.4"
 splash = "1.0.1"
 peekaboo = "0.5.1"
@@ -33,7 +33,7 @@ store5 = "5.0.0-beta02"
 calf = "0.4.0"
 gms = "4.4.1"
 firebase-crashlytics = "2.9.9"
-firebase = "32.7.4"
+firebase = "32.8.0"
 paging = "3.3.0-alpha02-0.5.1"
 
 [libraries]
@@ -71,6 +71,7 @@ mvikotlin-coroutines = { module = "com.arkivanov.mvikotlin:mvikotlin-extensions-
 datastore-preferences = { module = "androidx.datastore:datastore-preferences-core", version.ref = "datastore" }
 datastore-core = { module = "androidx.datastore:datastore-core", version.ref = "datastore" }
 apollo = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo" }
+apollo-scalars = { module = "com.apollographql.apollo3:apollo-adapters", version.ref = "apollo" }
 splash = { module = "androidx.core:core-splashscreen", version.ref = "splash" }
 peekaboo-imagepicker = { module = "io.github.onseok:peekaboo-image-picker", version.ref = "peekaboo" }
 peekaboo-ui = { module = "io.github.onseok:peekaboo-ui", version.ref = "peekaboo" }
@@ -90,7 +91,7 @@ sqldelight-driver-android = { module = "app.cash.sqldelight:android-driver", ver
 sqldelight-driver-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
 store5 = { module = "org.mobilenativefoundation.store:store5", version.ref = "store5" }
 calf-permissions = { module = "com.mohamedrejeb.calf:calf-permissions", version.ref = "calf" }
-firebase = { module = "com.google.firebase:firebase-bom", version.ref="firebase" }
+firebase = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 paging-common = { module = "app.cash.paging:paging-common", version.ref = "paging" }

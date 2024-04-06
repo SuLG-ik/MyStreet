@@ -14,9 +14,6 @@ actual class MapObjects(
 
     actual fun addPlacemark(): Placemark {
         return mapObjects.addPlacemark()
-            .apply {
-                this.setScaleFunction()
-            }
             .toCommon()
     }
 

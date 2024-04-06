@@ -15,6 +15,10 @@ interface MapObjectReviewAdd {
 
     fun onContentInput(value: String)
 
+    fun onRatingInput(value: Int)
+
+    fun onAuthorHiddenInput(value: Boolean)
+
     val isLoading: Value<Boolean>
     val isContinueAvailable: Value<Boolean>
 }

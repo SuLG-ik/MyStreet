@@ -29,7 +29,7 @@ class GraphqlMapObjectsConverter {
             },
             images = images.map { it.path },
             forUser = forUser?.convert(),
-            rating = rating.rating?.toString()
+            rating = score.rating?.formattedValue
         )
     }
 

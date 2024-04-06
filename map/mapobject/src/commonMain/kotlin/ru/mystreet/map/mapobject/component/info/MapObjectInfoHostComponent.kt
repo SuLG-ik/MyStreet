@@ -46,6 +46,7 @@ class MapObjectInfoHostComponent(
                     mapObjectId = config.id,
                     onEdit = { onEdit(config.id) },
                     onImagePicker = { onImagePicker(config.id) },
+                    onAddReview = { onAddReview(config.id) },
                     map = map,
                 )
             )
@@ -64,14 +65,14 @@ class MapObjectInfoHostComponent(
                     mapObjectId = config.id,
                     onBack = this::onBack,
                     onCompleted = { onInfo(config.id) },
-                    onDelete = onBack,
+                    onDelete = this::onBack,
                 )
             )
 
             is Config.AddReview -> MapObjectInfoHost.Child.AddReview(
                 MapObjectReviewAddComponent(
                     componentContext = diComponentContext,
-                    onBack = onBack,
+                    onBack = this::onBack,
                     onCompleted = { onInfo(config.id) }
                 )
             )
