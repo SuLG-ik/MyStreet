@@ -13,6 +13,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutorScope
 import com.arkivanov.mvikotlin.extensions.coroutines.ExecutorBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -126,3 +127,20 @@ inline fun <reified T : Intent, Intent : Any, Action : Any, State : Any, Message
         }
     }
 }
+
+@OptIn(ExperimentalMviKotlinApi::class)
+inline fun <reified T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any> ExecutorBuilder<Intent, Action, State, Message, Label>.onIntentSkipping(
+    noinline handler: CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
+) {
+    val job: Job = SupervisorJob()
+    onIntent<T> {
+        if (job.children.any())
+            return@onIntent
+        val newScope = JobBasedCoroutineExecutorScopeImpl(
+            scope = this,
+            cancelableJob = job,
+        )
+        handler.invoke(newScope, it)
+    }
+}
+

@@ -6,15 +6,21 @@ import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ru.mystreet.core.component.onIntentSkipping
 import ru.mystreet.map.domain.entity.AddMapObjectReviewField
 import ru.mystreet.map.domain.entity.FieldError
+import ru.mystreet.map.domain.usecase.AddMapObjectReviewUseCase
 import ru.mystreet.uikit.ValidatedField
 
 @OptIn(ExperimentalMviKotlinApi::class)
 class MapObjectReviewAddStoreImpl(
     coroutineDispatcher: CoroutineDispatcher,
     storeFactory: StoreFactory,
-    savedState: MapObjectReviewAddStore.SavedState,
+    private val savedState: MapObjectReviewAddStore.SavedState,
+    addMapObjectReviewUseCase: AddMapObjectReviewUseCase,
 ) : MapObjectReviewAddStore,
     Store<MapObjectReviewAddStore.Intent, MapObjectReviewAddStore.State, MapObjectReviewAddStore.Label> by storeFactory.create<_, Action, Message, _, _>(
         name = "MapObjectReviewAddStoreImpl",
@@ -48,6 +54,17 @@ class MapObjectReviewAddStoreImpl(
             onIntent<MapObjectReviewAddStore.Intent.ContentInput> {
                 dispatch(Message.ContentInput(ValidatedField(it.value, null)))
             }
+            onIntentSkipping { intent: MapObjectReviewAddStore.Intent ->
+                val state = state()
+                if (!state.isContinueAvailable)
+                    return@onIntentSkipping
+                launch {
+                    addMapObjectReviewUseCase(savedState.mapObjectId, state.field)
+                    withContext(Dispatchers.Main) {
+                        publish(MapObjectReviewAddStore.Label.Complete)
+                    }
+                }
+            }
         },
     ) {
 
@@ -64,6 +81,7 @@ class MapObjectReviewAddStoreImpl(
 
     override fun getSavedState(): MapObjectReviewAddStore.SavedState {
         return MapObjectReviewAddStore.SavedState(
+            mapObjectId = savedState.mapObjectId,
             title = state.field.title.value,
             content = state.field.content.value,
             isAuthorHidden = state.field.isAuthorHidden,

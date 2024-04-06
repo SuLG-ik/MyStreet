@@ -25,8 +25,9 @@ class RemoteMapObjectReviewsPagingSource(
 
     override suspend fun load(params: LoadParams<Pageable>): LoadResult<Pageable, MapObjectReview> {
         try {
-            val nextPageNumber = params.key ?: Pageable(1, 30)
-            val response = getRemotePagingMapObjectsUseCase(sourceParams.mapObjectId, nextPageNumber)
+            val nextPageNumber = params.key ?: Pageable(0, 30)
+            val response =
+                getRemotePagingMapObjectsUseCase(sourceParams.mapObjectId, nextPageNumber)
             return LoadResult.Page(
                 data = response,
                 prevKey = null,

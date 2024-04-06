@@ -34,6 +34,7 @@ import ru.mystreet.map.domain.service.FramedMapObjectsQueueService
 import ru.mystreet.map.domain.service.FramesService
 import ru.mystreet.map.domain.store5.SingleFramedMapObjectsStore5
 import ru.mystreet.map.domain.usecase.AddLocalFramedMapObjectUseCase
+import ru.mystreet.map.domain.usecase.AddMapObjectReviewUseCase
 import ru.mystreet.map.domain.usecase.AddMapObjectUseCase
 import ru.mystreet.map.domain.usecase.AddRemoteMapObjectUseCase
 import ru.mystreet.map.domain.usecase.AddTagToFieldUseCase
@@ -120,6 +121,7 @@ private val mapSharedUseCaseModule = module {
     factoryOf(::CalculateNextPageUseCase)
     factoryOf(::GetRemotePagingMapObjectsUseCase)
     factoryOf(::GetMapObjectReviewsPagingSourceUseCaseImpl) bind GetMapObjectReviewsPagingSourceUseCase::class
+    factoryOf(::AddMapObjectReviewUseCase)
 }
 
 val mapSharedModule = module {

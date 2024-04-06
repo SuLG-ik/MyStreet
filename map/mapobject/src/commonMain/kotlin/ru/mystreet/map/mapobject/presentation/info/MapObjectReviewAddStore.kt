@@ -9,6 +9,7 @@ interface MapObjectReviewAddStore :
 
     @Serializable
     data class SavedState(
+        val mapObjectId: Long,
         val title: String = "",
         val content: String = "",
         val isAuthorHidden: Boolean = false,
@@ -29,6 +30,8 @@ interface MapObjectReviewAddStore :
         val field: AddMapObjectReviewField,
     )
 
-    sealed interface Label
+    sealed interface Label {
+        data object Complete : Label
+    }
 
 }

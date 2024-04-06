@@ -72,6 +72,7 @@ class MapObjectInfoHostComponent(
             is Config.AddReview -> MapObjectInfoHost.Child.AddReview(
                 MapObjectReviewAddComponent(
                     componentContext = diComponentContext,
+                    mapObjectId = config.id,
                     onBack = this::onBack,
                     onCompleted = { onInfo(config.id) }
                 )
