@@ -9,7 +9,7 @@
     <string name="green-zone">Растения</string>
     <string name="monument">Памятники</string>
     <string name="playground">Площадки</string>
-    <string name="installation">Инсталляция</string>
+    <string name="installation">Инсталляции</string>
     <string name="other">Другое</string>
     <string name="public-wc">Туалеты</string>
     <string name="streetlight">Освещение</string>
@@ -20,7 +20,7 @@
     <string name="monument_full">Памятники, архитектурные объекты</string>
     <string name="playground_full">Площадки, спортинвентарь, игровые зоны</string>
     <string name="installation_full">Инсталяция, объект искусства</string>
-    <string name="other_full">Other, does not match any category</string>
+    <string name="other_full">Другое, не подходящее ни под одну из категорий</string>
     <string name="public-wc_full">Общественные туалеты</string>
     <string name="streetlight_full">Освещение, фонари, светильники</string>
     <string name="trash_full">Урны для мусора, точки сбора мусора</string>
