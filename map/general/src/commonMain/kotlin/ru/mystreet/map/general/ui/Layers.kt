@@ -49,7 +49,6 @@ fun LayersButton(
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun LayersContent(
     layers: List<GeneralLayer>,
@@ -57,8 +56,9 @@ fun LayersContent(
     modifier: Modifier = Modifier,
 ) {
     Surface(
+        color = MaterialTheme.colorScheme.primaryContainer,
         shape = MaterialTheme.shapes.large,
-        modifier = modifier.alpha(DefaultMapAlpha),
+        modifier = modifier,
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(5.dp)

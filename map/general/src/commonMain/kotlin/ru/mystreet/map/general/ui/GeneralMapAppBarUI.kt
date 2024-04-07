@@ -12,11 +12,8 @@ fun GeneralMapAppBarUI(
     modifier: Modifier = Modifier,
 ) {
     val isInEditMode by component.isInEditMode.subscribeAsState()
-    val layers by component.layers.subscribeAsState()
     GeneralMapAppBarScreen(
         isInEditMode = isInEditMode,
-        layers = layers,
-        onLayerToggle = component::onLayerToggle,
         onEditModeToggle = component::onEditModeToggle,
         modifier = modifier,
     )

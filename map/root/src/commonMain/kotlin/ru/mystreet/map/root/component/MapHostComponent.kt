@@ -57,13 +57,6 @@ class MapHostComponent(
             )
 
             MapHost.Config.Parks -> MapHost.Child.Parks(ParksMapComponent(componentContext))
-            MapHost.Config.Trash -> MapHost.Child.Trash(
-                TrashMapComponent(
-                    componentContext = componentContext,
-                    editMap = editMap,
-                    map = map,
-                )
-            )
 
             else -> throw IllegalArgumentException("No childStack navigation for $config")
         }

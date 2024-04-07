@@ -14,24 +14,31 @@ fun topBarSlide(
     animationSpec: FiniteAnimationSpec<Float> = tween(),
 ): StackAnimator =
     stackAnimator(animationSpec = animationSpec) { factor, direction, content ->
-        content(Modifier.offsetYFactor(factor))
+        content(Modifier.offsetYFactor(factor, direction = 1))
     }
 
-private fun Modifier.offsetYFactor(factor: Float): Modifier =
+private fun Modifier.offsetYFactor(factor: Float, direction: Int): Modifier =
     layout { measurable, constraints ->
         val placeable = measurable.measure(constraints)
 
         layout(placeable.width, placeable.height) {
             placeable.placeRelative(
                 x = 0,
-                y = (placeable.height.toFloat() * mapFactor(factor)).toInt()
+                y = (placeable.height.toFloat() * mapFactor(factor, direction)).toInt()
             )
         }
     }
 
-private fun mapFactor(factor: Float): Float {
+private fun mapFactor(factor: Float, direction: Int): Float {
     return if (factor > 0)
-        -factor
+        -factor * direction
     else
-        factor
+        factor * direction
 }
+
+fun bottomBarSlide(
+    animationSpec: FiniteAnimationSpec<Float> = tween(),
+): StackAnimator =
+    stackAnimator(animationSpec = animationSpec) { factor, direction, content ->
+        content(Modifier.offsetYFactor(factor, direction = -1))
+    }
