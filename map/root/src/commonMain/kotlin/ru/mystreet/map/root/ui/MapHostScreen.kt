@@ -26,6 +26,7 @@ import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.AccountIcon
 import ru.mystreet.uikit.iconpack.uikiticonpack.Home
 import ru.mystreet.uikit.iconpack.uikiticonpack.Trash
+import ru.mystreet.uikit.paddingBottomInsets
 import ru.mystreet.uikit.paddingVerticalInsets
 
 enum class MapHostNavItem(
@@ -67,7 +68,7 @@ fun MapHostScreen(
                         currentItem = currentConfig.toUI(),
                         allItems = enumValues<MapHostNavItem>(),
                         onNavigate = { onNavigate(it.config) },
-                        modifier = Modifier.paddingVerticalInsets()
+                        modifier = Modifier
                             .graphicsLayer(alpha = DefaultMapAlpha),
                     )
                 }
@@ -93,7 +94,7 @@ private fun Navigation(
     modifier: Modifier = Modifier,
 ) {
     UIKitBottomAppBar(
-        modifier = modifier.padding(horizontal = 15.dp, vertical = 5.dp),
+        modifier = modifier.padding(horizontal = 15.dp, vertical = 20.dp),
     ) {
         allItems.forEach {
             UIKitNavigationBarItem(

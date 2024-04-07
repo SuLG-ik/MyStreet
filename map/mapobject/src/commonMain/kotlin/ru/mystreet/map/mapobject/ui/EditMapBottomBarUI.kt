@@ -16,8 +16,8 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ru.mystreet.map.component.editmap.EditMapBottomBar
-import ru.mystreet.uikit.paddingBottomInsets
 import ru.mystreet.uikit.paddingHorizontalInsets
+import ru.mystreet.uikit.paddingIme
 
 @Composable
 fun EditMapBottomBarUI(
@@ -28,7 +28,7 @@ fun EditMapBottomBarUI(
         component.isVisible.subscribeAsState().value,
         enter = fadeIn() + slideInVertically { it },
         exit = fadeOut() + slideOutVertically { it },
-        modifier = modifier.paddingBottomInsets(),
+        modifier = modifier.paddingIme(),
     ) {
         Children(
             component.childStack,

@@ -74,7 +74,7 @@ fun UIKitBottomAppBar(
     tonalElevation: Dp = 0.dp,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     windowInsets: WindowInsets = WindowInsets.systemBars,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable RowScope.() -> Unit,
 ) {
     Surface(
         color = containerColor,
@@ -85,7 +85,6 @@ fun UIKitBottomAppBar(
     ) {
         Row(
             Modifier
-                .windowInsetsPadding(windowInsets)
                 .height(72.dp)
                 .padding(contentPadding),
             horizontalArrangement = Arrangement.Start,
@@ -102,7 +101,7 @@ fun RowScope.UIKitNavigationBarItem(
     icon: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
 ) {
     val styledIcon = @Composable {
         Box(modifier = Modifier) {
@@ -230,7 +229,7 @@ private fun MeasureScope.placeIcon(
     iconPlaceable: Placeable,
     indicatorRipplePlaceable: Placeable,
     indicatorPlaceable: Placeable?,
-    constraints: Constraints
+    constraints: Constraints,
 ): MeasureResult {
     val width = constraints.maxWidth
     val height = constraints.maxHeight
@@ -254,7 +253,7 @@ private fun MeasureScope.placeIcon(
 
 internal class MappedInteractionSource(
     underlyingInteractionSource: InteractionSource,
-    private val delta: Offset
+    private val delta: Offset,
 ) : InteractionSource {
     private val mappedPresses =
         mutableMapOf<PressInteraction.Press, PressInteraction.Press>()

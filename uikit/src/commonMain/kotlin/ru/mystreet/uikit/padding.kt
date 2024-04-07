@@ -1,10 +1,14 @@
 package ru.mystreet.uikit
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,18 +22,19 @@ fun Modifier.paddingVerticalInsets() =
     this then Modifier.padding(
         PaddingValues(
             bottom = maxOf(
-                ScaffoldDefaults.contentWindowInsets.asPaddingValues().calculateBottomPadding(),
+                WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
                 20.dp
             ),
-            top = ScaffoldDefaults.contentWindowInsets.asPaddingValues().calculateTopPadding(),
+            top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding(),
         )
     )
+
 @Composable
 fun Modifier.paddingBottomInsets() =
     this then Modifier.padding(
         PaddingValues(
             bottom = maxOf(
-                ScaffoldDefaults.contentWindowInsets.asPaddingValues().calculateBottomPadding(),
+                WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
                 20.dp
             ),
         )
@@ -49,6 +54,16 @@ fun Modifier.paddingHorizontalInsets() =
                     .calculateEndPadding(LocalLayoutDirection.current),
                 10.dp,
             ),
+        )
+    )
+
+@Composable
+fun Modifier.paddingIme() =
+    this then Modifier.padding(
+        bottom = maxOf(
+            WindowInsets.ime.asPaddingValues()
+                .calculateBottomPadding() - WindowInsets.navigationBars.asPaddingValues()
+                .calculateBottomPadding(), 0.dp
         )
     )
 
