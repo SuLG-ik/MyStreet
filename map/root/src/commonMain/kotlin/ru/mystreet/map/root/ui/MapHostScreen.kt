@@ -35,9 +35,9 @@ enum class MapHostNavItem(
     GENERAL(UIKitIconPack.Home, MapHost.Config.General),
 
     //    PARKS(UIKitIconPack.Parks, MapHost.Config.Parks),
-    TRASH(UIKitIconPack.Trash, MapHost.Config.Trash),
-
+    //    TRASH(UIKitIconPack.Trash, MapHost.Config.Trash),
     //    SEARCH(UIKitIconPack.Search, MapHost.Config.Search),
+
     ACCOUNT(UIKitIconPack.AccountIcon, MapHost.Config.Account),
 }
 
@@ -133,7 +133,6 @@ private fun MapHost.Config.toUI(): MapHostNavItem {
         MapHost.Config.General -> MapHostNavItem.GENERAL
         MapHost.Config.Parks -> TODO("MapHostNavItem.PARKS")
         MapHost.Config.Search -> TODO("MapHostNavItem.SEARCH")
-        MapHost.Config.Trash -> MapHostNavItem.TRASH
         MapHost.Config.Account -> MapHostNavItem.ACCOUNT
     }
 }
