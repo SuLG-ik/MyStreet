@@ -1,9 +1,15 @@
 package ru.mystreet.map.data.converter
 
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import ru.mystreet.map.data.model.fragment.MapObjectFull
+import ru.mystreet.map.data.model.fragment.MapObjectReviewFull
 import ru.mystreet.map.domain.entity.MapObject
 import ru.mystreet.map.domain.entity.MapObjectCategory
+import ru.mystreet.map.domain.entity.MapObjectReview
 import ru.mystreet.map.domain.entity.MapObjectTag
+import ru.mystreet.map.domain.entity.ReviewAuthor
 import ru.mystreet.map.domain.entity.UserMapObject
 import ru.mystreet.map.geomety.Latitude
 import ru.mystreet.map.geomety.Longitude
@@ -25,7 +31,8 @@ class GraphqlMapObjectsConverter {
                 MapObjectTag(tag.id.toLong(), tag.title)
             },
             images = images.map { it.path },
-            forUser = forUser?.convert()
+            forUser = forUser?.convert(),
+            rating = score.rating?.formattedValue
         )
     }
 
@@ -34,6 +41,18 @@ class GraphqlMapObjectsConverter {
             isFavourite = favourite.isFavourite,
         )
     }
+
+    fun MapObjectReviewFull.convert(): MapObjectReview {
+        return MapObjectReview(
+            id = id.toLong(),
+            title = title,
+            text = text,
+            rating = rating,
+            createdDate = createdDate,
+            author = author?.name?.let { ReviewAuthor(it) }
+        )
+    }
+
 }
 
 private fun String.convertToCategory(): MapObjectCategory {

@@ -25,6 +25,8 @@ kotlin {
         }
         commonMain.dependencies {
             api(libs.apollo)
+            api(libs.apollo.scalars)
+            api(libs.kotlinx.datetime)
             implementation(projects.core.auth)
         }
         commonTest.dependencies {
@@ -47,6 +49,7 @@ apollo {
         srcDir("src/commonMain/graphql/")
         generateApolloMetadata.set(true)
         mapScalarToUpload("Upload")
+        mapScalar("DateTime", "kotlinx.datetime.LocalDateTime", "com.apollographql.apollo3.adapter.KotlinxLocalDateTimeAdapter")
     }
 }
 

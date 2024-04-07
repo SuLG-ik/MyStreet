@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ru.mystreet.account.ui.AccountHostUI
 import ru.mystreet.bottomsheet.child.SheetChildContent
-import ru.mystreet.map.ui.edit.MapObjectInfoHostUI
+import ru.mystreet.map.mapobject.ui.edit.MapObjectInfoHostUI
 
 class MapExternalSheetChildContent : SheetChildContent<MapExternalSheetHost.Child> {
     @Composable

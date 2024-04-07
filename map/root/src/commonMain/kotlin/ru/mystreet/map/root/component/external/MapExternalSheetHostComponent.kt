@@ -8,7 +8,6 @@ import com.arkivanov.decompose.router.slot.activate
 import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Serializable
 import ru.mystreet.account.component.AccountHostComponent
-import ru.mystreet.app.MapController
 import ru.mystreet.bottomsheet.child.SheetChildContent
 import ru.mystreet.bottomsheet.host.anchor.SheetAnchor
 import ru.mystreet.bottomsheet.host.component.SheetHost
@@ -16,7 +15,7 @@ import ru.mystreet.bottomsheet.host.component.SheetHostComponent
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildContext
 import ru.mystreet.map.component.Map
-import ru.mystreet.map.component.info.MapObjectInfoHostComponent
+import ru.mystreet.map.mapobject.component.info.MapObjectInfoHostComponent
 
 @OptIn(ExperimentalMaterial3Api::class)
 class MapExternalSheetHostComponent(

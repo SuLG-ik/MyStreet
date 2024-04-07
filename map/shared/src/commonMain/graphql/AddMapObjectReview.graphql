@@ -1,0 +1,16 @@
+mutation AddMapObjectReview(
+    $id: ID!
+    $input: ReviewInput!
+) {
+    mapObjects {
+        edit(id: $id) {
+            rating {
+                reviews {
+                    add(input: $input) {
+                        id
+                    }
+                }
+            }
+        }
+    }
+}

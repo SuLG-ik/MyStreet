@@ -35,6 +35,8 @@ fun UIKitTitledSurfaceColumn(
     modifier: Modifier = Modifier,
     shape: Shape = MaterialTheme.shapes.medium,
     color: Color = MaterialTheme.colorScheme.surface,
+    verticalArrangement: Arrangement.Vertical = Arrangement.Top,
+    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     contentColor: Color = contentColorFor(color),
     tonalElevation: Dp = 0.dp,
     shadowElevation: Dp = 0.dp,
@@ -47,6 +49,8 @@ fun UIKitTitledSurfaceColumn(
         modifier = modifier,
         shape = shape,
         color = color,
+        verticalArrangement = verticalArrangement,
+        horizontalAlignment = horizontalAlignment,
         contentColor = contentColor,
         tonalElevation = tonalElevation,
         shadowElevation = shadowElevation,
@@ -94,7 +98,6 @@ fun UIKitTitledSurfaceColumn(
         shadowElevation = shadowElevation,
         border = border
     ) {
-
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
