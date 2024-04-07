@@ -32,17 +32,10 @@ interface MapHost {
         data object Parks : Config()
 
         @Serializable
-        data object Trash : Config()
-
-        @Serializable
         data object Search : Config()
 
         @Serializable
         data object Account : Config()
-
-        companion object {
-            val allConfig: List<Config> by lazy { listOf(General, Parks, Trash, Search) }
-        }
 
     }
 
