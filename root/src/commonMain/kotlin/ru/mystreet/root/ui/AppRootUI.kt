@@ -1,6 +1,11 @@
 package ru.mystreet.root.ui
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -18,7 +23,10 @@ fun AppRootUI(
         AppRootScreen(
             modifier = modifier,
         ) {
-            Children(component.childStack) {
+            Children(
+                component.childStack,
+                modifier = Modifier.padding(WindowInsets.navigationBars.asPaddingValues())
+            ) {
                 AppRootNavHost(it.instance, modifier = Modifier.fillMaxSize())
             }
         }
