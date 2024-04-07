@@ -48,6 +48,7 @@ import ru.mystreet.map.domain.usecase.EditMapObjectUseCase
 import ru.mystreet.map.domain.usecase.FlowLocalFramedMapObjectUseCase
 import ru.mystreet.map.domain.usecase.GetFramedMapObjectsUseCase
 import ru.mystreet.map.domain.usecase.GetLocalFramedMapObjectUseCase
+import ru.mystreet.map.domain.usecase.GetMapObjectReviewsInfoUseCase
 import ru.mystreet.map.domain.usecase.GetMapObjectReviewsPagingSourceUseCase
 import ru.mystreet.map.domain.usecase.GetRemoteFramedMapObjectsUseCase
 import ru.mystreet.map.domain.usecase.GetRemotePagingMapObjectsUseCase
@@ -122,6 +123,7 @@ private val mapSharedUseCaseModule = module {
     factoryOf(::GetRemotePagingMapObjectsUseCase)
     factoryOf(::GetMapObjectReviewsPagingSourceUseCaseImpl) bind GetMapObjectReviewsPagingSourceUseCase::class
     factoryOf(::AddMapObjectReviewUseCase)
+    factoryOf(::GetMapObjectReviewsInfoUseCase)
 }
 
 val mapSharedModule = module {

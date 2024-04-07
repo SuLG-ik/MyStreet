@@ -49,7 +49,7 @@ apollo {
         srcDir("src/commonMain/graphql/")
         generateApolloMetadata.set(true)
         mapScalarToUpload("Upload")
-        mapScalar("DateTime", "kotlinx.datetime.LocalDateTime", "com.apollographql.apollo3.adapter.KotlinxLocalDateAdapter")
+        mapScalar("DateTime", "kotlinx.datetime.LocalDateTime", "com.apollographql.apollo3.adapter.KotlinxLocalDateTimeAdapter")
     }
 }
 

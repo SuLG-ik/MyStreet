@@ -1,5 +1,8 @@
 package ru.mystreet.map.data.converter
 
+import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import ru.mystreet.map.data.model.fragment.MapObjectFull
 import ru.mystreet.map.data.model.fragment.MapObjectReviewFull
 import ru.mystreet.map.domain.entity.MapObject
@@ -44,6 +47,8 @@ class GraphqlMapObjectsConverter {
             id = id.toLong(),
             title = title,
             text = text,
+            rating = rating,
+            createdDate = createdDate,
             author = author?.name?.let { ReviewAuthor(it) }
         )
     }

@@ -14,8 +14,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.mystreet.map.domain.entity.MapObjectReview
-import ru.mystreet.map.domain.source.MapObjectReviewsPagingSource
+import ru.mystreet.map.domain.entity.MapObjectReviewsInfo
+import ru.mystreet.map.domain.usecase.GetMapObjectReviewsInfoUseCase
 import ru.mystreet.map.domain.usecase.GetMapObjectReviewsPagingSourceUseCase
 
 @OptIn(ExperimentalMviKotlinApi::class)
@@ -23,14 +26,21 @@ class MapObjectReviewsStoreImpl(
     coroutineDispatcher: CoroutineDispatcher,
     storeFactory: StoreFactory,
     getMapObjectReviewsPagingSourceUseCase: GetMapObjectReviewsPagingSourceUseCase,
+    getMapObjectReviewsInfoUseCase: GetMapObjectReviewsInfoUseCase,
     params: MapObjectReviewsStore.Params,
 ) : MapObjectReviewsStore,
     Store<MapObjectReviewsStore.Intent, MapObjectReviewsStore.State, MapObjectReviewsStore.Label> by storeFactory.create<_, Action, Message, _, _>(
         name = "MapObjectReviewsStoreImpl",
-        initialState = MapObjectReviewsStore.State(),
+        initialState = MapObjectReviewsStore.State(
+            info = MapObjectReviewsInfo(
+                reviewsCount = 0,
+                isAddReviewAvailable = false,
+            )
+        ),
         reducer = {
             when (it) {
                 is Message.UpdateData -> copy(pagingData = it.pagingData)
+                is Message.UpdateInfo -> copy(info = it.info)
             }
         },
         bootstrapper = coroutineBootstrapper(coroutineDispatcher) { dispatch(Action.Setup) },
@@ -43,6 +53,12 @@ class MapObjectReviewsStoreImpl(
                 }.flow.cachedIn(this).onEach {
                     dispatch(Message.UpdateData(it))
                 }.flowOn(Dispatchers.Main).launchIn(this)
+                launch {
+                    val info = getMapObjectReviewsInfoUseCase(params.mapObjectId)
+                    withContext(Dispatchers.Main) {
+                        dispatch(Message.UpdateInfo(info))
+                    }
+                }
             }
         },
     ) {
@@ -52,6 +68,7 @@ class MapObjectReviewsStoreImpl(
     }
 
     sealed interface Message {
+        data class UpdateInfo(val info: MapObjectReviewsInfo) : Message
         data class UpdateData(val pagingData: PagingData<MapObjectReview>) : Message
     }
 }

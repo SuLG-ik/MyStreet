@@ -3,10 +3,26 @@ query GetMapObjectReviews($id: ID!, $pageable: PageableInput!) {
         info(id: $id) {
             score {
                 reviews {
-                    count
                     reviews(pageable: $pageable) {
                         ...MapObjectReviewFull
                     }
+                }
+            }
+        }
+    }
+}
+
+query GetMapObjectReviewsInfo($id: ID!) {
+    mapObjects {
+        info(id: $id) {
+            score {
+                forUser {
+                    review {
+                        id
+                    }
+                }
+                reviews {
+                    count
                 }
             }
         }
@@ -21,4 +37,5 @@ fragment MapObjectReviewFull on ReviewType {
     }
     rating
     text
+    createdDate
 }

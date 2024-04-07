@@ -5,8 +5,10 @@ import com.apollographql.apollo3.api.Optional
 import ru.mystreet.core.graphql.type.ReviewInput
 import ru.mystreet.map.data.converter.GraphqlMapObjectsConverter
 import ru.mystreet.map.data.model.AddMapObjectReviewMutation
+import ru.mystreet.map.data.model.GetMapObjectReviewsInfoQuery
 import ru.mystreet.map.data.model.GetMapObjectReviewsQuery
 import ru.mystreet.map.domain.entity.MapObjectReview
+import ru.mystreet.map.domain.entity.MapObjectReviewsInfo
 import ru.mystreet.map.domain.entity.Pageable
 import ru.mystreet.map.domain.entity.toInput
 import ru.mystreet.map.domain.repository.RemoteMapObjectReviewsRepository
@@ -26,6 +28,20 @@ class GraphQLRemoteMapObjectReviewsRepository(
             response.data?.mapObjects?.info?.score?.reviews?.reviews?.map { it.mapObjectReviewFull.convert() }
                 ?: TODO()
         }
+    }
+
+    override suspend fun getInfo(mapObjectId: Long): MapObjectReviewsInfo {
+        val response = client.query(
+            GetMapObjectReviewsInfoQuery(
+                id = mapObjectId.toString()
+            )
+        ).execute()
+        val data = response.data ?: TODO()
+        val forUser = data.mapObjects.info.score.forUser
+        return MapObjectReviewsInfo(
+            reviewsCount = data.mapObjects.info.score.reviews.count,
+            isAddReviewAvailable = forUser != null && forUser.review == null
+        )
     }
 
     override suspend fun addReview(

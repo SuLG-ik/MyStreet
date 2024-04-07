@@ -225,12 +225,3 @@ fun rememberStarScale(isSelected: Boolean, index: Int): Float {
     }
     return scale.value
 }
-
-@Composable
-fun ratingColor(isSelected: Boolean): Color {
-    return if (isSelected) Color(0xFFEEA63A) else MaterialTheme.colorScheme.outline
-}
-
-fun ratingIcon(isSelected: Boolean): ImageVector {
-    return if (isSelected) UIKitIconPack.RatingStar else UIKitIconPack.RatingStarOutline
-}
