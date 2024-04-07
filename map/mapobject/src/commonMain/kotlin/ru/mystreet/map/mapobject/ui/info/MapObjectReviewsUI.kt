@@ -123,11 +123,15 @@ fun MapObjectReview(
                     mapObjectReview,
                 )
             }
-            Text(
-                mapObjectReview.title ?: "empty title",
-                style = MaterialTheme.typography.titleLarge
-            )
-            Text(mapObjectReview.text ?: "empty text")
+            val title = mapObjectReview.title
+            if (!title.isNullOrEmpty())
+                Text(
+                    title,
+                    style = MaterialTheme.typography.titleLarge
+                )
+            val text = mapObjectReview.text
+            if (!text.isNullOrEmpty())
+                Text(text)
         }
     }
 }
