@@ -61,6 +61,7 @@ class GeneralMapComponent(
             MapObjectCategory.GreenArea,
             MapObjectCategory.PublicWC,
             MapObjectCategory.Other,
+            MapObjectCategory.Trash,
         )
 
     }
