@@ -4,4 +4,5 @@ interface GeneralMap {
 
     val appBar: GeneralMapAppBar
 
+    val bottomBar: GeneralMapBottomBar
 }

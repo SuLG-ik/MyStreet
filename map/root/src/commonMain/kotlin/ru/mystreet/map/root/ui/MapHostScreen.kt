@@ -7,6 +7,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
@@ -26,8 +27,6 @@ import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.AccountIcon
 import ru.mystreet.uikit.iconpack.uikiticonpack.Home
 import ru.mystreet.uikit.iconpack.uikiticonpack.Trash
-import ru.mystreet.uikit.paddingBottomInsets
-import ru.mystreet.uikit.paddingVerticalInsets
 
 enum class MapHostNavItem(
     val icon: ImageVector,
@@ -48,6 +47,7 @@ fun MapHostScreen(
     currentConfig: MapHost.Config,
     onNavigate: (MapHost.Config) -> Unit,
     childTopBar: @Composable () -> Unit,
+    childBottomBar: @Composable () -> Unit,
     map: @Composable () -> Unit,
     bottomBarOverlay: @Composable () -> Unit,
     modifier: Modifier = Modifier,
@@ -55,24 +55,12 @@ fun MapHostScreen(
     Scaffold(
         topBar = childTopBar,
         bottomBar = {
-            Box(
-                modifier = Modifier.clickable(false) {},
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                AnimatedVisibility(
-                    isBottomBarVisible,
-                    enter = fadeIn() + slideInVertically { it },
-                    exit = fadeOut() + slideOutVertically { it }
-                ) {
-                    Navigation(
-                        currentItem = currentConfig.toUI(),
-                        allItems = enumValues<MapHostNavItem>(),
-                        onNavigate = { onNavigate(it.config) },
-                        modifier = Modifier
-                            .graphicsLayer(alpha = DefaultMapAlpha),
-                    )
-                }
-            }
+            BottomNavigation(
+                isBottomBarVisible = isBottomBarVisible,
+                currentConfig = currentConfig,
+                onNavigate = onNavigate,
+                childBottomBar = childBottomBar
+            )
         },
         modifier = modifier,
     ) {
@@ -82,6 +70,36 @@ fun MapHostScreen(
         ) {
             map()
             bottomBarOverlay()
+        }
+    }
+}
+
+@Composable
+private fun BottomNavigation(
+    isBottomBarVisible: Boolean,
+    currentConfig: MapHost.Config,
+    onNavigate: (MapHost.Config) -> Unit,
+    childBottomBar: @Composable () -> Unit,
+) {
+    Box(
+        modifier = Modifier.clickable(false) {},
+        contentAlignment = Alignment.BottomCenter
+    ) {
+        AnimatedVisibility(
+            isBottomBarVisible,
+            enter = fadeIn() + slideInVertically { it },
+            exit = fadeOut() + slideOutVertically { it }
+        ) {
+            Column {
+                childBottomBar()
+                Navigation(
+                    currentItem = currentConfig.toUI(),
+                    allItems = enumValues<MapHostNavItem>(),
+                    onNavigate = { onNavigate(it.config) },
+                    modifier = Modifier
+                        .graphicsLayer(alpha = DefaultMapAlpha),
+                )
+            }
         }
     }
 }

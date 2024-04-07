@@ -12,22 +12,28 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.mystreet.map.domain.entity.GeneralLayer
+import ru.mystreet.map.domain.entity.GeneralSelectedMode
 import ru.mystreet.map.general.domain.usecase.GeneralLayersConfigFlowUseCase
+import ru.mystreet.map.general.domain.usecase.SelectedModeConfigFlowUseCase
 import ru.mystreet.map.general.domain.usecase.UpdateGeneralLayerConfigUseCase
+import ru.mystreet.map.general.domain.usecase.UpdateSelectedModeConfigUseCase
 
 @OptIn(ExperimentalMviKotlinApi::class)
 class LayersConfigStoreImpl(
     coroutineDispatcher: CoroutineDispatcher,
     storeFactory: StoreFactory,
     updateGeneralLayerConfigUseCase: UpdateGeneralLayerConfigUseCase,
+    updateSelectedModeConfigUseCase: UpdateSelectedModeConfigUseCase,
     generalLayersConfigFlowUseCase: GeneralLayersConfigFlowUseCase,
+    selectedModeConfigFlowUseCase: SelectedModeConfigFlowUseCase,
 ) : LayersConfigStore,
     Store<LayersConfigStore.Intent, LayersConfigStore.State, LayersConfigStore.Label> by storeFactory.create<_, Action, Message, _, _>(
         name = "LayersConfigStoreImpl",
         initialState = LayersConfigStore.State(),
         reducer = {
             when (it) {
-                is Message.UpdateLayers -> copy(it.layers)
+                is Message.UpdateLayers -> copy(layers = it.layers)
+                is Message.UpdateMode -> copy(mode = it.mode)
             }
         },
         bootstrapper = coroutineBootstrapper(coroutineDispatcher) { dispatch(Action.Setup) },
@@ -37,10 +43,19 @@ class LayersConfigStoreImpl(
                     .onEach { dispatch(Message.UpdateLayers(it)) }
                     .flowOn(Dispatchers.Main)
                     .launchIn(this)
+                selectedModeConfigFlowUseCase()
+                    .onEach { dispatch(Message.UpdateMode(it)) }
+                    .flowOn(Dispatchers.Main)
+                    .launchIn(this)
             }
             onIntent<LayersConfigStore.Intent.UpdateLayerEnabled> {
                 launch {
                     updateGeneralLayerConfigUseCase(it.layer, it.isEnabled)
+                }
+            }
+            onIntent<LayersConfigStore.Intent.ToggleMode> {
+                launch {
+                    updateSelectedModeConfigUseCase(it.mode)
                 }
             }
         },
@@ -53,6 +68,10 @@ class LayersConfigStoreImpl(
     sealed interface Message {
         data class UpdateLayers(
             val layers: List<GeneralLayer>,
+        ) : Message
+
+        data class UpdateMode(
+            val mode: GeneralSelectedMode,
         ) : Message
     }
 }
