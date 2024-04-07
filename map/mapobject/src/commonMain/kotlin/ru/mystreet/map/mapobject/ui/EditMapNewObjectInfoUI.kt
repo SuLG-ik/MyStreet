@@ -105,7 +105,8 @@ private fun EditMapNewObjectScreen(
                 value = field.description,
                 onValueChange = onDescriptionInput,
                 enabled = true,
-                singleLine = true,
+                minLines = 3,
+                maxLines = 6,
                 errorText = {
                     TitleError(it)
                 },

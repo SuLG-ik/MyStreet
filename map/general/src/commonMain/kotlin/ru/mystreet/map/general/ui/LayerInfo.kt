@@ -13,7 +13,7 @@ enum class LayerInfo(
     Bower(MR.strings.bower, MR.images.bower),
     Fountain(MR.strings.fountain, MR.images.fountain),
     GreenArea(MR.strings.green_zone, MR.images.green_zone),
-    Installation(MR.strings.installation, MR.images.streetlight),
+    Installation(MR.strings.installation, MR.images.installation),
     Monument(MR.strings.monument, MR.images.monument),
     Playground(MR.strings.playground, MR.images.playground),
     PublicWC(MR.strings.public_wc, MR.images.public_wc),

@@ -47,7 +47,7 @@ enum class SelectableCategoryInfo(
     PublicWC(MR.strings.public_wc_full, MR.images.public_wc),
     StreetLight(MR.strings.streetlight_full, MR.images.streetlight),
     Trash(MR.strings.trash_full, MR.images.trash),
-    Installation(MR.strings.installation_full, MR.images.trash),
+    Installation(MR.strings.installation_full, MR.images.installation),
     Other(MR.strings.other_full, MR.images.layers),
 }
 

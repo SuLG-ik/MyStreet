@@ -55,10 +55,12 @@ class GeneralMapComponent(
             MapObjectCategory.Playground,
             MapObjectCategory.StreetLight,
             MapObjectCategory.Monument,
+            MapObjectCategory.Installation,
             MapObjectCategory.Fountain,
             MapObjectCategory.Bower,
             MapObjectCategory.GreenArea,
-            MapObjectCategory.PublicWC
+            MapObjectCategory.PublicWC,
+            MapObjectCategory.Other,
         )
 
     }
