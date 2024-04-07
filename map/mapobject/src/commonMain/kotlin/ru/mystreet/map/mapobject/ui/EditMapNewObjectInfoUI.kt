@@ -139,6 +139,8 @@ private fun MapObjectCategory.toTitle(): String {
         MapObjectCategory.GreenArea -> "Растение"
         MapObjectCategory.PublicWC -> "Туалет"
         MapObjectCategory.Trash -> "Урна для мусора"
+        MapObjectCategory.Installation -> "Инсталляция"
+        MapObjectCategory.Other -> "Другое"
     }
 }
 

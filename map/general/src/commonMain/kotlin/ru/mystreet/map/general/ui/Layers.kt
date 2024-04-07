@@ -17,14 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
 import ru.mystreet.map.domain.entity.GeneralLayer
-import ru.mystreet.uikit.DefaultMapAlpha
 import ru.mystreet.uikit.MR
 import ru.mystreet.uikit.UIKitSelectableTonalIconButton
 import ru.mystreet.uikit.tokens.UIKitSizeTokens
@@ -33,7 +31,7 @@ import ru.mystreet.uikit.tokens.UIKitSizeTokens
 fun LayersButton(
     isSelected: Boolean,
     toggleSelected: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     UIKitSelectableTonalIconButton(
         selected = isSelected,
@@ -84,7 +82,7 @@ fun LayerItems(
 ) {
     FlowRow(
         verticalArrangement = Arrangement.spacedBy(20.dp),
-        maxItemsInEachRow = 4,
+        maxItemsInEachRow = 3,
         modifier = modifier,
     ) {
         layers.forEach {

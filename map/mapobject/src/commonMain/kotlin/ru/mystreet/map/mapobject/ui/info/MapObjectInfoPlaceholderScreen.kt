@@ -17,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.mapobject.ui.info.Height
 import ru.mystreet.map.ui.Chip
 import ru.mystreet.uikit.iconpack.UIKitIconPack
@@ -111,20 +110,6 @@ fun TitlePlaceholder(
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.placeholder(),
         )
-    }
-}
-
-private fun MapObjectCategory.format(): String {
-    return when (this) {
-        MapObjectCategory.Bench -> "лавочка"
-        MapObjectCategory.Playground -> "площадка"
-        MapObjectCategory.StreetLight -> "освещение"
-        MapObjectCategory.Monument -> "памятник"
-        MapObjectCategory.Fountain -> "фонтан"
-        MapObjectCategory.Bower -> "беседка"
-        MapObjectCategory.GreenArea -> "зелёная зона"
-        MapObjectCategory.PublicWC -> "общественный туалет"
-        MapObjectCategory.Trash -> "урна для мусора"
     }
 }
 

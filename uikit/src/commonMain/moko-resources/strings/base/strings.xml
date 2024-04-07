@@ -9,6 +9,8 @@
     <string name="green-zone">Plants</string>
     <string name="monument">Monument</string>
     <string name="playground">Playground</string>
+    <string name="installation">Installation</string>
+    <string name="other">Other</string>
     <string name="public-wc">WC</string>
     <string name="streetlight">Light</string>
     <string name="bower_full">Bower, shared recreation, tables</string>
@@ -17,6 +19,8 @@
     <string name="green-zone_full">Green areas, flower beds, trees</string>
     <string name="monument_full">Monuments, architectural objects</string>
     <string name="playground_full">Playgrounds, sports equipment, play areas</string>
+    <string name="installation_full">Installations, public art, land art, art intervention</string>
+    <string name="other_full">Other, does not match any category</string>
     <string name="public-wc_full">Public WC</string>
     <string name="streetlight_full">Lighting, streetlight, lamps</string>
     <string name="trash_full">Trash bins, garbage collection points</string>

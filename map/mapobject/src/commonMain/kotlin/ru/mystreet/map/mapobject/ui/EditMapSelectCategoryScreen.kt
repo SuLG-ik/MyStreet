@@ -27,11 +27,10 @@ import dev.icerock.moko.resources.ImageResource
 import dev.icerock.moko.resources.StringResource
 import dev.icerock.moko.resources.compose.painterResource
 import dev.icerock.moko.resources.compose.stringResource
-import ru.mystreet.map.domain.entity.SelectableCategory
 import ru.mystreet.map.domain.entity.MapObjectCategory
+import ru.mystreet.map.domain.entity.SelectableCategory
 import ru.mystreet.uikit.MR
 import ru.mystreet.uikit.UIKitSelectableTonalIconButton
-import ru.mystreet.uikit.paddingHorizontalInsets
 import ru.mystreet.uikit.tokens.UIKitSizeTokens
 import ru.mystreet.uikit.whiteBottom
 
@@ -48,6 +47,8 @@ enum class SelectableCategoryInfo(
     PublicWC(MR.strings.public_wc_full, MR.images.public_wc),
     StreetLight(MR.strings.streetlight_full, MR.images.streetlight),
     Trash(MR.strings.trash_full, MR.images.trash),
+    Installation(MR.strings.installation_full, MR.images.trash),
+    Other(MR.strings.other_full, MR.images.layers),
 }
 
 @Composable
@@ -135,5 +136,7 @@ fun MapObjectCategory.toUI(): SelectableCategoryInfo {
         MapObjectCategory.GreenArea -> SelectableCategoryInfo.GreenArea
         MapObjectCategory.PublicWC -> SelectableCategoryInfo.PublicWC
         MapObjectCategory.Trash -> SelectableCategoryInfo.Trash
+        MapObjectCategory.Installation -> SelectableCategoryInfo.Installation
+        MapObjectCategory.Other -> SelectableCategoryInfo.Other
     }
 }
