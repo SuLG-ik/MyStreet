@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ru.mystreet.map.domain.entity.MapObjectCategory
+import ru.mystreet.map.mapobject.ui.info.Height
 import ru.mystreet.map.ui.Chip
 import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.RatingStar

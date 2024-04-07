@@ -27,6 +27,7 @@ kotlin {
             api(compose.runtime)
             api(compose.foundation)
             api(compose.material3)
+            implementation(libs.paging.common)
             implementation(libs.mvikotlin.core)
             implementation(libs.mvikotlin.coroutines)
             implementation(libs.decompose.ui)

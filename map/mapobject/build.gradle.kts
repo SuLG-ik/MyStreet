@@ -8,7 +8,6 @@ plugins {
 }
 
 kotlin {
-    androidTarget()
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -28,6 +27,7 @@ kotlin {
             api(compose.foundation)
             api(compose.material3)
             implementation(libs.mvikotlin.core)
+            implementation(libs.paging.compose)
             implementation(libs.mvikotlin.coroutines)
             implementation(libs.decompose.ui)
             implementation(libs.kotlinx.coroutines)

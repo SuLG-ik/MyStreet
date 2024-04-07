@@ -1,7 +1,5 @@
 package ru.mystreet.map.domain.entity
 
-import ru.mystreet.map.geomety.Latitude
-import ru.mystreet.map.geomety.Longitude
 import ru.mystreet.map.geomety.Point
 
 data class MapObject(
@@ -12,6 +10,7 @@ data class MapObject(
     val category: MapObjectCategory,
     val tags: List<MapObjectTag>,
     val images: List<String>,
+    val rating: String?,
     val forUser: UserMapObject?,
 )
 

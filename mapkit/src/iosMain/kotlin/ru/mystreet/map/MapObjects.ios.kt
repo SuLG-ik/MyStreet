@@ -22,6 +22,7 @@ actual class MapObjects(
 ) {
 
     actual fun addPlacemark(): Placemark {
+        mapObjectCollection.addPlacemark().setScaleFunctionWithPoints()
         return mapObjectCollection.addPlacemark().toData()
     }
 

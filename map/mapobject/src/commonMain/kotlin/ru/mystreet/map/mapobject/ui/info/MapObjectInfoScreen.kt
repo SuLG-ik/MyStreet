@@ -1,4 +1,4 @@
-package ru.mystreet.map.ui.info
+package ru.mystreet.map.mapobject.ui.info
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
@@ -40,10 +40,10 @@ import androidx.compose.ui.unit.dp
 import ru.mystreet.map.domain.entity.MapObject
 import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.ui.Chip
+import ru.mystreet.map.ui.info.MapObjectInfoPlaceholder
 import ru.mystreet.uikit.UIKitAsyncImage
 import ru.mystreet.uikit.UIKitBottomBar
 import ru.mystreet.uikit.iconpack.UIKitIconPack
-import ru.mystreet.uikit.iconpack.uikiticonpack.Add
 import ru.mystreet.uikit.iconpack.uikiticonpack.AddOutlined
 import ru.mystreet.uikit.iconpack.uikiticonpack.EditIcon
 import ru.mystreet.uikit.iconpack.uikiticonpack.RatingStar
@@ -52,6 +52,7 @@ import ru.mystreet.uikit.tokens.UIKitSizeTokens
 
 @Composable
 fun MapObjectInfoScreen(
+    reviews: @Composable () -> Unit,
     isLoading: Boolean,
     mapObject: MapObject?,
     onImagePicker: () -> Unit,
@@ -65,6 +66,7 @@ fun MapObjectInfoScreen(
         } else {
             if (mapObject != null) {
                 MapObjectInfo(
+                    reviews = reviews,
                     mapObject = mapObject,
                     onImagePicker = onImagePicker,
                     onFavourite = onFavourite,
@@ -79,6 +81,7 @@ fun MapObjectInfoScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapObjectInfo(
+    reviews: @Composable () -> Unit,
     mapObject: MapObject,
     onImagePicker: () -> Unit,
     onFavourite: (Boolean) -> Unit,
@@ -103,10 +106,7 @@ fun MapObjectInfo(
                         mapObject = mapObject,
                         modifier = Modifier.fillMaxWidth().weight(1f),
                     )
-                    Favourite(
-                        mapObject = mapObject,
-                        onToggle = onFavourite,
-                    )
+                    Rating(mapObject = mapObject)
                 }
                 Description(
                     mapObject = mapObject,
@@ -116,15 +116,16 @@ fun MapObjectInfo(
                     mapObject = mapObject,
                     modifier = Modifier.fillMaxWidth(),
                 )
-                Reviews(
-                    mapObject = mapObject,
-                    modifier = modifier,
-                )
+                reviews()
             }
         }
         UIKitBottomBar(
             actions = {
                 EditButton(onEdit)
+                Favourite(
+                    mapObject = mapObject,
+                    onToggle = onFavourite,
+                )
             },
             modifier = Modifier.align(Alignment.BottomCenter)
         )
@@ -278,19 +279,6 @@ fun Tags(
 }
 
 @Composable
-fun Reviews(
-    mapObject: MapObject,
-    modifier: Modifier = Modifier,
-) {
-    Column(modifier = modifier) {
-        ReviewsHeader(
-            mapObject = mapObject,
-            modifier = Modifier.fillMaxWidth()
-        )
-    }
-}
-
-@Composable
 fun Favourite(
     mapObject: MapObject,
     onToggle: (Boolean) -> Unit,
@@ -333,50 +321,24 @@ fun Favourite(
 }
 
 @Composable
-fun ReviewsHeader(
-    mapObject: MapObject,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier,
-    ) {
-        Text(
-            text = "Отзывы (3)",
-            style = MaterialTheme.typography.titleLarge,
-            modifier = Modifier.fillMaxWidth().weight(1f)
-        )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Rating(mapObject = mapObject)
-            IconButton(onClick = {}) {
-                Icon(
-                    imageVector = UIKitIconPack.Add,
-                    contentDescription = null,
-                    modifier = Modifier.size(UIKitSizeTokens.DefaultIconSize),
-                )
-            }
-        }
-    }
-}
-
-@Composable
 fun Rating(
     mapObject: MapObject,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(5.dp),
-        modifier = modifier
-    ) {
-        Image(
-            UIKitIconPack.RatingStar,
-            contentDescription = null,
-            modifier = Modifier.size(UIKitSizeTokens.SmallIconSize),
-        )
-        Text("4.5")
+    val rating = mapObject.rating
+    if (rating != null) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(5.dp),
+            modifier = modifier
+        ) {
+            Image(
+                UIKitIconPack.RatingStar,
+                contentDescription = null,
+                modifier = Modifier.size(UIKitSizeTokens.SmallIconSize),
+            )
+            Text(rating)
+        }
     }
 }
 

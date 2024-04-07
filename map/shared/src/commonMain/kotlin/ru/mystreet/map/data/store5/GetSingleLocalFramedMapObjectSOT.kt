@@ -1,4 +1,4 @@
-package ru.mystreet.map.domain.store5
+package ru.mystreet.map.data.store5
 
 import org.mobilenativefoundation.store.store5.SourceOfTruth
 import ru.mystreet.map.domain.entity.FramedMapObjects
