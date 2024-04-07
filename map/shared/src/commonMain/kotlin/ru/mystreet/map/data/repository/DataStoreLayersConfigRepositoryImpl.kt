@@ -45,7 +45,7 @@ private fun Preferences.get(type: GeneralLayerType): Boolean {
 }
 
 private fun Preferences.toGeneralLayers(): List<GeneralLayer> {
-    return enumValues<GeneralLayerType>().mapIndexed { index, type ->
+    return GeneralLayerType.entries.mapIndexed { index, type ->
         GeneralLayer(
             isEnabled = get(type),
             position = index + 1,

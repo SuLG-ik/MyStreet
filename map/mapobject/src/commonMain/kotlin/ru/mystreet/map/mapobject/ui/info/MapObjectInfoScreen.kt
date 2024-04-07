@@ -251,6 +251,8 @@ private fun MapObjectCategory.format(): String {
         MapObjectCategory.GreenArea -> "зелёная зона"
         MapObjectCategory.PublicWC -> "общественный туалет"
         MapObjectCategory.Trash -> "урна для мусора"
+        MapObjectCategory.Installation -> "инсталяция"
+        MapObjectCategory.Other -> "другое"
     }
 }
 
