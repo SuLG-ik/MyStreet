@@ -90,7 +90,7 @@ fun LayerItems(
                 isEnabled = it.isEnabled,
                 layerInfo = it.type.toUI(),
                 onToggleEnabled = { onToggleEnabled(it) },
-                modifier = Modifier.width(70.dp)
+                modifier = Modifier.width(80.dp),
             )
         }
     }
