@@ -2,10 +2,7 @@ package ru.mystreet.map.ui.edit
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -33,6 +30,7 @@ import ru.mystreet.uikit.UIKitTitledSurfaceColumn
 import ru.mystreet.uikit.UIKitValidatedOutlinedTextField
 import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.Trash
+import ru.mystreet.uikit.paddingIme
 import ru.mystreet.uikit.tokens.UIKitSizeTokens
 
 @Composable
@@ -74,7 +72,7 @@ private fun MapObjectEditScreen(
     modifier: Modifier,
 ) {
     Column(
-        modifier = modifier.padding(bottom = 10.dp).padding(WindowInsets.ime.asPaddingValues())
+        modifier = modifier.padding(bottom = 10.dp).paddingIme()
             .verticalScroll(rememberScrollState())
     ) {
         UIKitTitledSurfaceColumn(

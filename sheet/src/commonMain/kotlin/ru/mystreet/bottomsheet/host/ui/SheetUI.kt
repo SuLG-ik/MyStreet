@@ -1,6 +1,9 @@
 package ru.mystreet.bottomsheet.host.ui
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import com.arkivanov.decompose.router.slot.ChildSlot
@@ -53,21 +57,29 @@ fun <Child : SheetChild> SheetUI(
     content: @Composable () -> Unit,
 ) {
     val sheetState = rememberSheetState(component)
+    val alpha by animateFloatAsState(if (sheetState.isVisible) 1f else 0f)
     BottomSheetScaffold(
         sheetContent = {
-            BottomSheet(
-                childContent = component.childContent,
-                child = component.currentChild,
-            )
+            Box(
+                modifier = Modifier.alpha(alpha)
+            ) {
+                BottomSheet(
+                    childContent = component.childContent,
+                    child = component.currentChild,
+                )
+            }
         },
         sheetDragHandle = {
             val currentChild = component.currentChild.subscribeAsState().value.child
             if (currentChild == null || currentChild.instance.config.hasDragHandle) {
-                DragHandle()
+                DragHandle(modifier = Modifier.alpha(alpha))
             }
         },
         scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState),
-        sheetShape = MaterialTheme.shapes.large,
+        sheetShape = MaterialTheme.shapes.large.copy(
+            bottomEnd = CornerSize(0),
+            bottomStart = CornerSize(0)
+        ),
         sheetShadowElevation = 16.dp,
         modifier = modifier,
     ) {

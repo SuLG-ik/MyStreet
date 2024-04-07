@@ -37,6 +37,7 @@ import ru.mystreet.uikit.KeyboardActionsNext
 import ru.mystreet.uikit.KeyboardOptionsDone
 import ru.mystreet.uikit.KeyboardOptionsNext
 import ru.mystreet.uikit.UIKitValidatedOutlinedTextField
+import ru.mystreet.uikit.paddingIme
 
 @Composable
 fun AccountLoginUI(
@@ -77,7 +78,7 @@ fun AccountLoginScreen(
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.padding(WindowInsets.ime.asPaddingValues())
+        modifier = modifier.paddingIme()
             .verticalScroll(rememberScrollState()),
     ) {
         Column(
