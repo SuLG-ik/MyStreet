@@ -8,15 +8,16 @@ import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildContext
 import ru.mystreet.core.component.diChildStack
+import ru.mystreet.errors.component.ErrorsList
+import ru.mystreet.errors.component.ErrorsListComponent
+import ru.mystreet.map.component.Map
 import ru.mystreet.map.component.editmap.EditMap
 import ru.mystreet.map.component.editmap.EditMapComponent
 import ru.mystreet.map.domain.entity.MapConfig
 import ru.mystreet.map.general.component.GeneralMapComponent
 import ru.mystreet.map.map.component.FramedMapComponent
-import ru.mystreet.map.component.Map
 import ru.mystreet.map.parks.component.ParksMapComponent
 import ru.mystreet.map.root.component.external.MapExternalSheetHostComponent
-import ru.mystreet.map.trash.component.TrashMapComponent
 
 class MapHostComponent(
     componentContext: DIComponentContext,
@@ -33,6 +34,7 @@ class MapHostComponent(
     override val uiConfig: Value<MapHost.UIConfig> = editMap.isEnabled.map {
         MapHost.UIConfig(!it)
     }
+    override val errorsList: ErrorsList = ErrorsListComponent(diChildContext("errors_list"))
 
     private val navigation = StackNavigation<MapHost.Config>()
 
@@ -71,7 +73,8 @@ class MapHostComponent(
             navigation.bringToFront(config)
     }
 
-    override val sheetHost = MapExternalSheetHostComponent(diChildContext("map_external"), map = map)
+    override val sheetHost =
+        MapExternalSheetHostComponent(diChildContext("map_external"), map = map)
 
 
     private fun showExternalScreen(config: MapHost.Config): Boolean {

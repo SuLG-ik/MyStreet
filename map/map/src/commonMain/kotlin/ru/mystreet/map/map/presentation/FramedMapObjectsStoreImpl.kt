@@ -3,7 +3,6 @@ package ru.mystreet.map.map.presentation
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
-import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -11,15 +10,19 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.mystreet.core.component.onIntentWithDebounce
+import ru.mystreet.errors.domain.MutableErrorDispatcher
+import ru.mystreet.errors.store.onActionSafe
+import ru.mystreet.errors.store.safeCoroutineExecutorFactory
 import ru.mystreet.map.domain.entity.FramedMapObjects
+import ru.mystreet.map.domain.usecase.QueueFramedMapObjectsUseCase
 import ru.mystreet.map.domain.usecase.SaveMapInitialCameraPositionUseCase
 import ru.mystreet.map.geomety.VisibleArea
-import ru.mystreet.map.domain.usecase.QueueFramedMapObjectsUseCase
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMviKotlinApi::class)
 class FramedMapObjectsStoreImpl(
     coroutineDispatcher: CoroutineDispatcher,
+    errorDispatcher: MutableErrorDispatcher,
     storeFactory: StoreFactory,
     queueFramedMapObjectsUseCase: QueueFramedMapObjectsUseCase,
     saveMapInitialCameraPositionUseCase: SaveMapInitialCameraPositionUseCase,
@@ -35,11 +38,11 @@ class FramedMapObjectsStoreImpl(
                 )
             }
         },
-        executorFactory = coroutineExecutorFactory(coroutineDispatcher) {
-            onAction<Action.LoadMapObjects> {
+        executorFactory = safeCoroutineExecutorFactory(coroutineDispatcher, errorDispatcher) {
+            onActionSafe(dispatcher = errorDispatcher) { action: Action.LoadMapObjects ->
                 val loadedFrames = state().loadedFrames
                 launch {
-                    val objects = queueFramedMapObjectsUseCase(loadedFrames, it.visibleArea)
+                    val objects = queueFramedMapObjectsUseCase(loadedFrames, action.visibleArea)
                     objects.map {
                         async {
                             it.collect {

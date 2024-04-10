@@ -3,8 +3,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinxSerialization)
-    alias(libs.plugins.apollo)
-    alias(libs.plugins.moko.resources)
+    alias(libs.plugins.atomicfu)
 }
 
 kotlin {
@@ -30,22 +29,13 @@ kotlin {
             implementation(libs.paging.common)
             implementation(libs.mvikotlin.core)
             implementation(libs.mvikotlin.coroutines)
-            implementation(libs.decompose.ui)
             implementation(libs.kotlinx.coroutines)
             implementation(libs.decompose.core)
+            implementation(libs.kotlin.reflect)
             implementation(projects.core.component)
-            implementation(projects.mapkitCompose)
-            api(libs.store5)
-            implementation(projects.uikit)
             implementation(projects.core.db)
             implementation(projects.core.time)
-            api(projects.core.graphql)
-            api(projects.imagepicker)
-            implementation(projects.core.datastore)
-            implementation(libs.moko.resources)
-            implementation(libs.kotlinx.collections)
-            implementation(libs.peekaboo.imagepicker)
-            api(projects.errors.shared)
+            implementation(libs.atomicfu)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -60,15 +50,6 @@ android {
         minSdk = 24
     }
 }
-
-apollo {
-    service("service") {
-        packageName.set("ru.mystreet.map.data.model")
-        dependsOn(projects.core.graphql)
-        srcDir("src/commonMain/graphql/")
-    }
-}
-
-multiplatformResources {
-    resourcesPackage = "ru.mystreet.map"
+dependencies {
+    implementation(libs.firebase.crashlytics.buildtools)
 }

@@ -3,7 +3,6 @@ package ru.mystreet.core.component
 import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.CoroutineExecutorScope
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.coroutineScope
 import kotlin.coroutines.CoroutineContext
 
@@ -28,13 +27,12 @@ class DeferredCoroutineExecutorScopeImpl<out State : Any, in Message : Any, in A
 
 }
 
-@PublishedApi
 @OptIn(ExperimentalMviKotlinApi::class)
-internal class JobBasedCoroutineExecutorScopeImpl<out State : Any, in Message : Any, in Action : Any, in Label : Any>(
+class ContextMergingCoroutineExecutorScope<out State : Any, in Message : Any, in Action : Any, in Label : Any>(
     scope: CoroutineExecutorScope<State, Message, Action, Label>,
-    cancelableJob: Job,
+    context: CoroutineContext,
 ) : CoroutineExecutorScope<State, Message, Action, Label> by scope {
 
-    override val coroutineContext: CoroutineContext = scope.coroutineContext + cancelableJob
+    override val coroutineContext: CoroutineContext = scope.coroutineContext + context
 
 }
