@@ -20,7 +20,9 @@ class GraphqlRemoteMapObjectsRepository(
                 frames = with(converter) { listOf(frames.convert()) }
             )
         ).execute()
-        if (response.exception != null) TODO()
+        val exception = response.exception
+        if (exception != null)
+            throw exception
         return with(converter) {
             response.data?.mapObjects?.framed?.map { it.convert() }?.firstOrNull()
         } ?: TODO()

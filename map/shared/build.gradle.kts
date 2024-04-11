@@ -45,6 +45,7 @@ kotlin {
             implementation(libs.moko.resources)
             implementation(libs.kotlinx.collections)
             implementation(libs.peekaboo.imagepicker)
+            api(projects.errors.shared)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

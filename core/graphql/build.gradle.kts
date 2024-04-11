@@ -28,6 +28,7 @@ kotlin {
             api(libs.apollo.scalars)
             api(libs.kotlinx.datetime)
             implementation(projects.core.auth)
+            implementation(projects.errors.shared)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

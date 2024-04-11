@@ -5,9 +5,10 @@ import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
 import ru.mystreet.bottomsheet.host.component.SheetHost
+import ru.mystreet.errors.component.ErrorsList
+import ru.mystreet.map.component.Map
 import ru.mystreet.map.component.editmap.EditMap
 import ru.mystreet.map.general.component.GeneralMap
-import ru.mystreet.map.component.Map
 import ru.mystreet.map.parks.component.ParksMap
 import ru.mystreet.map.trash.component.TrashMap
 
@@ -16,6 +17,8 @@ interface MapHost {
     val childStack: Value<ChildStack<Config, Child>>
 
     val uiConfig: Value<UIConfig>
+
+    val errorsList: ErrorsList
 
     data class UIConfig(
         val isBottomBarVisible: Boolean,

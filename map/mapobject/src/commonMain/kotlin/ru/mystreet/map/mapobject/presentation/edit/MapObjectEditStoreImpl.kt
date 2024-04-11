@@ -1,30 +1,33 @@
-package ru.mystreet.map.presentation.edit
+package ru.mystreet.map.mapobject.presentation.edit
 
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
-import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.mystreet.core.component.onIntentWithDebounce
-import ru.mystreet.core.component.onIntentWithSkipping
+import ru.mystreet.errors.domain.MutableErrorDispatcher
+import ru.mystreet.errors.store.onActionSafe
+import ru.mystreet.errors.store.onIntentSafeDebounce
+import ru.mystreet.errors.store.onIntentSafeSkipping
+import ru.mystreet.errors.store.safeCoroutineExecutorFactory
 import ru.mystreet.map.domain.entity.EditMapObjectField
 import ru.mystreet.map.domain.entity.FieldError
 import ru.mystreet.map.domain.entity.FieldSuggestion
 import ru.mystreet.map.domain.entity.TagsField
 import ru.mystreet.map.domain.usecase.AddTagToFieldUseCase
+import ru.mystreet.map.domain.usecase.DeleteMapObjectUseCase
 import ru.mystreet.map.domain.usecase.EditMapObjectUseCase
 import ru.mystreet.map.domain.usecase.FormatAndValidateDescriptionUseCase
 import ru.mystreet.map.domain.usecase.FormatAndValidateTitleUseCase
 import ru.mystreet.map.domain.usecase.LoadMapObjectTagsWithTitleUseCase
 import ru.mystreet.map.domain.usecase.LoadMapObjectUseCase
-import ru.mystreet.map.domain.usecase.DeleteMapObjectUseCase
 import ru.mystreet.map.domain.usecase.RemoveTagFromFieldUseCase
+import ru.mystreet.map.presentation.edit.MapObjectEditStore
 import ru.mystreet.uikit.ValidatedField
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -32,6 +35,7 @@ import kotlin.time.Duration.Companion.milliseconds
 class MapObjectEditStoreImpl(
     coroutineDispatcher: CoroutineDispatcher,
     storeFactory: StoreFactory,
+    errorDispatcher: MutableErrorDispatcher,
     savedState: MapObjectEditStore.SavedState,
     formatAndValidateTitleUseCase: FormatAndValidateTitleUseCase,
     formatAndValidateDescriptionUseCase: FormatAndValidateDescriptionUseCase,
@@ -61,8 +65,8 @@ class MapObjectEditStoreImpl(
             }
         },
         bootstrapper = coroutineBootstrapper(coroutineDispatcher) { dispatch(Action.Setup) },
-        executorFactory = coroutineExecutorFactory(coroutineDispatcher) {
-            onAction<Action.Setup> {
+        executorFactory = safeCoroutineExecutorFactory(coroutineDispatcher, errorDispatcher) {
+            onActionSafe(errorDispatcher) { _: Action.Setup ->
                 launch {
                     val mapObject = loadMapObjectUseCase(savedState.id)
                     withContext(Dispatchers.Main) {
@@ -94,8 +98,11 @@ class MapObjectEditStoreImpl(
             onIntent<MapObjectEditStore.Intent.DescriptionInput> {
                 dispatch(Message.SetDescription(formatAndValidateDescriptionUseCase(it.value)))
             }
-            onIntentWithDebounce<MapObjectEditStore.Intent.TagInput, _, _, _, _, _>(300.milliseconds) { intent ->
-                val tags = state().field?.tags ?: return@onIntentWithDebounce
+            onIntentSafeDebounce(
+                duration = 300.milliseconds,
+                dispatcher = errorDispatcher
+            ) { intent: MapObjectEditStore.Intent.TagInput ->
+                val tags = state().field?.tags ?: return@onIntentSafeDebounce
                 val newTags = tags.copy(value = intent.value)
                 dispatch(Message.SetTags(newTags))
                 deferredLaunch {
@@ -124,20 +131,20 @@ class MapObjectEditStoreImpl(
                 val tags = state().field?.tags ?: return@onIntent
                 dispatch(Message.SetTags(removeTagFromFieldUseCase(tag = it.value, field = tags)))
             }
-            onIntentWithSkipping { intent: MapObjectEditStore.Intent.Continue ->
-                val field = state().field ?: return@onIntentWithSkipping
+            onIntentSafeSkipping(errorDispatcher) { intent: MapObjectEditStore.Intent.Continue ->
+                val field = state().field ?: return@onIntentSafeSkipping
                 dispatch(Message.Loading)
-                deferredLaunch {
+                launch {
                     editMapObjectUseCase(field)
                     withContext(Dispatchers.Main) {
                         publish(MapObjectEditStore.Label.OnSaved)
                     }
                 }
             }
-            onIntentWithSkipping { intent: MapObjectEditStore.Intent.Delete ->
+            onIntentSafeSkipping(errorDispatcher) { intent: MapObjectEditStore.Intent.Delete ->
                 val id = state().id
                 dispatch(Message.Loading)
-                deferredLaunch {
+                launch {
                     deleteMapObjectUseCase(id)
                     withContext(Dispatchers.Main) {
                         publish(MapObjectEditStore.Label.OnDeleted)

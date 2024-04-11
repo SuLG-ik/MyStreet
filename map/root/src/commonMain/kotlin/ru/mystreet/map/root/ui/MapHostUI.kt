@@ -15,6 +15,7 @@ import com.arkivanov.decompose.extensions.compose.stack.animation.plus
 import com.arkivanov.decompose.extensions.compose.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ru.mystreet.bottomsheet.host.ui.SheetUI
+import ru.mystreet.errors.ui.ErrorsListUI
 import ru.mystreet.map.general.ui.GeneralMapAppBarUI
 import ru.mystreet.map.general.ui.GeneralMapBottomBarUI
 import ru.mystreet.map.map.ui.MapUI
@@ -36,53 +37,58 @@ fun MapHostUI(
 ) {
     val currentChild by component.childStack.subscribeAsState()
     val uiConfig by component.uiConfig.subscribeAsState()
-    SheetUI(
-        component = component.sheetHost,
-        modifier = Modifier.fillMaxSize(),
+    ErrorsListUI(
+        component = component.errorsList,
+        modifier = Modifier.fillMaxWidth().paddingVerticalInsets()
     ) {
-        MapHostScreen(
-            isBottomBarVisible = uiConfig.isBottomBarVisible,
-            currentConfig = currentChild.active.configuration,
-            onNavigate = component::onNavigate,
-            modifier = modifier,
-            childTopBar = {
-                Children(currentChild, animation = stackAnimation(topBarSlide() + fade())) {
-                    MapHostAppBarChildren(
-                        child = it.instance,
-                        modifier = Modifier.paddingVerticalInsets().fillMaxWidth()
-                    )
-                }
-            },
-            childBottomBar = {
-                Children(currentChild, animation = stackAnimation(bottomBarSlide() + fade())) {
-                    MapHostBottomBarChildren(
-                        child = it.instance,
-                        modifier = Modifier.padding(horizontal = 15.dp).fillMaxWidth()
+        SheetUI(
+            component = component.sheetHost,
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            MapHostScreen(
+                isBottomBarVisible = uiConfig.isBottomBarVisible,
+                currentConfig = currentChild.active.configuration,
+                onNavigate = component::onNavigate,
+                modifier = modifier,
+                childTopBar = {
+                    Children(currentChild, animation = stackAnimation(topBarSlide() + fade())) {
+                        MapHostAppBarChildren(
+                            child = it.instance,
+                            modifier = Modifier.paddingVerticalInsets().fillMaxWidth()
+                        )
+                    }
+                },
+                childBottomBar = {
+                    Children(currentChild, animation = stackAnimation(bottomBarSlide() + fade())) {
+                        MapHostBottomBarChildren(
+                            child = it.instance,
+                            modifier = Modifier.padding(horizontal = 15.dp).fillMaxWidth()
+                                .alpha(DefaultMapAlpha)
+                        )
+                    }
+                },
+                bottomBarOverlay = {
+                    EditMapBottomBarUI(
+                        component = component.editMap.bottomBar,
+                        modifier = Modifier.fillMaxWidth()
                             .alpha(DefaultMapAlpha)
                     )
+                },
+                map = {
+                    Box {
+                        MapUI(
+                            component.map,
+                            modifier = Modifier.fillMaxSize().paddingVerticalInsets()
+                                .paddingHorizontalInsets()
+                        )
+                        EditMapOverlayUI(
+                            component.editMap,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    }
                 }
-            },
-            bottomBarOverlay = {
-                EditMapBottomBarUI(
-                    component = component.editMap.bottomBar,
-                    modifier = Modifier.fillMaxWidth()
-                        .alpha(DefaultMapAlpha)
-                )
-            },
-            map = {
-                Box {
-                    MapUI(
-                        component.map,
-                        modifier = Modifier.fillMaxSize().paddingVerticalInsets()
-                            .paddingHorizontalInsets()
-                    )
-                    EditMapOverlayUI(
-                        component.editMap,
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
-            }
-        )
+            )
+        }
     }
 }
 

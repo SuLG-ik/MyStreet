@@ -32,6 +32,10 @@ include(":map:shared")
 include(":map:trash")
 include(":map:parks")
 include(":map:mapobject")
+include(":core:crashlytics")
+
+include(":errors:ui")
+include(":errors:shared")
 
 include(":core:component")
 include(":core:datastore")

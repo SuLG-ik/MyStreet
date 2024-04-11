@@ -78,6 +78,7 @@ kotlin {
             api(projects.core.db)
             api(projects.core.time)
             api(projects.core.auth)
+            implementation(projects.core.crashlytics)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -13,6 +13,7 @@ import ru.mystreet.root.component.AppRoot
 import ru.mystreet.root.ui.AppRootUI
 
 class MainActivity : ComponentActivity() {
+
     @OptIn(ExperimentalDecomposeApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
@@ -24,4 +25,5 @@ class MainActivity : ComponentActivity() {
             AppRootUI(component = appRoot)
         }
     }
+
 }

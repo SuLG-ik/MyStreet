@@ -8,7 +8,7 @@ import ru.mystreet.map.account.GetAccountInfoQuery
 
 class KtorAccountProfileRepository(
     private val client: ApolloClient,
-    private val converter: GraphQLAccountProfileConverter
+    private val converter: GraphQLAccountProfileConverter,
 ) : AccountProfileRepository {
     override suspend fun info(): AccountProfileFull {
         val response = client.query(GetAccountInfoQuery())

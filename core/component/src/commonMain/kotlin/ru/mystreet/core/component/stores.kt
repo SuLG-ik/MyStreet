@@ -91,25 +91,10 @@ interface DeferredCoroutineExecutorScope<out State : Any, in Message : Any, in A
 
 @OptIn(ExperimentalMviKotlinApi::class)
 inline fun <reified T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any> ExecutorBuilder<Intent, Action, State, Message, Label>.onIntentWithDebounce(
-    time: Duration,
+    duration: Duration,
     noinline handler: DeferredCoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
 ) {
-    var nextLaunchTime = timeSource.markNow()
-    var job: Job? = null
-    onIntent<T> {
-        val debouncedCoroutineExecutorScope = DeferredCoroutineExecutorScopeImpl(this)
-        with(debouncedCoroutineExecutorScope) { handler(it) }
-        job?.cancel()
-        job = launch {
-            if (nextLaunchTime.hasNotPassedNow()) {
-                nextLaunchTime = timeSource.markNow() + time
-                delay(time)
-            } else {
-                nextLaunchTime = timeSource.markNow() + time
-            }
-            debouncedCoroutineExecutorScope.launch()
-        }
-    }
+    onIntent<T>(debounceIntentHandler(duration, handler))
 }
 
 @OptIn(ExperimentalMviKotlinApi::class)
@@ -132,15 +117,62 @@ inline fun <reified T : Intent, Intent : Any, Action : Any, State : Any, Message
 inline fun <reified T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any> ExecutorBuilder<Intent, Action, State, Message, Label>.onIntentSkipping(
     noinline handler: CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
 ) {
-    val job: Job = SupervisorJob()
-    onIntent<T> {
+    onIntent<T>(skippingIntentHandler(handler))
+}
+
+@OptIn(ExperimentalMviKotlinApi::class)
+fun <T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any> skippingIntentHandler(
+    handler: CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
+): CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit {
+    return SkippingIntentHandler(handler)
+}
+
+@OptIn(ExperimentalMviKotlinApi::class)
+fun <T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any> debounceIntentHandler(
+    duration: Duration,
+    handler: DeferredCoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
+): CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit {
+    return DebounceIntentHandler(duration, handler)
+}
+
+
+@OptIn(ExperimentalMviKotlinApi::class)
+private class SkippingIntentHandler<T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any>(
+    private val handler: CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
+) : (CoroutineExecutorScope<State, Message, Action, Label>, T) -> Unit {
+    private val job: Job = SupervisorJob()
+    override fun invoke(p1: CoroutineExecutorScope<State, Message, Action, Label>, p2: T) {
         if (job.children.any())
-            return@onIntent
-        val newScope = JobBasedCoroutineExecutorScopeImpl(
-            scope = this,
-            cancelableJob = job,
+            return
+        val newScope = ContextMergingCoroutineExecutorScope(
+            scope = p1,
+            context = job,
         )
-        handler.invoke(newScope, it)
+        handler.invoke(newScope, p2)
     }
 }
 
+@OptIn(ExperimentalMviKotlinApi::class)
+private class DebounceIntentHandler<T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any>(
+    private val duration: Duration,
+    private val handler: DeferredCoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
+) : (CoroutineExecutorScope<State, Message, Action, Label>, T) -> Unit {
+    var nextLaunchTime = timeSource.markNow()
+    var job: Job? = null
+
+    override fun invoke(p1: CoroutineExecutorScope<State, Message, Action, Label>, p2: T) {
+        val debouncedCoroutineExecutorScope = DeferredCoroutineExecutorScopeImpl(p1)
+        with(debouncedCoroutineExecutorScope) { handler(p2) }
+        job?.cancel()
+        job = p1.launch {
+            if (nextLaunchTime.hasNotPassedNow()) {
+                nextLaunchTime = timeSource.markNow() + duration
+                delay(duration)
+            } else {
+                nextLaunchTime = timeSource.markNow() + duration
+            }
+            debouncedCoroutineExecutorScope.launch()
+        }
+
+    }
+}

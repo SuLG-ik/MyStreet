@@ -7,12 +7,10 @@ import ru.mystreet.imagepicker.imagePickerModule
 import ru.mystreet.map.data.formatter.RawMapObjectFieldFormatter
 import ru.mystreet.map.data.validator.RegexMapObjectFieldValidator
 import ru.mystreet.map.domain.formatter.MapObjectFieldFormatter
-import ru.mystreet.map.domain.usecase.AddTagToFieldUseCase
 import ru.mystreet.map.domain.usecase.FormatAndValidateDescriptionUseCase
 import ru.mystreet.map.domain.usecase.FormatAndValidateTitleUseCase
 import ru.mystreet.map.domain.usecase.FormatDescriptionUseCase
 import ru.mystreet.map.domain.usecase.FormatTitleUseCase
-import ru.mystreet.map.domain.usecase.RemoveTagFromFieldUseCase
 import ru.mystreet.map.domain.usecase.UploadMapObjectImagesUseCase
 import ru.mystreet.map.domain.usecase.ValidateDescriptionUseCase
 import ru.mystreet.map.domain.usecase.ValidateTitleUseCase
@@ -32,9 +30,9 @@ import ru.mystreet.map.presentation.add.MapObjectImageLoaderStoreImpl
 import ru.mystreet.map.presentation.edit.EditMapStore
 import ru.mystreet.map.presentation.edit.EditMapStoreImpl
 import ru.mystreet.map.presentation.edit.MapObjectEditStore
-import ru.mystreet.map.presentation.edit.MapObjectEditStoreImpl
+import ru.mystreet.map.mapobject.presentation.edit.MapObjectEditStoreImpl
 import ru.mystreet.map.presentation.info.MapObjectInfoStore
-import ru.mystreet.map.presentation.info.MapObjectInfoStoreImpl
+import ru.mystreet.map.mapobject.presentation.info.MapObjectInfoStoreImpl
 
 val mapObjectModule = module {
     includes(imagePickerModule)
