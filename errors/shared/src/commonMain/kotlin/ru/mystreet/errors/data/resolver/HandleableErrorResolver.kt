@@ -1,4 +1,9 @@
-package ru.mystreet.errors.domain
+package ru.mystreet.errors.data.resolver
+
+import ru.mystreet.errors.domain.ErrorConfigResolver
+import ru.mystreet.errors.domain.ErrorInfo
+import ru.mystreet.errors.domain.UniqueIdGenerator
+import ru.mystreet.errors.domain.exception.HandleableError
 
 class HandleableErrorResolver(
     private val idGenerator: UniqueIdGenerator,

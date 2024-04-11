@@ -1,4 +1,6 @@
-package ru.mystreet.errors.domain
+package ru.mystreet.errors.domain.exception
+
+import ru.mystreet.errors.domain.ErrorInfo
 
 interface HandleableError {
 

@@ -91,25 +91,10 @@ interface DeferredCoroutineExecutorScope<out State : Any, in Message : Any, in A
 
 @OptIn(ExperimentalMviKotlinApi::class)
 inline fun <reified T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any> ExecutorBuilder<Intent, Action, State, Message, Label>.onIntentWithDebounce(
-    time: Duration,
+    duration: Duration,
     noinline handler: DeferredCoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
 ) {
-    var nextLaunchTime = timeSource.markNow()
-    var job: Job? = null
-    onIntent<T> {
-        val debouncedCoroutineExecutorScope = DeferredCoroutineExecutorScopeImpl(this)
-        with(debouncedCoroutineExecutorScope) { handler(it) }
-        job?.cancel()
-        job = launch {
-            if (nextLaunchTime.hasNotPassedNow()) {
-                nextLaunchTime = timeSource.markNow() + time
-                delay(time)
-            } else {
-                nextLaunchTime = timeSource.markNow() + time
-            }
-            debouncedCoroutineExecutorScope.launch()
-        }
-    }
+    onIntent<T>(debounceIntentHandler(duration, handler))
 }
 
 @OptIn(ExperimentalMviKotlinApi::class)
@@ -143,6 +128,15 @@ fun <T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label :
 }
 
 @OptIn(ExperimentalMviKotlinApi::class)
+fun <T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any> debounceIntentHandler(
+    duration: Duration,
+    handler: DeferredCoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
+): CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit {
+    return DebounceIntentHandler(duration, handler)
+}
+
+
+@OptIn(ExperimentalMviKotlinApi::class)
 private class SkippingIntentHandler<T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any>(
     private val handler: CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
 ) : (CoroutineExecutorScope<State, Message, Action, Label>, T) -> Unit {
@@ -155,5 +149,30 @@ private class SkippingIntentHandler<T : Intent, Intent : Any, Action : Any, Stat
             context = job,
         )
         handler.invoke(newScope, p2)
+    }
+}
+
+@OptIn(ExperimentalMviKotlinApi::class)
+private class DebounceIntentHandler<T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any>(
+    private val duration: Duration,
+    private val handler: DeferredCoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
+) : (CoroutineExecutorScope<State, Message, Action, Label>, T) -> Unit {
+    var nextLaunchTime = timeSource.markNow()
+    var job: Job? = null
+
+    override fun invoke(p1: CoroutineExecutorScope<State, Message, Action, Label>, p2: T) {
+        val debouncedCoroutineExecutorScope = DeferredCoroutineExecutorScopeImpl(p1)
+        with(debouncedCoroutineExecutorScope) { handler(p2) }
+        job?.cancel()
+        job = p1.launch {
+            if (nextLaunchTime.hasNotPassedNow()) {
+                nextLaunchTime = timeSource.markNow() + duration
+                delay(duration)
+            } else {
+                nextLaunchTime = timeSource.markNow() + duration
+            }
+            debouncedCoroutineExecutorScope.launch()
+        }
+
     }
 }

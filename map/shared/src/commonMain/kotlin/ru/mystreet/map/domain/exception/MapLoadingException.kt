@@ -1,7 +1,7 @@
 package ru.mystreet.map.domain.exception
 
 import ru.mystreet.errors.domain.ErrorInfo
-import ru.mystreet.errors.domain.HandleableError
+import ru.mystreet.errors.domain.exception.HandleableError
 
 class MapLoadingException : Exception(), HandleableError {
 

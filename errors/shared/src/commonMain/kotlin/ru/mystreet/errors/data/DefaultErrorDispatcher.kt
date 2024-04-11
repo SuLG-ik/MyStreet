@@ -7,19 +7,24 @@ import ru.mystreet.errors.domain.ErrorConfigResolver
 import ru.mystreet.errors.domain.ErrorHandlerFactory
 import ru.mystreet.errors.domain.ErrorHandlersConfig
 import ru.mystreet.errors.domain.ErrorInfo
+import ru.mystreet.errors.domain.ErrorPostProcessor
+import ru.mystreet.errors.domain.ErrorPostProcessorController
 import ru.mystreet.errors.domain.MutableErrorDispatcher
 
 @Suppress("FunctionName")
 fun DefaultErrorDispatcher(
-    vararg handlers: ErrorHandlerFactory<*>,
+    errorPostProcessors: Array<ErrorPostProcessor> = emptyArray(),
+    handlers: Array<ErrorHandlerFactory<*>> = emptyArray(),
 ): MutableErrorDispatcher {
     return DefaultErrorDispatcher(
         resolversConfig = DefaultErrorResolversConfig(handlers = handlers),
+        errorPostProcessor = ErrorPostProcessorController(errorPostProcessors),
     )
 }
 
 private class DefaultErrorDispatcher(
     private val resolversConfig: ErrorHandlersConfig,
+    private val errorPostProcessor: ErrorPostProcessor,
 ) : MutableErrorDispatcher {
 
     override val errors: MutableSharedFlow<ErrorInfo> =
@@ -32,8 +37,9 @@ private class DefaultErrorDispatcher(
     }
 
     private fun dispatch(error: Any, resolver: ErrorConfigResolver<Any>) {
-        val config = resolver.resolve(error)
-        errors.tryEmit(config)
+        val info = resolver.resolve(error)
+        errorPostProcessor.process(info)
+        errors.tryEmit(info)
     }
 
 }

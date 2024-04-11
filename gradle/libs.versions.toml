@@ -36,6 +36,7 @@ firebase-crashlytics = "2.9.9"
 firebase = "32.8.0"
 paging = "3.3.0-alpha02-0.5.1"
 firebaseCrashlyticsBuildtools = "2.9.9"
+touchlab-crashlytics = "0.8.6"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -99,6 +100,7 @@ firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 paging-common = { module = "app.cash.paging:paging-common", version.ref = "paging" }
 paging-compose = { module = "app.cash.paging:paging-compose-common", version.ref = "paging" }
 firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
+touchlab-crashlytics = { module = "co.touchlab.crashkios:crashlytics", version.ref = "touchlab-crashlytics" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }

@@ -25,5 +25,10 @@ data class ErrorInfo(
         val isShownMultiple: Boolean = true,
         var isHighPriority: Boolean = false,
         val duration: Duration = 3.seconds,
+        val level: ErrorLevel = ErrorLevel.NORMAL,
     )
+}
+
+enum class ErrorLevel {
+    NORMAL, LOGGING, ERROR
 }

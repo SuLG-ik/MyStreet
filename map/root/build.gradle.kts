@@ -17,7 +17,7 @@ kotlin {
     iosX64()
     iosArm64()
     iosSimulatorArm64()
-    
+
     sourceSets {
         androidMain.dependencies {
         }
@@ -40,6 +40,7 @@ kotlin {
             implementation(projects.uikit)
             implementation(projects.sheet)
             implementation(projects.errors.ui)
+            implementation(projects.core.crashlytics)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

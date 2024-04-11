@@ -1,6 +1,8 @@
 package ru.mystreet.errors.domain
 
 import ru.mystreet.errors.data.AtomicUniqueIdGenerator
+import ru.mystreet.errors.data.resolver.ApolloExceptionResolver
+import ru.mystreet.errors.data.resolver.HandleableErrorResolver
 import kotlin.reflect.KClass
 
 interface ErrorHandlersConfig {
@@ -9,13 +11,19 @@ interface ErrorHandlersConfig {
 
 }
 
+val defaultResolvers = arrayOf<ErrorHandlerFactory<*>>(
+    { HandleableErrorResolver(it).asHandler() },
+    { ApolloExceptionResolver(it).asHandler() },
+)
+
 @Suppress("FunctionName")
 fun DefaultErrorResolversConfig(
     vararg handlers: ErrorHandlerFactory<*>,
     uniqueIdGenerator: UniqueIdGenerator = AtomicUniqueIdGenerator(),
 ): ErrorHandlersConfig {
     return ErrorHandlersConfig(
-        { HandleableErrorResolver(it).asHandler() }, *handlers,
+        *defaultResolvers,
+        *handlers,
         uniqueIdGenerator = uniqueIdGenerator,
     )
 }
@@ -33,16 +41,13 @@ private class DefaultErrorHandlersConfig(
 ) : ErrorHandlersConfig {
 
     private val handlers =
-        handlers.map { it.invoke(uniqueIdGenerator) }
-            .associateBy { it.type }
-            .toMutableMap()
+        handlers.map { it.invoke(uniqueIdGenerator) }.associateBy { it.type }.toMutableMap()
 
     private val handlersCache = mutableMapOf<KClass<*>, ErrorHandler<*>?>()
 
     override fun findHandler(value: Any): ErrorHandler<*>? {
         val type = value::class
-        if (handlersCache.containsKey(value))
-            return handlersCache[value]
+        if (handlersCache.containsKey(value)) return handlersCache[value]
         val handler = findInResolvers(value, type)
         handlersCache[type] = handler
         return handler
@@ -52,8 +57,7 @@ private class DefaultErrorHandlersConfig(
         var generalResolver: ErrorHandler<*>? = null
         handlers.forEach {
             if (it.key == type) return it.value
-            if (it.key.isInstance(value) && generalResolver == null)
-                generalResolver = it.value
+            if (it.key.isInstance(value) && generalResolver == null) generalResolver = it.value
         }
         return generalResolver
     }

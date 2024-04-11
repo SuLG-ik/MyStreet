@@ -8,7 +8,6 @@ import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
 import com.arkivanov.mvikotlin.extensions.coroutines.coroutineBootstrapper
-import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
@@ -16,6 +15,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.mystreet.errors.domain.ErrorDispatcher
+import ru.mystreet.errors.store.onActionSafe
+import ru.mystreet.errors.store.safeCoroutineExecutorFactory
 import ru.mystreet.map.domain.entity.MapObjectReview
 import ru.mystreet.map.domain.entity.MapObjectReviewsInfo
 import ru.mystreet.map.domain.usecase.GetMapObjectReviewsInfoUseCase
@@ -25,6 +27,7 @@ import ru.mystreet.map.domain.usecase.GetMapObjectReviewsPagingSourceUseCase
 class MapObjectReviewsStoreImpl(
     coroutineDispatcher: CoroutineDispatcher,
     storeFactory: StoreFactory,
+    errorDispatcher: ErrorDispatcher,
     getMapObjectReviewsPagingSourceUseCase: GetMapObjectReviewsPagingSourceUseCase,
     getMapObjectReviewsInfoUseCase: GetMapObjectReviewsInfoUseCase,
     params: MapObjectReviewsStore.Params,
@@ -44,8 +47,8 @@ class MapObjectReviewsStoreImpl(
             }
         },
         bootstrapper = coroutineBootstrapper(coroutineDispatcher) { dispatch(Action.Setup) },
-        executorFactory = coroutineExecutorFactory(coroutineDispatcher) {
-            onAction<Action.Setup> {
+        executorFactory = safeCoroutineExecutorFactory(coroutineDispatcher, errorDispatcher) {
+            onActionSafe(errorDispatcher) { action: Action.Setup ->
                 Pager(
                     config = PagingConfig(pageSize = 30),
                 ) {

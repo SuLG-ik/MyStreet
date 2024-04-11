@@ -13,8 +13,4 @@ import ru.mystreet.errors.store.ErrorsListStoreImpl
 
 val errorsModule = module {
     factoryOf(::ErrorsListStoreImpl) bind ErrorsListStore::class
-    single{DefaultErrorDispatcher() } binds arrayOf(
-        ErrorDispatcher::class,
-        MutableErrorDispatcher::class
-    )
 }

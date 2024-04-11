@@ -35,6 +35,7 @@ kotlin {
             implementation(projects.core.component)
             implementation(projects.core.db)
             implementation(projects.core.time)
+            implementation(libs.apollo)
             implementation(libs.atomicfu)
         }
         commonTest.dependencies {
