@@ -1,21 +1,50 @@
 package ru.mystreet.account.domain.service
 
-import ru.mystreet.account.domain.entity.LoginField
+import arrow.core.Ior
+import arrow.core.raise.ensure
+import arrow.core.raise.ior
+import org.koin.core.annotation.Factory
+import ru.mystreet.account.domain.entity.FieldError
 
+val emailRegex =
+    "[a-zA-Z0-9+._%\\-]{1,256}@[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}(\\.[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25})+".toRegex()
+
+@Factory
 class DirectAuthFieldValidator : AuthFieldValidator {
 
-    override fun validateLogin(value: String): LoginField.FieldError? {
-        if (value.isBlank()) {
-            return LoginField.FieldError.IllegalLength
+    override fun validateEmail(value: String): Ior<FieldError, String> =
+        ior(combineError = { first, _ -> first }) {
+            ensure(value.isNotBlank()) { FieldError.IllegalLength }
+            ensure(emailRegex.matches(value)) { FieldError.IllegalInput }
+            value
         }
-        return null
-    }
 
-    override fun validatePassword(value: String): LoginField.FieldError? {
-        if (value.isBlank()) {
-            return LoginField.FieldError.IllegalLength
+    override fun validateLogin(value: String): Ior<FieldError, String> =
+        ior(combineError = { first, _ -> first }) {
+            ensure(value.isNotBlank()) { FieldError.IllegalLength }
+            value
         }
-        return null
-    }
+
+    override fun validateName(value: String): Ior<FieldError, String> =
+        ior(combineError = { first, _ -> first }) {
+            ensure(value.isNotBlank()) { FieldError.IllegalLength }
+            value
+        }
+
+    override fun validatePassword(value: String): Ior<FieldError, String> =
+        ior(combineError = { first, _ -> first }) {
+            ensure(value.isNotBlank()) { FieldError.IllegalLength }
+            value
+        }
+
+
+    override fun validateRepeatPassword(
+        value: String,
+        originalPassword: String,
+    ): Ior<FieldError, String> =
+        ior(combineError = { first, _ -> first }) {
+            ensure(value == originalPassword) { FieldError.IllegalInput }
+            value
+        }
 
 }

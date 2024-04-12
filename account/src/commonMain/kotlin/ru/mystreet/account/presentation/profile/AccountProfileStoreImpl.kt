@@ -9,9 +9,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.Factory
 import ru.mystreet.account.domain.entity.AccountProfileFull
 import ru.mystreet.account.domain.usecase.LoadAccountProfileFullUseCase
 
+@Factory(binds = [AccountProfileStore::class])
 @OptIn(ExperimentalMviKotlinApi::class)
 class AccountProfileStoreImpl(
     coroutineDispatcher: CoroutineDispatcher,

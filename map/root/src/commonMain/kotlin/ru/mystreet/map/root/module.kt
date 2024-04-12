@@ -1,5 +1,6 @@
 package ru.mystreet.map.root
 
+import org.koin.core.annotation.Module
 import org.koin.dsl.binds
 import org.koin.dsl.module
 import ru.mystreet.account.accountModule

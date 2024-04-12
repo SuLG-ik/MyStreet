@@ -34,6 +34,7 @@ import ru.mystreet.account.component.auth.AccountRegister
 import ru.mystreet.account.domain.entity.RegisterField
 import ru.mystreet.uikit.AppIcon
 import ru.mystreet.uikit.UIKitOutlineTextField
+import ru.mystreet.uikit.UIKitValidatedOutlinedTextField
 import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.BackButton
 import ru.mystreet.uikit.paddingIme
@@ -135,28 +136,28 @@ fun AccountRegisterFields(
     Column(
         modifier = modifier,
     ) {
-        UIKitOutlineTextField(
+        UIKitValidatedOutlinedTextField(
             title = "Логин",
-            value = field.username,
+            value = field.login,
             onValueChange = onLoginInput,
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
         )
-        UIKitOutlineTextField(
+        UIKitValidatedOutlinedTextField(
             title = "Почта",
             value = field.email,
             onValueChange = onEmailInput,
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
         )
-        UIKitOutlineTextField(
+        UIKitValidatedOutlinedTextField(
             title = "Отображаемое имя",
             value = field.name,
             onValueChange = onNameInput,
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
         )
-        UIKitOutlineTextField(
+        UIKitValidatedOutlinedTextField(
             title = "Пароль",
             value = field.password,
             onValueChange = onPasswordInput,
@@ -164,7 +165,7 @@ fun AccountRegisterFields(
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
         )
-        UIKitOutlineTextField(
+        UIKitValidatedOutlinedTextField(
             title = "Повторите пароль",
             value = field.passwordRepeat,
             onValueChange = onPasswordRepeatInput,

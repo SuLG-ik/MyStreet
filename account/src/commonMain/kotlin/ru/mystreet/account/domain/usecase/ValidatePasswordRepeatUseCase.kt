@@ -6,12 +6,12 @@ import ru.mystreet.account.domain.entity.FieldError
 import ru.mystreet.account.domain.service.AuthFieldValidator
 
 @Factory
-class ValidatePasswordUseCase(
+class ValidatePasswordRepeatUseCase(
     private val validator: AuthFieldValidator,
 ) {
 
-    operator fun invoke(value: String): Ior<FieldError, String> {
-        return validator.validatePassword(value)
+    operator fun invoke(value: String, originalPassword: String): Ior<FieldError, String> {
+        return validator.validateRepeatPassword(value, originalPassword)
     }
 
 }

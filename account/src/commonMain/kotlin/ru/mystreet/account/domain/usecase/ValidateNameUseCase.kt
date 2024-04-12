@@ -3,16 +3,15 @@ package ru.mystreet.account.domain.usecase
 import arrow.core.Ior
 import org.koin.core.annotation.Factory
 import ru.mystreet.account.domain.entity.FieldError
+import ru.mystreet.account.domain.service.AuthFieldValidator
 
 @Factory
-class ProvidePasswordUseCase(
-    private val format: FormatPasswordUseCase,
-    private val validate: ValidatePasswordUseCase,
+class ValidateNameUseCase(
+    private val validator: AuthFieldValidator,
 ) {
 
     operator fun invoke(value: String): Ior<FieldError, String> {
-        val formattedPassword = format(value)
-        return validate(formattedPassword)
+        return validator.validateName(value)
     }
 
 }

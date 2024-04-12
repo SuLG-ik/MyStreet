@@ -5,14 +5,14 @@ import org.koin.core.annotation.Factory
 import ru.mystreet.account.domain.entity.FieldError
 
 @Factory
-class ProvidePasswordUseCase(
-    private val format: FormatPasswordUseCase,
-    private val validate: ValidatePasswordUseCase,
+class ProvideEmailUseCase(
+    private val format: FormatEmailUseCase,
+    private val validate: ValidateEmailUseCase,
 ) {
 
     operator fun invoke(value: String): Ior<FieldError, String> {
-        val formattedPassword = format(value)
-        return validate(formattedPassword)
+        val formattedValue = format(value)
+        return validate(formattedValue)
     }
 
 }

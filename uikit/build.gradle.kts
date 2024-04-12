@@ -28,6 +28,7 @@ kotlin {
             api(libs.kotlinx.collections)
             api(libs.moko.resources)
             api(libs.moko.resources.compose)
+            api(libs.arrow.core)
             api(projects.core.coil)
         }
         commonTest.dependencies {

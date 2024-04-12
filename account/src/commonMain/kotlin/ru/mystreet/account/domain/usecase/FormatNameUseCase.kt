@@ -4,12 +4,12 @@ import org.koin.core.annotation.Factory
 import ru.mystreet.account.domain.service.AuthFieldFormatter
 
 @Factory
-class FormatPasswordUseCase(
+class FormatNameUseCase(
     private val formatter: AuthFieldFormatter,
 ) {
 
     operator fun invoke(value: String): String {
-        return formatter.formatPassword(value)
+        return formatter.formatName(value)
     }
 
 }

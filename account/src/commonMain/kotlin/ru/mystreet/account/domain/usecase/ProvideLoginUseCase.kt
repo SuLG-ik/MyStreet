@@ -1,16 +1,18 @@
 package ru.mystreet.account.domain.usecase
 
-import ru.mystreet.account.domain.entity.LoginField
-import ru.mystreet.uikit.ValidatedField
+import arrow.core.Ior
+import org.koin.core.annotation.Factory
+import ru.mystreet.account.domain.entity.FieldError
 
+@Factory
 class ProvideLoginUseCase(
-    private val formatLoginUseCase: FormatLoginUseCase,
-    private val validateLoginUseCase: ValidateLoginUseCase,
+    private val format: FormatLoginUseCase,
+    private val validate: ValidateLoginUseCase,
 ) {
 
-    operator fun invoke(value: String): ValidatedField<LoginField.FieldError> {
-        val formattedValue = formatLoginUseCase(value)
-        return ValidatedField(formattedValue, validateLoginUseCase(formattedValue))
+    operator fun invoke(value: String): Ior<FieldError, String> {
+        val formattedValue = format(value)
+        return validate(formattedValue)
     }
 
 }

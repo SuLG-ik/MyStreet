@@ -42,7 +42,7 @@ class AccountRegisterComponent(
     override val registerField: Value<RegisterField> = state.map { it.field }
 
     override fun onNameInput(value: String) {
-        store.accept(AccountRegisterStore.Intent.NameInput(value))
+        store.accept(AccountRegisterStore.Intent.LoginInput(value))
     }
 
     override fun onUsernameInput(value: String) {

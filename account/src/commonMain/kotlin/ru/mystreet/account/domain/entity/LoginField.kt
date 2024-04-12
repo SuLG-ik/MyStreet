@@ -1,14 +1,13 @@
 package ru.mystreet.account.domain.entity
 
-import ru.mystreet.uikit.ValidatedField
+import arrow.core.Ior
 
 data class LoginField(
-    val login: ValidatedField<FieldError>,
-    val password: ValidatedField<FieldError>,
-) {
+    val login: Ior<FieldError, String>,
+    val password: Ior<FieldError, String>,
+)
 
-    sealed interface FieldError {
-        data object IllegalLength : FieldError
-        data object IllegalInput : FieldError
-    }
+sealed interface FieldError {
+    data object IllegalLength : FieldError
+    data object IllegalInput : FieldError
 }

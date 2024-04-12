@@ -18,7 +18,7 @@ interface AccountRegisterStore :
 
     sealed interface Intent {
         data class EmailInput(val value: String): Intent
-        data class NameInput(val value: String): Intent
+        data class LoginInput(val value: String): Intent
         data class UsernameInput(val value: String) : Intent
         data class PasswordInput(val value: String) : Intent
         data class PasswordRepeatInput(val value: String) : Intent
@@ -28,7 +28,7 @@ interface AccountRegisterStore :
     data class State(
         val isLoading: Boolean = false,
         val isContinueAvailable: Boolean = false,
-        val field: RegisterField = RegisterField(),
+        val field: RegisterField,
     )
 
     sealed interface Label {

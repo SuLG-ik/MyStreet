@@ -6,11 +6,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -30,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ru.mystreet.account.component.auth.AccountLogin
+import ru.mystreet.account.domain.entity.FieldError
 import ru.mystreet.account.domain.entity.LoginField
 import ru.mystreet.uikit.AppIcon
 import ru.mystreet.uikit.KeyboardActionsDone
@@ -170,10 +167,10 @@ fun ErrorText(text: String?, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun LoginField.FieldError.formatLoginError(): String {
+fun FieldError.formatLoginError(): String {
     return when (this) {
-        LoginField.FieldError.IllegalInput -> "Неверный ввод"
-        LoginField.FieldError.IllegalLength -> "Поле не должно быть пустым"
+        FieldError.IllegalInput -> "Неверный ввод"
+        FieldError.IllegalLength -> "Поле не должно быть пустым"
     }
 }
 
