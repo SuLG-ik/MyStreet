@@ -33,6 +33,7 @@ import ru.mystreet.uikit.KeyboardActionsDone
 import ru.mystreet.uikit.KeyboardActionsNext
 import ru.mystreet.uikit.KeyboardOptionsDone
 import ru.mystreet.uikit.KeyboardOptionsNext
+import ru.mystreet.uikit.UIKitValidatedOutlinedPasswordField
 import ru.mystreet.uikit.UIKitValidatedOutlinedTextField
 import ru.mystreet.uikit.paddingIme
 
@@ -143,7 +144,7 @@ fun AccountLoginFields(
             keyboardOptions = KeyboardOptionsNext,
             modifier = Modifier.fillMaxWidth(),
         )
-        UIKitValidatedOutlinedTextField(
+        UIKitValidatedOutlinedPasswordField(
             title = "Пароль",
             value = field.password,
             onValueChange = onPasswordInput,
@@ -153,7 +154,6 @@ fun AccountLoginFields(
             },
             keyboardActions = KeyboardActionsDone,
             keyboardOptions = KeyboardOptionsDone.copy(keyboardType = KeyboardType.Password),
-            visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
         )
     }

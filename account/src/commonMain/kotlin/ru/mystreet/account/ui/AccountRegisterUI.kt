@@ -33,6 +33,7 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ru.mystreet.account.component.auth.AccountRegister
 import ru.mystreet.account.domain.entity.RegisterField
 import ru.mystreet.uikit.AppIcon
+import ru.mystreet.uikit.UIKitValidatedOutlinedPasswordField
 import ru.mystreet.uikit.UIKitValidatedOutlinedTextField
 import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.BackButton
@@ -165,7 +166,7 @@ fun AccountRegisterFields(
             },
             modifier = Modifier.fillMaxWidth(),
         )
-        UIKitValidatedOutlinedTextField(
+        UIKitValidatedOutlinedPasswordField(
             title = "Пароль",
             value = field.password,
             onValueChange = onPasswordInput,
@@ -173,10 +174,9 @@ fun AccountRegisterFields(
             errorText = {
                 ErrorText(it.formatLoginError())
             },
-            visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
         )
-        UIKitValidatedOutlinedTextField(
+        UIKitValidatedOutlinedPasswordField(
             title = "Повторите пароль",
             value = field.passwordRepeat,
             errorText = {
@@ -184,7 +184,6 @@ fun AccountRegisterFields(
             },
             onValueChange = onPasswordRepeatInput,
             singleLine = true,
-            visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
         )
     }
