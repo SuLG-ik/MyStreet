@@ -8,27 +8,83 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.Factory
+import ru.mystreet.account.domain.entity.FieldError
 import ru.mystreet.account.domain.entity.RegisterField
+import ru.mystreet.account.domain.usecase.ProvideEmailUseCase
+import ru.mystreet.account.domain.usecase.ProvideLoginUseCase
+import ru.mystreet.account.domain.usecase.ProvideNameUseCase
+import ru.mystreet.account.domain.usecase.ProvidePasswordRepeatUseCase
+import ru.mystreet.account.domain.usecase.ProvidePasswordUseCase
+import ru.mystreet.account.domain.usecase.RegisterIsContinueAvailableUseCase
 import ru.mystreet.account.domain.usecase.RegisterUseCase
+import ru.mystreet.uikit.ValidatedField
 
+@Factory(binds = [AccountRegisterStore::class])
 @OptIn(ExperimentalMviKotlinApi::class)
 class AccountRegisterStoreImpl(
     coroutineDispatcher: CoroutineDispatcher,
     storeFactory: StoreFactory,
     savedState: AccountRegisterStore.SavedState,
     registerUseCase: RegisterUseCase,
+    provideLoginUseCase: ProvideLoginUseCase,
+    providePasswordUseCase: ProvidePasswordUseCase,
+    provideEmailUseCase: ProvideEmailUseCase,
+    providePasswordRepeatUseCase: ProvidePasswordRepeatUseCase,
+    provideNameUseCase: ProvideNameUseCase,
+    registerIsContinueAvailableUseCase: RegisterIsContinueAvailableUseCase,
 ) : AccountRegisterStore,
     Store<AccountRegisterStore.Intent, AccountRegisterStore.State, AccountRegisterStore.Label> by storeFactory.create<_, _, Message, _, _>(
         name = "AccountRegisterStoreImpl",
-        initialState = savedState.restore(),
+        initialState = savedState.restore(
+            provideLoginUseCase = provideLoginUseCase,
+            providePasswordUseCase = providePasswordUseCase,
+            provideEmailUseCase = provideEmailUseCase,
+            providePasswordRepeatUseCase = providePasswordRepeatUseCase,
+            provideNameUseCase = provideNameUseCase,
+        ),
         reducer = {
             when (it) {
                 Message.Loading -> copy(isLoading = true, isContinueAvailable = false)
-                is Message.SetEmail -> copy(field = field.copy(email = it.value))
-                is Message.SetName -> copy(field = field.copy(name = it.value))
-                is Message.SetPassword -> copy(field = field.copy(password = it.value))
-                is Message.SetPasswordRepeat -> copy(field = field.copy(passwordRepeat = it.value))
-                is Message.SetUsername -> copy(field = field.copy(username = it.value))
+                is Message.SetEmail -> {
+                    val newField = field.copy(email = it.value)
+                    copy(
+                        field = newField,
+                        isContinueAvailable = registerIsContinueAvailableUseCase(newField)
+                    )
+                }
+
+                is Message.SetName -> {
+                    val newField = field.copy(name = it.value)
+                    copy(
+                        field = newField,
+                        isContinueAvailable = registerIsContinueAvailableUseCase(newField)
+                    )
+                }
+
+                is Message.SetPassword -> {
+                    val newField = field.copy(password = it.value)
+                    copy(
+                        field = newField,
+                        isContinueAvailable = registerIsContinueAvailableUseCase(newField)
+                    )
+                }
+
+                is Message.SetPasswordRepeat -> {
+                    val newField = field.copy(passwordRepeat = it.value)
+                    copy(
+                        field = newField,
+                        isContinueAvailable = registerIsContinueAvailableUseCase(newField)
+                    )
+                }
+
+                is Message.SetLogin -> {
+                    val newField = field.copy(login = it.value)
+                    copy(
+                        field = newField,
+                        isContinueAvailable = registerIsContinueAvailableUseCase(newField)
+                    )
+                }
             }
         },
         executorFactory = coroutineExecutorFactory(coroutineDispatcher) {
@@ -38,10 +94,10 @@ class AccountRegisterStoreImpl(
                     return@onIntent
                 launch {
                     val response = registerUseCase(
-                        username = state.field.username,
-                        password = state.field.password,
-                        email = state.field.email,
-                        name = state.field.name
+                        username = state.field.login.value,
+                        password = state.field.password.value,
+                        email = state.field.email.value,
+                        name = state.field.name.value
                     )
                     withContext(Dispatchers.Main) {
                         publish(AccountRegisterStore.Label.RegisterSuccess(response.username))
@@ -49,42 +105,49 @@ class AccountRegisterStoreImpl(
                 }
             }
             onIntent<AccountRegisterStore.Intent.PasswordInput> {
-                dispatch(Message.SetPassword(it.value))
+                dispatch(Message.SetPassword(providePasswordUseCase(it.value)))
             }
             onIntent<AccountRegisterStore.Intent.PasswordRepeatInput> {
-                dispatch(Message.SetPasswordRepeat(it.value))
+                dispatch(
+                    Message.SetPasswordRepeat(
+                        providePasswordRepeatUseCase(
+                            value = it.value,
+                            originalPassword = state().field.password.value,
+                        )
+                    )
+                )
             }
             onIntent<AccountRegisterStore.Intent.EmailInput> {
-                dispatch(Message.SetEmail(it.value))
+                dispatch(Message.SetEmail(provideEmailUseCase(it.value)))
             }
             onIntent<AccountRegisterStore.Intent.UsernameInput> {
-                dispatch(Message.SetUsername(it.value))
+                dispatch(Message.SetLogin(provideLoginUseCase(it.value)))
             }
-            onIntent<AccountRegisterStore.Intent.NameInput> {
-                dispatch(Message.SetName(it.value))
+            onIntent<AccountRegisterStore.Intent.LoginInput> {
+                dispatch(Message.SetName(provideNameUseCase(it.value)))
             }
         },
     ) {
 
     sealed interface Message {
-        data class SetUsername(
-            val value: String,
+        data class SetLogin(
+            val value: ValidatedField<FieldError>,
         ) : Message
 
         data class SetEmail(
-            val value: String,
+            val value: ValidatedField<FieldError>,
         ) : Message
 
         data class SetName(
-            val value: String,
+            val value: ValidatedField<FieldError>,
         ) : Message
 
         data class SetPasswordRepeat(
-            val value: String,
+            val value: ValidatedField<FieldError>,
         ) : Message
 
         data class SetPassword(
-            val value: String,
+            val value: ValidatedField<FieldError>,
         ) : Message
 
         data object Loading : Message
@@ -92,11 +155,11 @@ class AccountRegisterStoreImpl(
 
     override fun getSavedState(): AccountRegisterStore.SavedState {
         return AccountRegisterStore.SavedState(
-            name = state.field.name,
-            email = state.field.email,
-            username = state.field.username,
-            password = state.field.password,
-            passwordRepeat = state.field.passwordRepeat,
+            name = state.field.name.value,
+            email = state.field.email.value,
+            username = state.field.login.value,
+            password = state.field.password.value,
+            passwordRepeat = state.field.passwordRepeat.value,
         )
     }
 
@@ -104,14 +167,20 @@ class AccountRegisterStoreImpl(
 }
 
 
-private fun AccountRegisterStore.SavedState.restore(): AccountRegisterStore.State {
+private fun AccountRegisterStore.SavedState.restore(
+    provideLoginUseCase: ProvideLoginUseCase,
+    providePasswordUseCase: ProvidePasswordUseCase,
+    provideEmailUseCase: ProvideEmailUseCase,
+    providePasswordRepeatUseCase: ProvidePasswordRepeatUseCase,
+    provideNameUseCase: ProvideNameUseCase,
+): AccountRegisterStore.State {
     return AccountRegisterStore.State(
         isLoading = false, isContinueAvailable = true, field = RegisterField(
-            name = name,
-            username = username,
-            email = email,
-            password = password,
-            passwordRepeat = passwordRepeat
+            name = provideNameUseCase(name),
+            login = provideLoginUseCase(username),
+            email = provideEmailUseCase(email),
+            password = providePasswordUseCase(password),
+            passwordRepeat = providePasswordRepeatUseCase(passwordRepeat, password),
         )
 
     )

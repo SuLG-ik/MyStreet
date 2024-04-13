@@ -6,11 +6,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -25,17 +21,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ru.mystreet.account.component.auth.AccountLogin
+import ru.mystreet.account.domain.entity.FieldError
 import ru.mystreet.account.domain.entity.LoginField
 import ru.mystreet.uikit.AppIcon
 import ru.mystreet.uikit.KeyboardActionsDone
 import ru.mystreet.uikit.KeyboardActionsNext
 import ru.mystreet.uikit.KeyboardOptionsDone
 import ru.mystreet.uikit.KeyboardOptionsNext
+import ru.mystreet.uikit.UIKitValidatedOutlinedPasswordField
 import ru.mystreet.uikit.UIKitValidatedOutlinedTextField
 import ru.mystreet.uikit.paddingIme
 
@@ -132,6 +129,7 @@ fun AccountLoginFields(
     modifier: Modifier = Modifier,
 ) {
     Column(
+        verticalArrangement = Arrangement.spacedBy(5.dp),
         modifier = modifier,
     ) {
         UIKitValidatedOutlinedTextField(
@@ -146,7 +144,7 @@ fun AccountLoginFields(
             keyboardOptions = KeyboardOptionsNext,
             modifier = Modifier.fillMaxWidth(),
         )
-        UIKitValidatedOutlinedTextField(
+        UIKitValidatedOutlinedPasswordField(
             title = "Пароль",
             value = field.password,
             onValueChange = onPasswordInput,
@@ -156,7 +154,6 @@ fun AccountLoginFields(
             },
             keyboardActions = KeyboardActionsDone,
             keyboardOptions = KeyboardOptionsDone.copy(keyboardType = KeyboardType.Password),
-            visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -170,10 +167,11 @@ fun ErrorText(text: String?, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun LoginField.FieldError.formatLoginError(): String {
+fun FieldError.formatLoginError(): String {
     return when (this) {
-        LoginField.FieldError.IllegalInput -> "Неверный ввод"
-        LoginField.FieldError.IllegalLength -> "Поле не должно быть пустым"
+        FieldError.IllegalInput -> "Неверный ввод"
+        is FieldError.IllegalLength -> "Длина должна быть не менее $minSize"
+        FieldError.EmptyField -> "Поле не должно быть пустым"
     }
 }
 

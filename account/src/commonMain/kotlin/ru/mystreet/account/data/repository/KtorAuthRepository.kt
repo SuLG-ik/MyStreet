@@ -5,6 +5,7 @@ import io.ktor.client.call.body
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.HttpStatusCode
+import org.koin.core.annotation.Factory
 import ru.mystreet.account.data.converter.AuthConverter
 import ru.mystreet.account.data.entity.RemoteLoginRequest
 import ru.mystreet.account.data.entity.RemoteLoginResponse
@@ -15,6 +16,7 @@ import ru.mystreet.account.domain.entity.RegisterResponse
 import ru.mystreet.account.domain.exception.UserIncorrectCredentials
 import ru.mystreet.account.domain.repository.AuthRepository
 
+@Factory
 class KtorAuthRepository(
     private val converter: AuthConverter,
     private val client: HttpClient,

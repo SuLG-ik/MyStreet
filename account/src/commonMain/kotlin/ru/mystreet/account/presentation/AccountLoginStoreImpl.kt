@@ -8,6 +8,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.Factory
+import org.koin.core.annotation.InjectedParam
+import ru.mystreet.account.domain.entity.FieldError
 import ru.mystreet.account.domain.entity.LoginField
 import ru.mystreet.account.domain.exception.UserIncorrectCredentials
 import ru.mystreet.account.domain.usecase.LoginIsContinueAvailableUseCase
@@ -17,10 +20,11 @@ import ru.mystreet.account.domain.usecase.ProvidePasswordUseCase
 import ru.mystreet.uikit.ValidatedField
 
 @OptIn(ExperimentalMviKotlinApi::class)
+@Factory(binds = [AccountLoginStore::class])
 class AccountLoginStoreImpl(
     coroutineDispatcher: CoroutineDispatcher,
     storeFactory: StoreFactory,
-    savedState: AccountLoginStore.SavedState,
+    @InjectedParam savedState: AccountLoginStore.SavedState,
     loginUseCase: LoginUseCase,
     provideLoginUseCase: ProvideLoginUseCase,
     providePasswordUseCase: ProvidePasswordUseCase,
@@ -60,12 +64,13 @@ class AccountLoginStoreImpl(
         executorFactory = coroutineExecutorFactory(coroutineDispatcher) {
             onIntent<AccountLoginStore.Intent.Continue> {
                 val state = state()
-                if (state.isLoading || !state.isContinueAvailable)
-                    return@onIntent
+                if (state.isLoading || !state.isContinueAvailable) return@onIntent
                 dispatch(Message.Loading)
                 launch {
                     try {
-                        val auth = loginUseCase(state.field.login.value, state.field.password.value)
+                        val login = state.field.login.value
+                        val password = state.field.password.value
+                        val auth = loginUseCase(login, password)
                         withContext(Dispatchers.Main) {
                             publish(AccountLoginStore.Label.LoginSuccess(auth.username))
                         }
@@ -87,11 +92,11 @@ class AccountLoginStoreImpl(
 
     sealed interface Message {
         data class SetLogin(
-            val value: ValidatedField<LoginField.FieldError>,
+            val value: ValidatedField<FieldError>,
         ) : Message
 
         data class SetPassword(
-            val value: ValidatedField<LoginField.FieldError>,
+            val value: ValidatedField<FieldError>,
         ) : Message
 
         data object Loading : Message
@@ -110,7 +115,7 @@ class AccountLoginStoreImpl(
 
 fun AccountLoginStore.SavedState.restore(
     provideLoginUseCase: ProvideLoginUseCase,
-    providePasswordUseCase: ProvidePasswordUseCase
+    providePasswordUseCase: ProvidePasswordUseCase,
 ): AccountLoginStore.State {
     return AccountLoginStore.State(
         isLoading = false,

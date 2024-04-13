@@ -6,9 +6,9 @@ import ru.mystreet.account.domain.entity.FieldError
 import ru.mystreet.uikit.ValidatedField
 
 @Factory
-class ProvideLoginUseCase(
-    private val format: FormatLoginUseCase,
-    private val validate: ValidateLoginUseCase,
+class ProvideEmailUseCase(
+    private val format: FormatEmailUseCase,
+    private val validate: ValidateEmailUseCase,
 ) {
 
     operator fun invoke(value: String): ValidatedField<FieldError> {

@@ -7,12 +7,12 @@ import ru.mystreet.account.domain.service.AuthFieldValidator
 import ru.mystreet.uikit.ValidatedField
 
 @Factory
-class ValidateLoginUseCase(
+class ValidatePasswordRepeatUseCase(
     private val validator: AuthFieldValidator,
 ) {
 
-    operator fun invoke(value: String): ValidatedField<FieldError> {
-        return validator.validateLogin(value)
+    operator fun invoke(value: String, originalPassword: String): ValidatedField<FieldError> {
+        return validator.validateRepeatPassword(value, originalPassword)
     }
 
 }

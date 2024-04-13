@@ -8,9 +8,11 @@ import com.arkivanov.mvikotlin.extensions.coroutines.coroutineExecutorFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.koin.core.annotation.Factory
 import ru.mystreet.account.domain.usecase.LogOutUseCase
 import ru.mystreet.core.component.onIntentWithSkipping
 
+@Factory(binds = [AccountProfileSettingStore::class])
 @OptIn(ExperimentalMviKotlinApi::class)
 class AccountProfileSettingStoreImpl(
     coroutineDispatcher: CoroutineDispatcher,

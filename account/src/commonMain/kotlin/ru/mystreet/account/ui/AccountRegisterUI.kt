@@ -27,13 +27,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ru.mystreet.account.component.auth.AccountRegister
 import ru.mystreet.account.domain.entity.RegisterField
 import ru.mystreet.uikit.AppIcon
-import ru.mystreet.uikit.UIKitOutlineTextField
+import ru.mystreet.uikit.UIKitValidatedOutlinedPasswordField
+import ru.mystreet.uikit.UIKitValidatedOutlinedTextField
 import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.BackButton
 import ru.mystreet.uikit.paddingIme
@@ -133,43 +133,57 @@ fun AccountRegisterFields(
     modifier: Modifier = Modifier,
 ) {
     Column(
+        verticalArrangement = Arrangement.spacedBy(5.dp),
         modifier = modifier,
     ) {
-        UIKitOutlineTextField(
+        UIKitValidatedOutlinedTextField(
             title = "Логин",
-            value = field.username,
+            value = field.login,
             onValueChange = onLoginInput,
             singleLine = true,
+            errorText = {
+                ErrorText(it.formatLoginError())
+            },
             modifier = Modifier.fillMaxWidth(),
         )
-        UIKitOutlineTextField(
+        UIKitValidatedOutlinedTextField(
             title = "Почта",
             value = field.email,
             onValueChange = onEmailInput,
             singleLine = true,
+            errorText = {
+                ErrorText(it.formatLoginError())
+            },
             modifier = Modifier.fillMaxWidth(),
         )
-        UIKitOutlineTextField(
+        UIKitValidatedOutlinedTextField(
             title = "Отображаемое имя",
             value = field.name,
             onValueChange = onNameInput,
             singleLine = true,
+            errorText = {
+                ErrorText(it.formatLoginError())
+            },
             modifier = Modifier.fillMaxWidth(),
         )
-        UIKitOutlineTextField(
+        UIKitValidatedOutlinedPasswordField(
             title = "Пароль",
             value = field.password,
             onValueChange = onPasswordInput,
             singleLine = true,
-            visualTransformation = PasswordVisualTransformation(),
+            errorText = {
+                ErrorText(it.formatLoginError())
+            },
             modifier = Modifier.fillMaxWidth(),
         )
-        UIKitOutlineTextField(
+        UIKitValidatedOutlinedPasswordField(
             title = "Повторите пароль",
             value = field.passwordRepeat,
+            errorText = {
+                ErrorText(it.formatLoginError())
+            },
             onValueChange = onPasswordRepeatInput,
             singleLine = true,
-            visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
         )
     }
