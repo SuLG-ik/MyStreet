@@ -44,7 +44,7 @@ class DirectAuthFieldValidator : AuthFieldValidator {
     override fun validatePassword(value: String): ValidatedField<FieldError> {
         return when {
             value.isBlank() -> ValidatedField(value, FieldError.EmptyField)
-            value.length < 8 -> ValidatedField(value, FieldError.IllegalLength(3))
+            value.length < 8 -> ValidatedField(value, FieldError.IllegalLength(8))
             !passwordRegex.matches(value) -> ValidatedField(value, FieldError.IllegalInput)
             else -> ValidatedField(value, null)
         }
