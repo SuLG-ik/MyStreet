@@ -170,7 +170,8 @@ fun ErrorText(text: String?, modifier: Modifier = Modifier) {
 fun FieldError.formatLoginError(): String {
     return when (this) {
         FieldError.IllegalInput -> "Неверный ввод"
-        FieldError.IllegalLength -> "Поле не должно быть пустым"
+        is FieldError.IllegalLength -> "Длина должна быть не менее $minSize"
+        FieldError.EmptyField -> "Поле не должно быть пустым"
     }
 }
 

@@ -4,13 +4,14 @@ import arrow.core.Ior
 import org.koin.core.annotation.Factory
 import ru.mystreet.account.domain.entity.FieldError
 import ru.mystreet.account.domain.service.AuthFieldValidator
+import ru.mystreet.uikit.ValidatedField
 
 @Factory
 class ValidatePasswordUseCase(
     private val validator: AuthFieldValidator,
 ) {
 
-    operator fun invoke(value: String): Ior<FieldError, String> {
+    operator fun invoke(value: String): ValidatedField<FieldError> {
         return validator.validatePassword(value)
     }
 

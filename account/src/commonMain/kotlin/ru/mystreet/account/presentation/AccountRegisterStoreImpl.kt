@@ -1,6 +1,5 @@
 package ru.mystreet.account.presentation
 
-import arrow.core.Ior
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
@@ -19,6 +18,7 @@ import ru.mystreet.account.domain.usecase.ProvidePasswordRepeatUseCase
 import ru.mystreet.account.domain.usecase.ProvidePasswordUseCase
 import ru.mystreet.account.domain.usecase.RegisterIsContinueAvailableUseCase
 import ru.mystreet.account.domain.usecase.RegisterUseCase
+import ru.mystreet.uikit.ValidatedField
 
 @Factory(binds = [AccountRegisterStore::class])
 @OptIn(ExperimentalMviKotlinApi::class)
@@ -94,10 +94,10 @@ class AccountRegisterStoreImpl(
                     return@onIntent
                 launch {
                     val response = registerUseCase(
-                        username = state.field.login.getOrNull()!!,
-                        password = state.field.password.getOrNull()!!,
-                        email = state.field.email.getOrNull()!!,
-                        name = state.field.name.getOrNull()!!
+                        username = state.field.login.value,
+                        password = state.field.password.value,
+                        email = state.field.email.value,
+                        name = state.field.name.value
                     )
                     withContext(Dispatchers.Main) {
                         publish(AccountRegisterStore.Label.RegisterSuccess(response.username))
@@ -112,7 +112,7 @@ class AccountRegisterStoreImpl(
                     Message.SetPasswordRepeat(
                         providePasswordRepeatUseCase(
                             value = it.value,
-                            originalPassword = state().field.password.getOrNull() ?: ""
+                            originalPassword = state().field.password.value,
                         )
                     )
                 )
@@ -131,23 +131,23 @@ class AccountRegisterStoreImpl(
 
     sealed interface Message {
         data class SetLogin(
-            val value: Ior<FieldError, String>,
+            val value: ValidatedField<FieldError>,
         ) : Message
 
         data class SetEmail(
-            val value: Ior<FieldError, String>,
+            val value: ValidatedField<FieldError>,
         ) : Message
 
         data class SetName(
-            val value: Ior<FieldError, String>,
+            val value: ValidatedField<FieldError>,
         ) : Message
 
         data class SetPasswordRepeat(
-            val value: Ior<FieldError, String>,
+            val value: ValidatedField<FieldError>,
         ) : Message
 
         data class SetPassword(
-            val value: Ior<FieldError, String>,
+            val value: ValidatedField<FieldError>,
         ) : Message
 
         data object Loading : Message
@@ -155,11 +155,11 @@ class AccountRegisterStoreImpl(
 
     override fun getSavedState(): AccountRegisterStore.SavedState {
         return AccountRegisterStore.SavedState(
-            name = state.field.name.getOrNull() ?: "",
-            email = state.field.email.getOrNull() ?: "",
-            username = state.field.login.getOrNull() ?: "",
-            password = state.field.password.getOrNull() ?: "",
-            passwordRepeat = state.field.passwordRepeat.getOrNull() ?: "",
+            name = state.field.name.value,
+            email = state.field.email.value,
+            username = state.field.login.value,
+            password = state.field.password.value,
+            passwordRepeat = state.field.passwordRepeat.value,
         )
     }
 

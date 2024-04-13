@@ -1,11 +1,11 @@
 package ru.mystreet.account.domain.entity
 
-import arrow.core.Ior
+import ru.mystreet.uikit.ValidatedField
 
 data class RegisterField(
-    val name: Ior<FieldError, String>,
-    val login: Ior<FieldError, String>,
-    val email: Ior<FieldError, String>,
-    val password: Ior<FieldError, String>,
-    val passwordRepeat: Ior<FieldError, String>,
+    val name: ValidatedField<FieldError>,
+    val login: ValidatedField<FieldError>,
+    val email: ValidatedField<FieldError>,
+    val password: ValidatedField<FieldError>,
+    val passwordRepeat: ValidatedField<FieldError>,
 )

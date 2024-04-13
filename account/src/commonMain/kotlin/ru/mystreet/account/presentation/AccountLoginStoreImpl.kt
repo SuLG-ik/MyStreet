@@ -1,6 +1,5 @@
 package ru.mystreet.account.presentation
 
-import arrow.core.Ior
 import com.arkivanov.mvikotlin.core.store.Store
 import com.arkivanov.mvikotlin.core.store.StoreFactory
 import com.arkivanov.mvikotlin.core.utils.ExperimentalMviKotlinApi
@@ -18,6 +17,7 @@ import ru.mystreet.account.domain.usecase.LoginIsContinueAvailableUseCase
 import ru.mystreet.account.domain.usecase.LoginUseCase
 import ru.mystreet.account.domain.usecase.ProvideLoginUseCase
 import ru.mystreet.account.domain.usecase.ProvidePasswordUseCase
+import ru.mystreet.uikit.ValidatedField
 
 @OptIn(ExperimentalMviKotlinApi::class)
 @Factory(binds = [AccountLoginStore::class])
@@ -64,13 +64,12 @@ class AccountLoginStoreImpl(
         executorFactory = coroutineExecutorFactory(coroutineDispatcher) {
             onIntent<AccountLoginStore.Intent.Continue> {
                 val state = state()
-                if (state.isLoading || !state.isContinueAvailable)
-                    return@onIntent
+                if (state.isLoading || !state.isContinueAvailable) return@onIntent
                 dispatch(Message.Loading)
                 launch {
                     try {
-                        val login = state.field.login.getOrNull() ?: TODO()
-                        val password = state.field.password.getOrNull() ?: TODO()
+                        val login = state.field.login.value
+                        val password = state.field.password.value
                         val auth = loginUseCase(login, password)
                         withContext(Dispatchers.Main) {
                             publish(AccountLoginStore.Label.LoginSuccess(auth.username))
@@ -93,11 +92,11 @@ class AccountLoginStoreImpl(
 
     sealed interface Message {
         data class SetLogin(
-            val value: Ior<FieldError, String>,
+            val value: ValidatedField<FieldError>,
         ) : Message
 
         data class SetPassword(
-            val value: Ior<FieldError, String>,
+            val value: ValidatedField<FieldError>,
         ) : Message
 
         data object Loading : Message
@@ -106,8 +105,8 @@ class AccountLoginStoreImpl(
 
     override fun getSavedState(): AccountLoginStore.SavedState {
         return AccountLoginStore.SavedState(
-            login = state.field.login.getOrNull() ?: "",
-            password = state.field.password.getOrNull() ?: "",
+            login = state.field.login.value,
+            password = state.field.password.value,
         )
     }
 

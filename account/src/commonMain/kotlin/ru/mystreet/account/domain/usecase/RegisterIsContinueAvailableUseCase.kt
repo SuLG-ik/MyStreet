@@ -7,9 +7,9 @@ import ru.mystreet.account.domain.entity.RegisterField
 class RegisterIsContinueAvailableUseCase {
 
     operator fun invoke(field: RegisterField): Boolean {
-        return field.login.leftOrNull() == null && field.password.leftOrNull() == null &&
-                field.email.leftOrNull() == null && field.passwordRepeat.leftOrNull() == null &&
-                field.name.leftOrNull() == null
+        return field.login.error == null && field.password.error == null &&
+                field.email.error == null && field.passwordRepeat.error == null &&
+                field.name.error == null
     }
 
 }

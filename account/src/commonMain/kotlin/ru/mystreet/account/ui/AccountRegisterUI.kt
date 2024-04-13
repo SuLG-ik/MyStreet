@@ -33,7 +33,6 @@ import com.arkivanov.decompose.extensions.compose.subscribeAsState
 import ru.mystreet.account.component.auth.AccountRegister
 import ru.mystreet.account.domain.entity.RegisterField
 import ru.mystreet.uikit.AppIcon
-import ru.mystreet.uikit.UIKitOutlineTextField
 import ru.mystreet.uikit.UIKitValidatedOutlinedTextField
 import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.BackButton
@@ -141,6 +140,9 @@ fun AccountRegisterFields(
             value = field.login,
             onValueChange = onLoginInput,
             singleLine = true,
+            errorText = {
+                ErrorText(it.formatLoginError())
+            },
             modifier = Modifier.fillMaxWidth(),
         )
         UIKitValidatedOutlinedTextField(
@@ -148,6 +150,9 @@ fun AccountRegisterFields(
             value = field.email,
             onValueChange = onEmailInput,
             singleLine = true,
+            errorText = {
+                ErrorText(it.formatLoginError())
+            },
             modifier = Modifier.fillMaxWidth(),
         )
         UIKitValidatedOutlinedTextField(
@@ -155,6 +160,9 @@ fun AccountRegisterFields(
             value = field.name,
             onValueChange = onNameInput,
             singleLine = true,
+            errorText = {
+                ErrorText(it.formatLoginError())
+            },
             modifier = Modifier.fillMaxWidth(),
         )
         UIKitValidatedOutlinedTextField(
@@ -162,12 +170,18 @@ fun AccountRegisterFields(
             value = field.password,
             onValueChange = onPasswordInput,
             singleLine = true,
+            errorText = {
+                ErrorText(it.formatLoginError())
+            },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
         )
         UIKitValidatedOutlinedTextField(
             title = "Повторите пароль",
             value = field.passwordRepeat,
+            errorText = {
+                ErrorText(it.formatLoginError())
+            },
             onValueChange = onPasswordRepeatInput,
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
