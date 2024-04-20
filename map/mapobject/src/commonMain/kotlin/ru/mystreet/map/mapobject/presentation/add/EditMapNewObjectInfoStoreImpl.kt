@@ -133,7 +133,7 @@ private fun EditMapNewObjectInfoStore.SavedState.toField(
             value = tag,
             isInputAvailable = tags.size < MAX_TAGS,
             tags = TagsField.Tags(
-                tags = tags,
+                tags = tags.toPersistentList(),
                 maxTags = MAX_TAGS,
             ),
             suggestion = FieldSuggestion(false, persistentListOf()),
@@ -147,7 +147,7 @@ private fun AddMapObjectField.toSavedState(): EditMapNewObjectInfoStore.SavedSta
         description = description.value,
         point = point,
         category = category,
-        tags = tags.tags.tags,
+        tags = tags.tags.tags.toList(),
         tag = tags.value,
     )
 }

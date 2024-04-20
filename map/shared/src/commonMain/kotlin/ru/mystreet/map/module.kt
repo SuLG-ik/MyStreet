@@ -61,6 +61,8 @@ import ru.mystreet.map.domain.usecase.RemoveTagFromFieldUseCase
 import ru.mystreet.map.domain.usecase.SaveLocalFramedMapObjectUseCase
 import ru.mystreet.map.domain.usecase.SaveMapInitialCameraPositionUseCase
 import ru.mystreet.map.domain.usecase.SetMapObjectFavouriteUseCase
+import ru.mystreet.map.domain.usecase.TrimAddMapObjectFieldUseCase
+import ru.mystreet.map.domain.usecase.TrimEditMapObjectFieldUseCase
 import ru.mystreet.map.domain.usecase.UploadMapObjectImagesUseCase
 import ru.mystreet.map.map.data.service.FramesServiceImpl
 
@@ -124,6 +126,8 @@ private val mapSharedUseCaseModule = module {
     factoryOf(::GetMapObjectReviewsPagingSourceUseCaseImpl) bind GetMapObjectReviewsPagingSourceUseCase::class
     factoryOf(::AddMapObjectReviewUseCase)
     factoryOf(::GetMapObjectReviewsInfoUseCase)
+    factoryOf(::TrimEditMapObjectFieldUseCase)
+    factoryOf(::TrimAddMapObjectFieldUseCase)
 }
 
 val mapSharedModule = module {
