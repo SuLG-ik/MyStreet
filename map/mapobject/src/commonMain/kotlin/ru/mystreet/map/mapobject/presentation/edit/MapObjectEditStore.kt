@@ -1,6 +1,5 @@
 package ru.mystreet.map.presentation.edit
 
-import kotlinx.collections.immutable.PersistentList
 import kotlinx.serialization.Serializable
 import ru.mystreet.core.component.SavedStateStore
 import ru.mystreet.map.domain.entity.EditMapObjectField

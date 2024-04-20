@@ -16,7 +16,7 @@ interface EditMapNewObjectInfoStore :
         val title: String = "",
         val description: String = "",
         val tag: String = "",
-        val tags: PersistentList<String> = persistentListOf(),
+        val tags: List<String> = listOf(),
         val point: Point,
         val category: MapObjectCategory,
     )
