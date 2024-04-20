@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="svg1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #fff;
+      }
+
+      .cls-1, .cls-2 {
+        fill: #b8a438;
+      }
+
+      .cls-2, .cls-3 {
+        stroke-width: 0px;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <g id="layer2">
+    <ellipse id="path13" class="cls-1" cx="11.94" cy="11.93" rx="11.33" ry="11.34"/>
+  </g>
+  <g id="g35">
+    <ellipse id="path2" class="cls-3" cx="11.77" cy="8.33" rx="5.67" ry="5.65"/>
+    <rect id="rect11" class="cls-2" x="6.81" y="12.36" width="9.62" height="1.78"/>
+    <rect id="rect11-3" class="cls-2" x="6.98" y="2.52" width="9.58" height="2.62"/>
+    <path id="path12" class="cls-2" d="M16.3,5.12l.12.07.1.08.14.13-.1-.4-.26.12Z"/>
+    <path id="path14" class="cls-2" d="M15.62,12.39l.18-.07.2-.14-.41.41.03-.18v-.03Z"/>
+    <path id="path15" class="cls-2" d="M7.61,12.22l.23.14.12.05-.3.03-.06-.21Z"/>
+    <path id="path16" class="cls-2" d="M6.9,5.39l.14-.17.07-.05.14-.05-.18-.15-.19.41Z"/>
+  </g>
+  <g id="g34">
+    <ellipse id="path3" class="cls-3" cx="19.33" cy="14.77" rx="1.68" ry="1.67"/>
+    <ellipse id="path5" class="cls-3" cx="4.41" cy="14.58" rx="1.7" ry="1.68"/>
+    <path id="path6" class="cls-3" d="M2.75,14.74l.04-.38.05-.38.12-.41.2-.45.34-.55.34-.43.42-.46.48-.47.76-.8.13.42.16.38.2.32-.55.52-.63.65-.33.35-.25.41-1.46,1.28Z"/>
+    <path id="path7" class="cls-3" d="M17.81,11.59l.48-1.12.62.7.71.71.45.53.36.52.22.37.22.61.1.49.06.43v.19s-1.4-1.25-1.4-1.25l-.11-.31-.21-.35-.3-.36-.46-.46-.73-.7Z"/>
+    <path id="path17" class="cls-2" d="M18.2,10.6l.07-.04h.08s.07.06.07.06l-.07-.35-.14.34Z"/>
+    <path id="path18" class="cls-2" d="M17.8,11.5l.03.11.05.09-.2-.06.12-.13Z"/>
+    <path id="path19" class="cls-2" d="M5.38,10.48l.09-.02.06.06.11.02-.11-.33-.15.26Z"/>
+    <path id="path20" class="cls-2" d="M5.95,11.46v.09s-.03.06-.03.06l.18-.06-.15-.09Z"/>
+  </g>
+  <g id="g33">
+    <rect id="rect9" class="cls-3" x="8.61" y="19.28" width="6.96" height="1.41"/>
+    <rect id="rect1" class="cls-3" x="10.23" y="14.68" width="3.55" height="5.16"/>
+    <path id="path1-1" class="cls-3" d="M10.25,18.42l-.05.4-.05.17-.12.15-.16.11-.24.05v.11h.68"/>
+    <path id="path8" class="cls-3" d="M10.3,14.68l3.41.02"/>
+    <path id="path1" class="cls-3" d="M13.75,18.42l.05.4.05.17.12.15.16.11.24.05v.11h-.68"/>
+    <path id="path21" class="cls-2" d="M10.21,14.8l.04-.09.11-.05-.07-.13s-.16.02-.15.07c.01.05.05.2.05.2h.02Z"/>
+    <path id="path22" class="cls-2" d="M15.47,19.26l.05.04.04.06.1.06v-.26s-.2.09-.2.09Z"/>
+    <path id="path23" class="cls-2" d="M15.44,20.73l.09-.05.08-.11.07.24-.23-.08Z"/>
+    <path id="path24" class="cls-2" d="M8.59,20.59l.03.07.11.05-.18.03.05-.15Z"/>
+    <path id="path25" class="cls-2" d="M8.58,19.4l.05-.07.09-.03.06-.04-.21-.05v.2Z"/>
+    <path id="path26" class="cls-2" d="M13.72,14.68l.04.04.03.09.04-.22-.1.09Z"/>
+  </g>
+  <g id="g32">
+    <rect id="rect28" class="cls-2" x="8.89" y="6.92" width="5.98" height="3.57"/>
+    <path id="path28" class="cls-3" d="M14.68,6.89l.13.08.09.19.07-.32-.29.04Z"/>
+    <path id="path29" class="cls-3" d="M14.66,10.53l.14-.07.16-.19-.04.42-.26-.17Z"/>
+    <path id="path30" class="cls-3" d="M8.84,10.31l.09.12.21.1-.31.07v-.29Z"/>
+    <path id="path31" class="cls-3" d="M9.08,6.9l-.12.06-.08.08-.05.12-.02-.35.27.09Z"/>
+    <path id="path32" class="cls-3" d="M8.91,6.96l-.02.12-.06.08.08-.2Z"/>
+  </g>
+</svg>
