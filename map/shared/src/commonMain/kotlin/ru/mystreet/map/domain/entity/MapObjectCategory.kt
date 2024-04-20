@@ -18,8 +18,8 @@ enum class MapObjectCategory(
     GreenArea("green_area", MR.images.map_icon_green_area),
     PublicWC("public_wc", MR.images.map_icon_public_wc),
     Trash("trash", MR.images.map_icon_trash),
-    Installation("installation", MR.images.map_icon_trash),
-    Other("other", MR.images.map_icon_trash);
+    Installation("installation", MR.images.map_icon_installation),
+    Other("other", MR.images.map_icon_installation);
 
     companion object {
 
