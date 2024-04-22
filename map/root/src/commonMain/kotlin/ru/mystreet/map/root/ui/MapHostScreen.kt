@@ -82,7 +82,7 @@ private fun BottomNavigation(
     childBottomBar: @Composable () -> Unit,
 ) {
     Box(
-        modifier = Modifier.clickable(false) {},
+        modifier = Modifier,
         contentAlignment = Alignment.BottomCenter
     ) {
         AnimatedVisibility(
@@ -97,6 +97,7 @@ private fun BottomNavigation(
                     allItems = enumValues<MapHostNavItem>(),
                     onNavigate = { onNavigate(it.config) },
                     modifier = Modifier
+                        .clickable(false) {}
                         .graphicsLayer(alpha = DefaultMapAlpha),
                 )
             }
