@@ -97,7 +97,8 @@ fun MapObjectInfo(
         ) {
             Images(mapObject.images, onImagePicker, modifier = Modifier.fillMaxWidth())
             Column(
-                modifier = Modifier.padding(horizontal = 15.dp)
+                modifier = Modifier.padding(horizontal = 15.dp),
+                verticalArrangement = Arrangement.spacedBy(5.dp),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -121,7 +122,7 @@ fun MapObjectInfo(
         }
         UIKitBottomBar(
             actions = {
-                EditButton(onEdit)
+//                EditButton(onEdit)
                 Favourite(
                     mapObject = mapObject,
                     onToggle = onFavourite,
