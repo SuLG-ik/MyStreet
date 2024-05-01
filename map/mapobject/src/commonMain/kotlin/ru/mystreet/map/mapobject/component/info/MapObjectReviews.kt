@@ -12,6 +12,8 @@ interface MapObjectReviews {
 
     val info: Value<MapObjectReviewsInfo>
 
+    var onRefresh: (() -> Unit)?
+
     fun onAddReview()
 
 }

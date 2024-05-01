@@ -30,6 +30,8 @@ class MapObjectReviewsComponent(
 
     override val info: Value<MapObjectReviewsInfo> = state.map { it.info }
 
+    override var onRefresh: (() -> Unit)? = null
+
     override fun onAddReview() {
         onAddReview.invoke()
     }

@@ -63,6 +63,7 @@ class MapObjectInfoComponent(
     }
 
     override fun onRefresh() {
+        reviews.onRefresh?.invoke()
         store.accept(MapObjectInfoStore.Intent.Refresh)
     }
 

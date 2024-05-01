@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.mystreet.core.component.onIntentCancel
 import ru.mystreet.errors.domain.ErrorDispatcher
 import ru.mystreet.errors.store.onActionSafe
 import ru.mystreet.errors.store.onIntentSafeDebounce
@@ -45,6 +46,14 @@ class MapObjectInfoStoreImpl(
         bootstrapper = coroutineBootstrapper(coroutineDispatcher) { dispatch(Action.Setup) },
         executorFactory = safeCoroutineExecutorFactory(coroutineDispatcher, errorDispatcher) {
             onActionSafe(errorDispatcher) { action: Action.Setup ->
+                launch {
+                    val mapObject = loadMapObjectUseCase(savedState.id)
+                    withContext(Dispatchers.Main) {
+                        dispatch(Message.SetMapObject(mapObject))
+                    }
+                }
+            }
+            onIntentCancel { intent: MapObjectInfoStore.Intent.Refresh ->
                 launch {
                     val mapObject = loadMapObjectUseCase(savedState.id)
                     withContext(Dispatchers.Main) {
