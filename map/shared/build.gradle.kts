@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.apollo)
     alias(libs.plugins.moko.resources)
 }

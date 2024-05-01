@@ -14,6 +14,7 @@ import com.arkivanov.mvikotlin.extensions.coroutines.ExecutorBuilder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.Clock
@@ -121,6 +122,13 @@ inline fun <reified T : Intent, Intent : Any, Action : Any, State : Any, Message
 }
 
 @OptIn(ExperimentalMviKotlinApi::class)
+inline fun <reified T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any> ExecutorBuilder<Intent, Action, State, Message, Label>.onIntentCancel(
+    noinline handler: CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
+) {
+    onIntent<T>(cancelIntentHandler(handler))
+}
+
+@OptIn(ExperimentalMviKotlinApi::class)
 fun <T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any> skippingIntentHandler(
     handler: CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
 ): CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit {
@@ -137,6 +145,14 @@ fun <T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label :
 
 
 @OptIn(ExperimentalMviKotlinApi::class)
+fun <T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any> cancelIntentHandler(
+    handler: CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
+): CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit {
+    return CancelIntentHandler(handler)
+}
+
+
+@OptIn(ExperimentalMviKotlinApi::class)
 private class SkippingIntentHandler<T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any>(
     private val handler: CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
 ) : (CoroutineExecutorScope<State, Message, Action, Label>, T) -> Unit {
@@ -144,6 +160,21 @@ private class SkippingIntentHandler<T : Intent, Intent : Any, Action : Any, Stat
     override fun invoke(p1: CoroutineExecutorScope<State, Message, Action, Label>, p2: T) {
         if (job.children.any())
             return
+        val newScope = ContextMergingCoroutineExecutorScope(
+            scope = p1,
+            context = job,
+        )
+        handler.invoke(newScope, p2)
+    }
+}
+
+@OptIn(ExperimentalMviKotlinApi::class)
+private class CancelIntentHandler<T : Intent, Intent : Any, Action : Any, State : Any, Message : Any, Label : Any>(
+    private val handler: CoroutineExecutorScope<State, Message, Action, Label>.(intent: T) -> Unit,
+) : (CoroutineExecutorScope<State, Message, Action, Label>, T) -> Unit {
+    private val job: Job = SupervisorJob()
+    override fun invoke(p1: CoroutineExecutorScope<State, Message, Action, Label>, p2: T) {
+        job.cancelChildren()
         val newScope = ContextMergingCoroutineExecutorScope(
             scope = p1,
             context = job,

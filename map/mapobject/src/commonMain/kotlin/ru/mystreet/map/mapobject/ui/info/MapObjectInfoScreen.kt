@@ -122,7 +122,7 @@ fun MapObjectInfo(
         }
         UIKitBottomBar(
             actions = {
-//                EditButton(onEdit)
+                EditButton(onEdit)
                 Favourite(
                     mapObject = mapObject,
                     onToggle = onFavourite,
