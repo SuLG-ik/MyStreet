@@ -1,7 +1,19 @@
-query GetAccountInfo {
+query GetAccountInfo($pageable: PageableInput!) {
     users {
         info {
             ...AccountProfileFull
+            reviews {
+                count
+                list(pageable: $pageable) {
+                    ...AccountReviewsDetails
+                }
+            }
+            favourite {
+                count
+                list(pageable: $pageable) {
+                    ...AccountFavouriteDetails
+                }
+            }
         }
     }
 }
@@ -13,3 +25,16 @@ fragment AccountProfileFull on UserType {
     email
 }
 
+fragment AccountFavouriteDetails on FavouriteMapObjectType{
+    mapObject {
+        id
+        title
+    }
+}
+fragment AccountReviewsDetails on ReviewType {
+    id
+    rating
+    mapObject {
+        title
+    }
+}

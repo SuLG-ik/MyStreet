@@ -56,6 +56,7 @@ import ru.mystreet.map.domain.entity.MapObjectReview
 import ru.mystreet.map.domain.entity.MapObjectReviewsInfo
 import ru.mystreet.map.domain.entity.ReviewAuthor
 import ru.mystreet.map.mapobject.component.info.MapObjectReviews
+import ru.mystreet.uikit.RatingStars
 import ru.mystreet.uikit.UIKitCard
 import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.Add
@@ -254,48 +255,6 @@ fun firstLetters(name: String): String {
         append(name.splitToSequence(" ").take(2).map { it.first() }.joinToString(""))
     }
 }
-
-@Composable
-fun RatingStars(
-    rating: Int,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(5.dp)
-    ) {
-        repeat(5) {
-            RatingStar(
-                isSelected = it + 1 <= rating,
-                modifier = Modifier.size(15.dp),
-            )
-        }
-    }
-}
-
-@Composable
-fun RatingStar(
-    isSelected: Boolean,
-    modifier: Modifier = Modifier,
-) {
-    Icon(
-        ratingIcon(isSelected),
-        contentDescription = null,
-        tint = ratingColor(isSelected),
-        modifier = modifier,
-    )
-}
-
-
-@Composable
-fun ratingColor(isSelected: Boolean): Color {
-    return if (isSelected) Color(0xFFEEA63A) else MaterialTheme.colorScheme.outline
-}
-
-fun ratingIcon(isSelected: Boolean): ImageVector {
-    return if (isSelected) UIKitIconPack.RatingStar else UIKitIconPack.RatingStarOutline
-}
-
 
 @Composable
 fun MapObjectReviewsScreen(
