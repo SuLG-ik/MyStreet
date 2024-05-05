@@ -5,6 +5,7 @@ import org.koin.core.annotation.Factory
 import ru.mystreet.account.data.converter.GraphQLAccountProfileConverter
 import ru.mystreet.account.domain.entity.AccountProfileFull
 import ru.mystreet.account.domain.repository.AccountProfileRepository
+import ru.mystreet.core.graphql.type.PageableInput
 import ru.mystreet.map.account.GetAccountInfoQuery
 
 @Factory
@@ -13,10 +14,9 @@ class KtorAccountProfileRepository(
     private val converter: GraphQLAccountProfileConverter,
 ) : AccountProfileRepository {
     override suspend fun info(): AccountProfileFull {
-        val response = client.query(GetAccountInfoQuery())
+        val response = client.query(GetAccountInfoQuery(pageable = PageableInput(0, 10)))
             .execute()
-
-        val result = response.data?.users?.info?.accountProfileFull ?: throw Exception()
+        val result = response.data?.users?.info ?: throw Exception()
         return with(converter) { result.convert() }
     }
 }

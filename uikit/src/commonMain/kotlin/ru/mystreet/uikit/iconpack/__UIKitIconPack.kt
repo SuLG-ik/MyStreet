@@ -6,6 +6,7 @@ import ru.mystreet.uikit.iconpack.uikiticonpack.AccountIcon
 import ru.mystreet.uikit.iconpack.uikiticonpack.Add
 import ru.mystreet.uikit.iconpack.uikiticonpack.AddOutlined
 import ru.mystreet.uikit.iconpack.uikiticonpack.AppIcon
+import ru.mystreet.uikit.iconpack.uikiticonpack.ArrowRight
 import ru.mystreet.uikit.iconpack.uikiticonpack.ArrowUp
 import ru.mystreet.uikit.iconpack.uikiticonpack.Bench
 import ru.mystreet.uikit.iconpack.uikiticonpack.Bower
@@ -13,6 +14,7 @@ import ru.mystreet.uikit.iconpack.uikiticonpack.CaptureButton
 import ru.mystreet.uikit.iconpack.uikiticonpack.CenterPin
 import ru.mystreet.uikit.iconpack.uikiticonpack.DiskStorage
 import ru.mystreet.uikit.iconpack.uikiticonpack.EditIcon
+import ru.mystreet.uikit.iconpack.uikiticonpack.Empty
 import ru.mystreet.uikit.iconpack.uikiticonpack.Follow
 import ru.mystreet.uikit.iconpack.uikiticonpack.Fountain
 import ru.mystreet.uikit.iconpack.uikiticonpack.GreenZone
@@ -44,8 +46,8 @@ public val UIKitIconPack.AllIcons: ____KtList<ImageVector>
       return __AllIcons!!
     }
     __AllIcons= listOf(NoCamera, Search, CaptureButton, Fountain, Home, RatingStarOutline, PublicWc,
-        ZoomIn, EditIcon, Streetlight, Follow, AddOutlined, Bench, AppIcon, Settings, Layers,
-        ArrowUp, RatingStar, Add, GreenZone, Monument, DiskStorage, Trash, Accept, Bower,
-        AccountIcon, Parks, CenterPin, Remove, Playground, ZoomOut)
+        ZoomIn, Empty, EditIcon, Streetlight, Follow, AddOutlined, Bench, AppIcon, Settings, Layers,
+        ArrowUp, ArrowRight, RatingStar, Add, GreenZone, Monument, DiskStorage, Trash, Accept,
+        Bower, AccountIcon, Parks, CenterPin, Remove, Playground, ZoomOut)
     return __AllIcons!!
   }

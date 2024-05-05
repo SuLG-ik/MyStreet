@@ -3,7 +3,7 @@ query GetMapObjectReviews($id: ID!, $pageable: PageableInput!) {
         info(id: $id) {
             score {
                 reviews {
-                    reviews(pageable: $pageable) {
+                    list(pageable: $pageable) {
                         ...MapObjectReviewFull
                     }
                 }
