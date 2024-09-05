@@ -1,8 +1,9 @@
 query GetFramedMapObjectsPart(
+    $categories: [ID!]!
     $frames: [MapObjectsFrameInput!]!
 ) {
     mapObjects {
-        framed(frames: $frames) {
+        framed(categories: $categories, frames: $frames) {
             frame {
                 ...MapFrame
             }
@@ -29,4 +30,29 @@ fragment MapObjectPart on MapObjectType {
         id
         titleShort
     }
+    area {
+        polygon {
+            ...PolygonFragment
+        }
+    }
+}
+
+fragment PolygonFragment on PolygonType {
+    outerRing {
+        ...LinearRingFragment
+    }
+    innerRings {
+        ...LinearRingFragment
+    }
+}
+
+fragment LinearRingFragment on LinearRingType {
+    points {
+        ...PointFragment
+    }
+}
+
+fragment PointFragment on PointType{
+    latitude
+    longitude
 }

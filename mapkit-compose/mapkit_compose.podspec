@@ -50,5 +50,5 @@ Pod::Spec.new do |spec|
             SCRIPT
         }
     ]
-    spec.resources = ['build/compose/ios/mapkit_compose/compose-resources']
+    spec.resources = ['build/compose/cocoapods/compose-resources']
 end

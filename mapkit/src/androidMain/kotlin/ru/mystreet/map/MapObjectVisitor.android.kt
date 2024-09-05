@@ -5,8 +5,8 @@ import com.yandex.mapkit.map.ClusterizedPlacemarkCollection
 import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.map.MapObjectVisitor
 import com.yandex.mapkit.map.PlacemarkMapObject
-import com.yandex.mapkit.map.PolygonMapObject
 import com.yandex.mapkit.map.PolylineMapObject
+import com.yandex.mapkit.map.PolygonMapObject as NativePolygonMapObject
 
 actual abstract class MapObjectVisitor actual constructor() : MapObjectVisitor {
 
@@ -17,7 +17,8 @@ actual abstract class MapObjectVisitor actual constructor() : MapObjectVisitor {
     override fun onPolylineVisited(p0: PolylineMapObject) {
     }
 
-    override fun onPolygonVisited(p0: PolygonMapObject) {
+    override fun onPolygonVisited(p0: NativePolygonMapObject) {
+        p0.toCommon()
     }
 
     override fun onCircleVisited(p0: CircleMapObject) {
@@ -43,5 +44,7 @@ actual abstract class MapObjectVisitor actual constructor() : MapObjectVisitor {
     actual abstract fun onClusterizedPlacemarkVisitStart(clusterizedPlacemark: ClusterizedPlacemark): Boolean
 
     actual abstract fun onClusterizedPlacemarkVisitEnd(clusterizedPlacemark: ClusterizedPlacemark)
+
+    actual abstract fun onPolygonVisited(polygon: PolygonMapObject)
 
 }

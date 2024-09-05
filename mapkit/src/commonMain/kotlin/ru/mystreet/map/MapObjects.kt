@@ -13,5 +13,6 @@ expect class MapObjects {
     fun removePlacemarks(clusterizedPlacemark: ClusterizedPlacemark)
     fun visit(visitor: MapObjectVisitor)
     fun addMapObjects(): MapObjects
+    fun addPolygon(polygon: Polygon): PolygonMapObject
 
 }

@@ -5,6 +5,7 @@ import ru.mystreet.map.data.converter.GraphqlFramedMapObjectsConverter
 import ru.mystreet.map.data.model.GetFramedMapObjectsPartQuery
 import ru.mystreet.map.domain.entity.FramedMapObjects
 import ru.mystreet.map.domain.entity.MapFrame
+import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.domain.repository.RemoteMapObjectsRepository
 
 class GraphqlRemoteMapObjectsRepository(
@@ -17,6 +18,7 @@ class GraphqlRemoteMapObjectsRepository(
     ): FramedMapObjects {
         val response = client.query(
             GetFramedMapObjectsPartQuery(
+                categories = MapObjectCategory.defaultEntries.map { it.id },
                 frames = with(converter) { listOf(frames.convert()) }
             )
         ).execute()

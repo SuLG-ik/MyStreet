@@ -8,4 +8,6 @@ expect abstract class MapObjectVisitor() {
 
     abstract fun onClusterizedPlacemarkVisitEnd(clusterizedPlacemark: ClusterizedPlacemark)
 
+    abstract fun onPolygonVisited(polygon: PolygonMapObject)
+
 }

@@ -57,4 +57,8 @@ class SheetHostComponent<Config : Any, Child : SheetChild>(
         mergingAnchor.show()
     }
 
+    override fun hide() {
+        mergingAnchor.hide()
+    }
+
 }

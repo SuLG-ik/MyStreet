@@ -5,7 +5,7 @@ input AddFavouriteMapObjectInput {
 }
 
 input AddMapAreaInput {
-  mapObject: AddMapObjectInput!
+  polygon: PolygonInput!
 }
 
 input AddMapObjectInput {
@@ -18,6 +18,8 @@ input AddMapObjectInput {
   tags: [String!]!
 
   title: String!
+
+  area: AddMapAreaInput
 }
 
 type CategoryType {
@@ -329,18 +331,8 @@ type LinearRingType {
   points: [PointType!]!
 }
 
-type MapAreaMutation {
-  add(input: PolygonInput!): MapAreaType!
-}
-
-type MapAreaQuery {
-  framed(frames: [MapObjectsFrameInput!]!): [FramedMapAreaType!]!
-}
-
 type MapAreaType {
   id: ID!
-
-  mapObject: MapObjectType!
 
   polygon: PolygonType!
 }
@@ -430,6 +422,8 @@ type MapObjectType {
 
   images: [FileType!]!
 
+  area: MapAreaType
+
   forUser(username: String): UserMapObjectType
 
   score: MapObjectScoreType!
@@ -456,14 +450,12 @@ type MapObjectsMutation {
 }
 
 type MapObjectsQuery {
-  framed(frames: [MapObjectsFrameInput!]!): [FramedMapObjects!]!
+  framed(categories: [ID!]!, frames: [MapObjectsFrameInput!]!): [FramedMapObjects!]!
 
   info(id: ID!): MapObjectType!
 }
 
 type Mutation {
-  mapAreas: MapAreaMutation!
-
   mapObjects: MapObjectsMutation!
 
   users: UsersMutation!
@@ -500,8 +492,6 @@ type PolygonType {
 }
 
 type Query {
-  mapAreas: MapAreaQuery!
-
   mapObjectCategories: MapObjectCategoriesQuery!
 
   mapObjects: MapObjectsQuery!

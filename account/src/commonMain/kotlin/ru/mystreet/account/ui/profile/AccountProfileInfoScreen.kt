@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -215,7 +217,7 @@ fun FavouriteBlock(
         title = "Избранное",
         list = favourite,
         item = {
-            FavouriteItem(it)
+            FavouriteItem(it, modifier = Modifier.size(width = 150.dp, height = 200.dp))
         },
         key = { it.id },
         onMore = onMore,
@@ -233,7 +235,7 @@ fun ReviewsBlock(
         title = "Отзывы",
         list = reviews,
         item = {
-            ReviewItem(it)
+            ReviewItem(it, modifier = Modifier.size(width = 150.dp, height = 200.dp))
         },
         key = { it.id },
         onMore = onMore,
@@ -250,7 +252,9 @@ fun ReviewItem(review: ReviewShortInfo, modifier: Modifier = Modifier) {
             )
         },
         label = {
-            Column {
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(5.dp)
+            ) {
                 Text(
                     text = review.title,
                     style = MaterialTheme.typography.bodyLarge,
@@ -273,7 +277,9 @@ fun FavouriteItem(review: FavouriteShortInfo, modifier: Modifier = Modifier) {
             )
         },
         label = {
-            Column {
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(5.dp)
+            ) {
                 Text(
                     text = review.title,
                     style = MaterialTheme.typography.bodyLarge,
@@ -319,6 +325,7 @@ fun <T> CountableBlock(
         if (list.realSize > 0) {
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(5.dp),
+                contentPadding = PaddingValues(horizontal = 10.dp),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 items(list.content, key = key, contentType = { "item" }) {
@@ -384,7 +391,8 @@ fun CountableBlockItem(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = Modifier.size(width = 250.dp, height = 400.dp)
+        modifier = Modifier
+            .clip(MaterialTheme.shapes.medium)
             .then(modifier),
     ) {
         background.invoke()

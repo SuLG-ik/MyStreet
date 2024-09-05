@@ -26,15 +26,14 @@ import ru.mystreet.uikit.UIKitNavigationBarItem
 import ru.mystreet.uikit.iconpack.UIKitIconPack
 import ru.mystreet.uikit.iconpack.uikiticonpack.AccountIcon
 import ru.mystreet.uikit.iconpack.uikiticonpack.Home
-import ru.mystreet.uikit.iconpack.uikiticonpack.Trash
+import ru.mystreet.uikit.iconpack.uikiticonpack.Parks
 
 enum class MapHostNavItem(
     val icon: ImageVector,
     val config: MapHost.Config,
 ) {
     GENERAL(UIKitIconPack.Home, MapHost.Config.General),
-
-    //    PARKS(UIKitIconPack.Parks, MapHost.Config.Parks),
+//    PARKS(UIKitIconPack.Parks, MapHost.Config.Parks),
     //    TRASH(UIKitIconPack.Trash, MapHost.Config.Trash),
     //    SEARCH(UIKitIconPack.Search, MapHost.Config.Search),
 

@@ -2,6 +2,7 @@ package ru.mystreet.map
 
 import com.yandex.mapkit.map.MapObject
 import com.yandex.mapkit.map.PlacemarkMapObject
+import com.yandex.mapkit.map.PolygonMapObject
 import com.yandex.mapkit.map.MapObjectTapListener as NativeMapObjectTapListener
 
 class MappingMapObjectTapListener(
@@ -15,6 +16,7 @@ class MappingMapObjectTapListener(
 internal fun MapObject.toCommon(): BaseMapObject {
     return when (this) {
         is PlacemarkMapObject -> this.toCommon()
+        is PolygonMapObject -> this.toCommon()
         else -> UnknownBaseMapObject(this)
     }
 }
