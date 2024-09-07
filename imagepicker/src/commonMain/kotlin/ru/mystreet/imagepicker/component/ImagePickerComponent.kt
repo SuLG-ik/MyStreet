@@ -28,6 +28,7 @@ class ImagePickerComponent(
             override fun onNext(value: ImagePickerImageLoadStore.Label) {
                 when (value) {
                     ImagePickerImageLoadStore.Label.Loaded -> onBack()
+                    ImagePickerImageLoadStore.Label.Cancel -> onBack()
                 }
             }
 

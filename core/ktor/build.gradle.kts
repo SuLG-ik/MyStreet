@@ -21,10 +21,10 @@ kotlin {
     
     sourceSets {
         androidMain.dependencies {
+            implementation(libs.ktor.okhttp)
         }
         commonMain.dependencies {
             api(libs.koin.core)
-            implementation(libs.ktor.cio)
             implementation(libs.ktor.auth)
             api(libs.ktor.core)
             implementation(libs.ktor.json)

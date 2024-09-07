@@ -1,6 +1,5 @@
 package ru.mystreet.uikit.placeholder
 
-import androidx.annotation.FloatRange
 import androidx.compose.animation.core.InfiniteRepeatableSpec
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
@@ -22,7 +21,7 @@ fun PlaceholderHighlight.Companion.fade(
 @Composable
 fun PlaceholderHighlight.Companion.shimmer(
     animationSpec: InfiniteRepeatableSpec<Float> = PlaceholderDefaults.shimmerAnimationSpec,
-    @FloatRange(from = 0.0, to = 1.0) progressForMaxAlpha: Float = 0.6f,
+    progressForMaxAlpha: Float = 0.6f,
 ): PlaceholderHighlight = PlaceholderHighlight.shimmer(
     highlightColor = PlaceholderDefaults.shimmerHighlightColor(),
     animationSpec = animationSpec,
@@ -33,11 +32,10 @@ interface PlaceholderHighlight {
     val animationSpec: InfiniteRepeatableSpec<Float>
 
     fun brush(
-        @FloatRange(from = 0.0, to = 1.0) progress: Float,
+        progress: Float,
         size: Size
     ): Brush
 
-    @FloatRange(from = 0.0, to = 1.0)
     fun alpha(progress: Float): Float
 
     companion object
@@ -54,7 +52,7 @@ fun PlaceholderHighlight.Companion.fade(
 fun PlaceholderHighlight.Companion.shimmer(
     highlightColor: Color,
     animationSpec: InfiniteRepeatableSpec<Float> = PlaceholderDefaults.shimmerAnimationSpec,
-    @FloatRange(from = 0.0, to = 1.0) progressForMaxAlpha: Float = 0.6f,
+    progressForMaxAlpha: Float = 0.6f,
 ): PlaceholderHighlight = Shimmer(
     highlightColor = highlightColor,
     animationSpec = animationSpec,

@@ -46,7 +46,7 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.material3)
             api(libs.moko.resources)
-            api(project(":mapkit"))
+            api(projects.mapkit)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

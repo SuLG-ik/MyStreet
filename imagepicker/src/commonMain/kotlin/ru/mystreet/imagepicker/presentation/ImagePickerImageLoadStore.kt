@@ -15,6 +15,7 @@ interface ImagePickerImageLoadStore :
 
     sealed interface Label {
         data object Loaded: Label
+        data object Cancel: Label
     }
 
 }

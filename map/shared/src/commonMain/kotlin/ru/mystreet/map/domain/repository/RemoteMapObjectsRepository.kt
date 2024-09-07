@@ -5,6 +5,6 @@ import ru.mystreet.map.domain.entity.MapFrame
 
 interface RemoteMapObjectsRepository {
 
-    suspend fun getFramedMapObjects(frames: MapFrame): FramedMapObjects
+    suspend fun getFramedMapObjects(frames: MapFrame):  FramedMapObjects
 
 }

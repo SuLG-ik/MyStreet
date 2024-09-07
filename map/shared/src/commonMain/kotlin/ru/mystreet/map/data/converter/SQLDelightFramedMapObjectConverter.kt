@@ -1,5 +1,6 @@
 package ru.mystreet.map.data.converter
 
+import ru.mystreet.errors.domain.exception.UnknownCategoryException
 import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.domain.entity.MapObjectPart
 import ru.mystreet.map.domain.entity.SavedMapFrame
@@ -14,7 +15,9 @@ class SQLDelightFramedMapObjectConverter {
             id = id,
             title = title,
             point = Point(latitude = Latitude(latitude), longitude = Longitude(longitude)),
-            category = MapObjectCategory.fromId(category),
+            category = MapObjectCategory.fromId(category)
+                ?: throw UnknownCategoryException(category),
+            area = null,
         )
     }
 

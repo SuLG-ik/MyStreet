@@ -11,6 +11,7 @@ import androidx.compose.ui.interop.UIKitView
 import cocoapods.YandexMapsMobile.YMKMapKit
 import cocoapods.YandexMapsMobile.YMKMapView
 import cocoapods.YandexMapsMobile.mapKit
+import cocoapods.YandexMapsMobile.sharedInstance
 import kotlinx.cinterop.ExperimentalForeignApi
 import ru.mystreet.map.Map
 

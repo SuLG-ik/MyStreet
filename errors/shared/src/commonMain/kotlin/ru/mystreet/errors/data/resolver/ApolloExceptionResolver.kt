@@ -11,6 +11,7 @@ import ru.mystreet.errors.domain.ErrorLevel
 import ru.mystreet.errors.domain.UniqueIdGenerator
 import ru.mystreet.errors.domain.exception.InternalException
 import ru.mystreet.errors.domain.exception.ObjectNotFoundException
+import ru.mystreet.errors.domain.exception.PermissionDeniedException
 import ru.mystreet.errors.domain.exception.UnknownException
 
 fun ApolloResponse<*>.throwDefaultErrors(name: String) {
@@ -19,6 +20,7 @@ fun ApolloResponse<*>.throwDefaultErrors(name: String) {
         when (it.extensions?.get("errorType")) {
             "NOT_FOUND" -> throw ObjectNotFoundException(name)
             "INTERNAL" -> throw InternalException(message = it.toString())
+            "PERMISSION_DENIED" -> throw PermissionDeniedException()
             else -> throw UnknownException(message = it.toString())
         }
     }

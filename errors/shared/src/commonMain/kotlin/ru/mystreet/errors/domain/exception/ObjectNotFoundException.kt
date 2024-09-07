@@ -10,6 +10,6 @@ class ObjectNotFoundException(
         title = "$name не найден, возможно, он удалён",
     )
 
-    override val config: ErrorInfo.Config = ErrorInfo.Config(key = "ConvertException")
+    override val config: ErrorInfo.Config = ErrorInfo.Config(key = "ObjectNotFoundException")
 
 }

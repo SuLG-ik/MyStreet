@@ -7,6 +7,7 @@ import ru.mystreet.core.graphql.type.AddMapObjectInput
 import ru.mystreet.core.graphql.type.MapObjectEditInput
 import ru.mystreet.core.graphql.type.PointInput
 import ru.mystreet.errors.data.resolver.throwDefaultErrors
+import ru.mystreet.errors.domain.exception.ObjectNotFoundException
 import ru.mystreet.map.data.converter.GraphqlMapObjectsConverter
 import ru.mystreet.map.data.model.AddMapObjectFavouriteMutation
 import ru.mystreet.map.data.model.AddMapObjectImagesMutation
@@ -72,7 +73,9 @@ class GraphqlMapObjectsRepository(
             )
         ).execute()
         response.throwDefaultErrors("Объект благоустройства")
-        return with(converter) { response.dataOrThrow().mapObjects.add.mapObjectFull.convert() }
+        return with(converter) {
+            response.dataOrThrow().mapObjects.add.mapObjectFull.convert()
+        }
     }
 
     override suspend fun deleteMapObject(

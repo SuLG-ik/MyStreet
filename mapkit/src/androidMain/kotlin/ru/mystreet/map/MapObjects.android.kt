@@ -17,6 +17,10 @@ actual class MapObjects(
             .toCommon()
     }
 
+    actual fun addPolygon(polygon: Polygon): PolygonMapObject {
+        return mapObjects.addPolygon(polygon.toNative()).toCommon()
+    }
+
     actual fun addClusterizedPlacemark(clusterListener: ClusterListener): ClusterizedPlacemark {
         return mapObjects.addClusterizedPlacemarkCollection(
             MappingClusterListener(

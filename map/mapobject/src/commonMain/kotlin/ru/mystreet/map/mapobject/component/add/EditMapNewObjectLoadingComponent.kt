@@ -34,6 +34,7 @@ class EditMapNewObjectLoadingComponent(
         store.labels.onEach {
             when(it) {
                 EditMapNewObjectLoadingStore.Label.LoadingCompleted -> onContinue()
+                EditMapNewObjectLoadingStore.Label.Canceled -> onContinue()
             }
         }.flowOn(Dispatchers.Main).launchIn(coroutineScope)
     }

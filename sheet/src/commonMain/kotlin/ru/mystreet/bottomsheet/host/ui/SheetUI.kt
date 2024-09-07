@@ -72,7 +72,7 @@ fun <Child : SheetChild> SheetUI(
         sheetDragHandle = {
             val currentChild = component.currentChild.subscribeAsState().value.child
             if (currentChild == null || currentChild.instance.config.hasDragHandle) {
-                DragHandle(modifier = Modifier.alpha(alpha))
+                DragHandle(onDismiss = component::hide, modifier = Modifier.alpha(alpha))
             }
         },
         scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState),
