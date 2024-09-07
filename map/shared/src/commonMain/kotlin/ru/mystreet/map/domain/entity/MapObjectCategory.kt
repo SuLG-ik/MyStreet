@@ -22,11 +22,25 @@ enum class MapObjectCategory(
     Other("other", MR.images.map_icon_installation);
 
     companion object {
+        val defaultEntries by lazy {
+            listOf(
+                Bench,
+                Playground,
+                StreetLight,
+                Monument,
+                Fountain,
+                Bower,
+                GreenArea,
+                PublicWC,
+                Trash,
+                Installation,
+                Other,
+            )
+        }
 
-        fun fromId(id: String): MapObjectCategory {
+        fun fromId(id: String): MapObjectCategory? {
             return MapObjectCategory.entries
                 .find { id == it.id }
-                ?: throw IllegalArgumentException("MapObjectCategory with id = $id does not exits")
         }
     }
 }

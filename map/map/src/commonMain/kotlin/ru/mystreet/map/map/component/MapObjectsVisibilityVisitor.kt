@@ -4,6 +4,7 @@ import ru.mystreet.map.ClusterizedPlacemark
 import ru.mystreet.map.IconStyle
 import ru.mystreet.map.MapObjectVisitor
 import ru.mystreet.map.Placemark
+import ru.mystreet.map.PolygonMapObject
 import ru.mystreet.map.domain.entity.MapGeoObject
 
 class MapObjectsVisibilityVisitor(
@@ -22,6 +23,9 @@ class MapObjectsVisibilityVisitor(
     }
 
     override fun onClusterizedPlacemarkVisitEnd(clusterizedPlacemark: ClusterizedPlacemark) {
+    }
+
+    override fun onPolygonVisited(polygon: PolygonMapObject) {
     }
 
 }

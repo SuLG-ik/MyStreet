@@ -17,7 +17,8 @@ class AddMapObjectUseCase(
                 id = mapObject.id,
                 title = mapObject.title,
                 point = mapObject.point,
-                category = mapObject.category
+                category = mapObject.category,
+                area = null,
             )
         )
     }

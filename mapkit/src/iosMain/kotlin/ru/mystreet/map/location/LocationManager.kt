@@ -33,7 +33,7 @@ actual class LocationManager(
                 filteringMode = config.filteringMode.toNative(),
                 locationListener = locationListener,
             )
-            awaitClose {locationManager.unsubscribeWithLocationListener(locationListener) }
+            awaitClose { locationManager.unsubscribeWithLocationListener(locationListener) }
         }
     }
 
@@ -48,7 +48,7 @@ private fun FilteringMode.toNative(): YMKLocationFilteringMode {
 
 
 class ContinuationLocationListener(
-    private val continuation: SendChannel<LocationUpdateEvent>
+    private val continuation: SendChannel<LocationUpdateEvent>,
 ) : NSObject(), YMKLocationDelegateProtocol {
     override fun onLocationStatusUpdatedWithStatus(status: YMKLocationStatus) {
         continuation.trySend(LocationUpdateEvent.LocationStatusUpdate(status.toData()))
@@ -70,8 +70,7 @@ private fun YMKLocation.toData(): Location {
         speed = speed?.doubleValue,
         absoluteTimestamp = (absoluteTimestamp.timeIntervalSince1970 * 1000).toLong(),
         relativeTimestamp = (relativeTimestamp.timeIntervalSince1970 * 1000).toLong(),
-
-        )
+    )
 }
 
 private fun YMKLocationStatus.toData(): LocationStatus {

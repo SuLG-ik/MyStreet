@@ -22,6 +22,7 @@ interface EditMapNewObjectLoadingStore :
 
     sealed interface Label {
         data object LoadingCompleted : Label
+        data object Canceled : Label
     }
 
 }

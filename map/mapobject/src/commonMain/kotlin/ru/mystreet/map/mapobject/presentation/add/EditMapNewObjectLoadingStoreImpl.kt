@@ -9,6 +9,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import ru.mystreet.errors.domain.ErrorDispatcher
+import ru.mystreet.errors.store.onActionSafe
 import ru.mystreet.map.domain.usecase.AddMapObjectUseCase
 
 @OptIn(ExperimentalMviKotlinApi::class)
@@ -17,8 +19,8 @@ class EditMapNewObjectLoadingStoreImpl(
     storeFactory: StoreFactory,
     private val savedState: EditMapNewObjectLoadingStore.SavedState,
     addMapObjectUseCase: AddMapObjectUseCase,
-
-    ) : EditMapNewObjectLoadingStore,
+    errorDispatcher: ErrorDispatcher,
+) : EditMapNewObjectLoadingStore,
     Store<EditMapNewObjectLoadingStore.Intent, EditMapNewObjectLoadingStore.State, EditMapNewObjectLoadingStore.Label> by storeFactory.create<_, Action, Message, _, _>(
         name = "EditMapNewObjectLoadingStoreImpl",
         initialState = EditMapNewObjectLoadingStore.State(),
@@ -29,12 +31,19 @@ class EditMapNewObjectLoadingStoreImpl(
         },
         bootstrapper = coroutineBootstrapper(coroutineDispatcher) { dispatch(Action.Setup) },
         executorFactory = coroutineExecutorFactory(coroutineDispatcher) {
-            onAction<Action.Setup> {
+            onActionSafe(errorDispatcher) { it: Action.Setup ->
                 launch {
-                    addMapObjectUseCase(savedState.field)
-                    withContext(Dispatchers.Main) {
-                        dispatch(Message.SetLoading(false))
-                        publish(EditMapNewObjectLoadingStore.Label.LoadingCompleted)
+                    try {
+                        addMapObjectUseCase(savedState.field)
+                        withContext(Dispatchers.Main) {
+                            dispatch(Message.SetLoading(false))
+                            publish(EditMapNewObjectLoadingStore.Label.LoadingCompleted)
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            publish(EditMapNewObjectLoadingStore.Label.Canceled)
+                        }
+                        throw e
                     }
                 }
             }

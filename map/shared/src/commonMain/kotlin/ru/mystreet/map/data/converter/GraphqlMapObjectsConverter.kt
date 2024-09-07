@@ -3,6 +3,7 @@ package ru.mystreet.map.data.converter
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import ru.mystreet.errors.domain.exception.UnknownCategoryException
 import ru.mystreet.map.data.model.fragment.MapObjectFull
 import ru.mystreet.map.data.model.fragment.MapObjectReviewFull
 import ru.mystreet.map.domain.entity.MapObject
@@ -26,7 +27,7 @@ class GraphqlMapObjectsConverter {
                 latitude = Latitude(point.latitude),
                 longitude = Longitude(point.longitude),
             ),
-            category = category.id.convertToCategory(),
+            category = MapObjectCategory.fromId(category.id) ?: throw UnknownCategoryException(category.id),
             tags = tags.map { tag ->
                 MapObjectTag(tag.id.toLong(), tag.title)
             },
@@ -53,8 +54,4 @@ class GraphqlMapObjectsConverter {
         )
     }
 
-}
-
-private fun String.convertToCategory(): MapObjectCategory {
-    return MapObjectCategory.fromId(this)
 }

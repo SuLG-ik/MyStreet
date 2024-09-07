@@ -106,7 +106,8 @@ fun rememberSheetState(
         saver = SheetState.Saver(
             skipPartiallyExpanded = skipPartiallyExpanded,
             confirmValueChange = confirmValueChange,
-            density = density
+            density = density,
+            skipHiddenState = skipHiddenState,
         )
     ) {
         SheetState(

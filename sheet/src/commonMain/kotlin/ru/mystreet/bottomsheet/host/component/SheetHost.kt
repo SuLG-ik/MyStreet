@@ -27,4 +27,6 @@ interface SheetHost<Child: SheetChild> {
 
     fun show()
 
+    fun hide()
+
 }

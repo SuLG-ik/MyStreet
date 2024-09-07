@@ -5,6 +5,7 @@ import androidx.compose.material3.SheetValue
 import com.arkivanov.decompose.router.slot.ChildSlot
 import com.arkivanov.decompose.router.slot.SlotNavigation
 import com.arkivanov.decompose.router.slot.activate
+import com.arkivanov.decompose.router.slot.dismiss
 import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Serializable
 import ru.mystreet.account.component.AccountHostComponent
@@ -91,6 +92,10 @@ class MapExternalSheetHostComponent(
 
     override fun show() {
         sheet.show()
+    }
+
+    override fun hide() {
+        sheet.hide()
     }
 
 }
