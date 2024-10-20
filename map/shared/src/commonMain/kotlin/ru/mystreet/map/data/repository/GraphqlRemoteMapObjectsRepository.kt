@@ -1,6 +1,6 @@
 package ru.mystreet.map.data.repository
 
-import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo.ApolloClient
 import ru.mystreet.map.data.converter.GraphqlFramedMapObjectsConverter
 import ru.mystreet.map.data.model.GetFramedMapObjectsPartQuery
 import ru.mystreet.map.domain.entity.FramedMapObjects

@@ -1,9 +1,9 @@
 package ru.sulgik.core.graphql
 
-import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.adapter.KotlinxLocalDateTimeAdapter
-import com.apollographql.apollo3.api.CustomScalarType
-import com.apollographql.apollo3.exception.ApolloNetworkException
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.adapter.datetime.KotlinxLocalDateTimeAdapter
+import com.apollographql.apollo.api.CustomScalarType
+import com.apollographql.apollo.exception.ApolloNetworkException
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module

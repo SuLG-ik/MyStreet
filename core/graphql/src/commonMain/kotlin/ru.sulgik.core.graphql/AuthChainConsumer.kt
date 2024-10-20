@@ -1,6 +1,6 @@
 package ru.sulgik.core.graphql
 
-import com.apollographql.apollo3.api.http.HttpRequest
+import com.apollographql.apollo.api.http.HttpRequest
 
 interface AuthRequestConsumer {
 

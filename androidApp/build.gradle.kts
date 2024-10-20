@@ -1,10 +1,20 @@
 plugins {
-    alias(libs.plugins.androidApplication)
-    alias(libs.plugins.kotlinAndroid)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.gms)
-    alias(libs.plugins.firebase.crashlytics)
+    application()
+}
+
+deps {
+    compose()
+    gmsLocation()
+    projectShared()
+    activity()
+    activityCompose()
+    splash()
+    firebaseCrashlytics()
+    firebaseAnalytics()
+}
+
+kotlin {
+    AppTarget.Android.configure(this)
 }
 
 android {
@@ -63,19 +73,4 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-
-dependencies {
-    implementation(libs.gms.location)
-    implementation(compose.ui)
-    implementation(compose.material3)
-    implementation(projects.shared)
-    implementation(libs.splash)
-    implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.firebase))
-    implementation(libs.firebase.crashlytics)
-    implementation(libs.firebase.analytics)
 }

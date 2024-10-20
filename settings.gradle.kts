@@ -1,4 +1,3 @@
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 pluginManagement {
     repositories {
         google()
@@ -12,13 +11,11 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 rootProject.name = "MyStreet"
 include(":androidApp")
 include(":shared")
 include(":uikit")
-include(":mapkit")
 include(":mapkit-compose")
 include(":root")
 include(":imagepicker")
