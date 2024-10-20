@@ -19,8 +19,8 @@ import ru.mystreet.map.data.model.RemoveMapObjectFavouriteMutation
 import ru.mystreet.map.domain.entity.MapObject
 import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.domain.repository.MapObjectsRepository
-import ru.mystreet.map.geomety.Latitude
-import ru.mystreet.map.geomety.Longitude
+import ru.sulgik.mapkit.geometry.Latitude
+import ru.sulgik.mapkit.geometry.Longitude
 
 class GraphqlMapObjectsRepository(
     private val apolloClient: ApolloClient,

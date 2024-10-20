@@ -13,9 +13,12 @@ import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.getSavedStateStore
 import ru.mystreet.core.component.values
 import ru.mystreet.map.domain.entity.AddMapObjectField
+import ru.mystreet.map.domain.entity.LatitudeConfig
+import ru.mystreet.map.domain.entity.LongitudeConfig
 import ru.mystreet.map.domain.entity.MapObjectCategory
-import ru.mystreet.map.geomety.Point
+import ru.mystreet.map.domain.entity.PointConfig
 import ru.mystreet.map.presentation.add.EditMapNewObjectInfoStore
+import ru.sulgik.mapkit.geometry.Point
 
 class EditMapNewObjectInfoComponent(
     componentContext: DIComponentContext,
@@ -29,10 +32,14 @@ class EditMapNewObjectInfoComponent(
     private val store: EditMapNewObjectInfoStore = getSavedStateStore(
         key = "edit_map_object_info",
         initialSavedState = {
+            val point = currentTarget.value
             EditMapNewObjectInfoStore.SavedState(
                 title = field?.title?.value ?: "",
                 description = field?.description?.value ?: "",
-                point = currentTarget.value,
+                point = PointConfig(
+                    latitude = LatitudeConfig(point.latitude.value),
+                    longitude = LongitudeConfig(point.longitude.value),
+                ),
                 category = category,
             )
         }

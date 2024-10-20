@@ -4,9 +4,7 @@ import ru.mystreet.errors.domain.exception.UnknownCategoryException
 import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.domain.entity.MapObjectPart
 import ru.mystreet.map.domain.entity.SavedMapFrame
-import ru.mystreet.map.geomety.Latitude
-import ru.mystreet.map.geomety.Longitude
-import ru.mystreet.map.geomety.Point
+import ru.sulgik.mapkit.geometry.Point
 
 class SQLDelightFramedMapObjectConverter {
 
@@ -14,7 +12,7 @@ class SQLDelightFramedMapObjectConverter {
         return MapObjectPart(
             id = id,
             title = title,
-            point = Point(latitude = Latitude(latitude), longitude = Longitude(longitude)),
+            point = Point(latitude = latitude, longitude = longitude),
             category = MapObjectCategory.fromId(category)
                 ?: throw UnknownCategoryException(category),
             area = null,

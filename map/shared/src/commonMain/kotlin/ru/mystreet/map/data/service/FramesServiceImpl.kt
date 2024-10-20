@@ -2,12 +2,12 @@ package ru.mystreet.map.map.data.service
 
 import ru.mystreet.map.domain.entity.MapFrame
 import ru.mystreet.map.domain.service.FramesService
-import ru.mystreet.map.geomety.Point
-import ru.mystreet.map.geomety.VisibleArea
+import ru.sulgik.mapkit.geometry.Point
+import ru.sulgik.mapkit.map.VisibleRegion
 
 class FramesServiceImpl : FramesService {
 
-    override fun calculateFrames(visibleArea: VisibleArea): List<MapFrame> {
+    override fun calculateFrames(visibleArea: VisibleRegion): List<MapFrame> {
         val topLeft = Point(
             minOf(visibleArea.topLeft.latitude, visibleArea.topRight.latitude),
             maxOf(visibleArea.topLeft.longitude, visibleArea.topRight.longitude)

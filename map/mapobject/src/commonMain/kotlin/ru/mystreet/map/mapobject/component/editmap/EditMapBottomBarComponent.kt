@@ -15,7 +15,7 @@ import ru.mystreet.map.component.add.EditMapNewObjectLoadingComponent
 import ru.mystreet.map.component.add.EditMapSelectCategoryComponent
 import ru.mystreet.map.domain.entity.AddMapObjectField
 import ru.mystreet.map.domain.entity.MapObjectCategory
-import ru.mystreet.map.geomety.Point
+import ru.sulgik.mapkit.geometry.Point
 
 class EditMapBottomBarComponent(
     componentContext: DIComponentContext,

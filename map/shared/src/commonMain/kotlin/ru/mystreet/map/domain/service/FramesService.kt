@@ -1,12 +1,12 @@
 package ru.mystreet.map.domain.service
 
 import ru.mystreet.map.domain.entity.MapFrame
-import ru.mystreet.map.geomety.Point
-import ru.mystreet.map.geomety.VisibleArea
+import ru.sulgik.mapkit.geometry.Point
+import ru.sulgik.mapkit.map.VisibleRegion
 
 interface FramesService {
 
-    fun calculateFrames(visibleArea: VisibleArea): List<MapFrame>
+    fun calculateFrames(visibleArea: VisibleRegion): List<MapFrame>
 
     fun calculateFrame(point: Point): MapFrame
 

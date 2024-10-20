@@ -1,11 +1,10 @@
 package ru.mystreet.map.domain.entity
 
-import ru.mystreet.map.ClusterizedPlacemark
-import ru.mystreet.map.Placemark
-import ru.mystreet.map.domain.entity.MapObjectCategory
+import ru.sulgik.mapkit.map.ClusterizedPlacemarkCollection
+import ru.sulgik.mapkit.map.PlacemarkMapObject
 
 class MapCategoryWithPlacemarks(
     val category: MapObjectCategory,
-    val clusterizedPlacemark: ClusterizedPlacemark,
-    val placemarks: List<Placemark>,
+    val clusterizedPlacemark: ClusterizedPlacemarkCollection,
+    val placemarks: List<PlacemarkMapObject>,
 )

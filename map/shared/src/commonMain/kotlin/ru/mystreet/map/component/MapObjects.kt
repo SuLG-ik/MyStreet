@@ -1,7 +1,7 @@
 package ru.mystreet.map.component
 
 import ru.mystreet.map.domain.entity.MapObjectCategory
-import ru.mystreet.map.geomety.Point
+import ru.sulgik.mapkit.geometry.Point
 
 interface MapObjects {
 

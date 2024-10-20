@@ -3,12 +3,18 @@ package ru.mystreet.map.map.component
 import ru.mystreet.app.MapController
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
-import ru.mystreet.map.BaseMapObject
 import ru.mystreet.map.component.MapCamera
 import ru.mystreet.map.component.MapControl
 import ru.mystreet.map.component.MapObjects
+import ru.mystreet.map.domain.entity.CameraPositionConfig
 import ru.mystreet.map.domain.entity.MapConfig
 import ru.mystreet.map.domain.entity.MapGeoObject
+import ru.mystreet.map.domain.entity.PointConfig
+import ru.sulgik.mapkit.geometry.Latitude
+import ru.sulgik.mapkit.geometry.Longitude
+import ru.sulgik.mapkit.geometry.Point
+import ru.sulgik.mapkit.map.CameraPosition
+import ru.sulgik.mapkit.map.MapObject
 
 class MapControlComponent(
     componentContext: DIComponentContext,
@@ -18,7 +24,7 @@ class MapControlComponent(
 
     override val controller: MapController =
         MapController(
-            initialCameraPosition = mapConfig.initialCameraPosition,
+            initialCameraPosition = mapConfig.initialCameraPosition?.toMap(),
             onObjectClickListener = this::onObjectClickListener,
             onBind = this::onBind,
             onUnbind = this::onUnbind,
@@ -39,8 +45,8 @@ class MapControlComponent(
         mapCamera.onUnbind()
     }
 
-    private fun onObjectClickListener(mapObject: BaseMapObject): Boolean {
-        val data = mapObject.data
+    private fun onObjectClickListener(mapObject: MapObject): Boolean {
+        val data = mapObject.userData
         if (data is MapGeoObject) {
             when (data) {
                 is MapGeoObject.MapObject -> {
@@ -53,4 +59,17 @@ class MapControlComponent(
     }
 
 
+}
+
+private fun CameraPositionConfig.toMap(): CameraPosition {
+    return CameraPosition(
+        target = target.toMap(), zoom = zoom, azimuth = azimuth, tilt = tilt,
+    )
+}
+
+private fun PointConfig.toMap(): Point {
+    return Point(
+        latitude = Latitude(latitude.value),
+        longitude = Longitude(longitude.value)
+    )
 }

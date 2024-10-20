@@ -7,5 +7,6 @@ interface MapControl {
     val controller: MapController
 
     val mapCamera: MapCamera
+
     val mapObjects: MapObjects
 }

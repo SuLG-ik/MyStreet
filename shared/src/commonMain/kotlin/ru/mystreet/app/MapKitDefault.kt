@@ -1,7 +1,9 @@
 package ru.mystreet.app
 
-import ru.mystreet.map.MapKit
+import ru.sulgik.mapkit.MapKit
+
 
 fun initializeMapKit() {
-    MapKit.initializeMapKit(BuildKonfig.API_KEY, "ru_RU")
+    MapKit.setApiKey(BuildKonfig.API_KEY)
+    MapKit.setLocale("ru_RU")
 }

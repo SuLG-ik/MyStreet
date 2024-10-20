@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.Serializable
 import ru.mystreet.core.datastore.DatastoreFactory
 import ru.mystreet.core.datastore.create
-import ru.mystreet.map.CameraPosition
+import ru.mystreet.map.domain.entity.CameraPositionConfig
 import ru.mystreet.map.domain.entity.MapConfig
 import ru.mystreet.map.domain.repository.LocalMapConfigRepository
 
@@ -23,7 +23,7 @@ class DataStoreLocalMapConfigRepository(
 
     override val mapConfig: Flow<MapConfig> = dataStore.data.map { it.mapConfig }
 
-    override suspend fun updateInitialCameraPosition(cameraPosition: CameraPosition) {
+    override suspend fun updateInitialCameraPosition(cameraPosition: CameraPositionConfig) {
         dataStore.updateData { it.copy(mapConfig = it.mapConfig.copy(initialCameraPosition = cameraPosition)) }
     }
 

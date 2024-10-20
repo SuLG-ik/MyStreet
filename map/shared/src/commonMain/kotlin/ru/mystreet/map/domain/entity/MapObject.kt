@@ -1,6 +1,6 @@
 package ru.mystreet.map.domain.entity
 
-import ru.mystreet.map.geomety.Point
+import ru.sulgik.mapkit.geometry.Point
 
 data class MapObject(
     val id: Long,

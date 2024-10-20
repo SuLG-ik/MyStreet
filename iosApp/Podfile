@@ -1,5 +1,14 @@
+
+def firebase
+  pod 'FirebaseCore'
+  pod 'FirebaseAnalytics'
+  pod 'FirebaseCrashlytics'
+end
+
+
 target 'iosApp' do
   use_frameworks!
   platform :ios, '16.0'
+  firebase
   pod 'shared', :path => '../shared'
 end

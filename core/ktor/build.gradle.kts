@@ -23,6 +23,9 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.ktor.okhttp)
         }
+        iosMain.dependencies {
+            implementation(libs.ktor.darwin)
+        }
         commonMain.dependencies {
             api(libs.koin.core)
             implementation(libs.ktor.auth)
@@ -54,7 +57,7 @@ buildkonfig {
         this.buildConfigField(
             FieldSpec.Type.STRING,
             "MYSTREET_API_URL",
-            System.getenv()["MYSTREET_API_URL"] ?: "",
+            configProperty("network.rest", "http://api.mystreet.sulgik.ru"),
             const = true,
         )
     }

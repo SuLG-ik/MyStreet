@@ -9,7 +9,7 @@ import ru.mystreet.app.startApp
 class MyStreetApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        Firebase.crashlytics.setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
+        Firebase.crashlytics.isCrashlyticsCollectionEnabled = !BuildConfig.DEBUG
         startApp()
     }
 }
