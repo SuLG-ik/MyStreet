@@ -13,7 +13,7 @@ android {
     compileSdk = 34
     defaultConfig {
         applicationId = "ru.mystreet.app"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 4
         versionName = "0.1.0"
@@ -78,5 +78,4 @@ dependencies {
     implementation(platform(libs.firebase))
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
-    debugImplementation(libs.compose.ui.tooling)
 }

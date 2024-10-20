@@ -1,33 +1,34 @@
 package ru.mystreet.map.map.component
 
-import ru.mystreet.map.Placemark
-import ru.mystreet.map.RGBA
-import ru.mystreet.map.UserLocationObjectListener
-import ru.mystreet.map.UserLocationView
-import ru.mystreet.map.image.ImageProvider
+import androidx.compose.ui.graphics.Color
+import ru.sulgik.mapkit.compose.utils.toMapkitColor
+import ru.sulgik.mapkit.layers.ObjectEvent
+import ru.sulgik.mapkit.map.ImageProvider
+import ru.sulgik.mapkit.map.PlacemarkMapObject
+import ru.sulgik.mapkit.user_location.UserLocationObjectListener
+import ru.sulgik.mapkit.user_location.UserLocationView
 
 class UserLocationImage(
     private val image: ImageProvider,
 ) : UserLocationObjectListener() {
 
-    val iconPoint get() = placemark?.geomety
+    val iconPoint get() = placemark?.geometry
 
-    var placemark: Placemark? = null
+    var placemark: PlacemarkMapObject? = null
 
-    override fun onObjectAdded(p0: UserLocationView) {
-        placemark = p0.pin
-        p0.arrow.setIcon(image)
-        p0.pin.setIcon(image)
-        p0.circle.fillColor = RGBA(108, 176, 244, 50)
+    override fun onObjectUpdated(view: UserLocationView, event: ObjectEvent) {
+        view.arrow.setIcon(image)
+        view.pin.setIcon(image)
+        view.accuracyCircle.fillColor = Color(108, 176, 244, 50).toMapkitColor()
     }
 
-    override fun onObjectRemoved(p0: UserLocationView) {
-
+    override fun onObjectAdded(view: UserLocationView) {
+        placemark = view.pin
+        view.arrow.setIcon(image)
+        view.pin.setIcon(image)
+        view.accuracyCircle.fillColor = Color(108, 176, 244, 50).toMapkitColor()
     }
 
-    override fun onObjectUpdated(p0: UserLocationView) {
-        p0.arrow.setIcon(image)
-        p0.pin.setIcon(image)
-        p0.circle.fillColor = RGBA(108, 176, 244, 50)
+    override fun onObjectRemoved(view: UserLocationView) {
     }
 }

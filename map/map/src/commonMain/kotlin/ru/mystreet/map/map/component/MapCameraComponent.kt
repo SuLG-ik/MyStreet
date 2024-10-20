@@ -8,7 +8,7 @@ import ru.mystreet.app.MapController
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.map.component.MapCamera
-import ru.mystreet.map.geomety.Point
+import ru.sulgik.mapkit.geometry.Point
 
 class MapCameraComponent(
     componentContext: DIComponentContext,

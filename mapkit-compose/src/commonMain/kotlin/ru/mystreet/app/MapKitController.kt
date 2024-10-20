@@ -4,27 +4,30 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import kotlinx.coroutines.flow.MutableStateFlow
-import ru.mystreet.map.BaseMapObject
-import ru.mystreet.map.CameraListener
-import ru.mystreet.map.CameraPosition
-import ru.mystreet.map.ClusterListener
-import ru.mystreet.map.ClusterizedPlacemark
-import ru.mystreet.map.MapAnimation
-import ru.mystreet.map.MapKit
-import ru.mystreet.map.MapObjectTapListener
-import ru.mystreet.map.MapObjects
-import ru.mystreet.map.MapWindow
-import ru.mystreet.map.Placemark
-import ru.mystreet.map.SizeChangedListener
-import ru.mystreet.map.UserLocationObjectListener
-import ru.mystreet.map.geomety.Point
-import ru.mystreet.map.geomety.ScreenPoint
-import ru.mystreet.map.geomety.VisibleArea
-import ru.mystreet.map.image.ImageProvider
+import ru.sulgik.mapkit.Animation
+import ru.sulgik.mapkit.MapKit
+import ru.sulgik.mapkit.ScreenPoint
+import ru.sulgik.mapkit.geometry.Point
+import ru.sulgik.mapkit.map.CameraListener
+import ru.sulgik.mapkit.map.CameraPosition
+import ru.sulgik.mapkit.map.ClusterListener
+import ru.sulgik.mapkit.map.ClusterizedPlacemarkCollection
+import ru.sulgik.mapkit.map.ImageProvider
+import ru.sulgik.mapkit.map.Map
+import ru.sulgik.mapkit.map.MapObject
+import ru.sulgik.mapkit.map.MapObjectCollection
+import ru.sulgik.mapkit.map.MapObjectTapListener
+import ru.sulgik.mapkit.map.MapWindow
+import ru.sulgik.mapkit.map.PlacemarkMapObject
+import ru.sulgik.mapkit.map.SizeChangedListener
+import ru.sulgik.mapkit.map.VisibleRegion
+import ru.sulgik.mapkit.user_location.UserLocationLayer
+import ru.sulgik.mapkit.user_location.UserLocationObjectListener
+import kotlin.time.Duration.Companion.milliseconds
 
 class MapController(
     val initialCameraPosition: CameraPosition?,
-    private val onObjectClickListener: (BaseMapObject) -> Boolean,
+    private val onObjectClickListener: (MapObject) -> Boolean,
     private val onBind: (() -> Unit)? = null,
     private val onUnbind: (() -> Unit)? = null,
 ) {
@@ -32,11 +35,11 @@ class MapController(
     private var isInitialized = false
 
     private val anchor: MutableStateFlow<MapWindow?> = MutableStateFlow(null)
-
+    private var userLocationLayer: UserLocationLayer? = null
     val cameraPosition: MutableStateFlow<CameraPosition?> = MutableStateFlow(null)
-    val currentTarget: MutableStateFlow<Point> = MutableStateFlow(Point())
+    val currentTarget: MutableStateFlow<Point> = MutableStateFlow(Point(0.0, 0.0))
 
-    private var pin: Placemark? = null
+    private var pin: PlacemarkMapObject? = null
 
     var isFollowLocation by mutableStateOf(false)
 
@@ -61,7 +64,7 @@ class MapController(
             updateCameraPosition(cameraPosition)
         }
 
-    internal fun bindAnchor(map: MapWindow) {
+    fun bindAnchor(map: MapWindow) {
         anchor.value = map
         if (!isInitialized && initialCameraPosition != null) {
             map.map.move(initialCameraPosition)
@@ -70,9 +73,10 @@ class MapController(
         setCameraListener(map)
         setTapListener(map)
         onBind?.invoke()
+        userLocationLayer = MapKit.getInstance().createUserLocationLayer(map)
     }
 
-    internal fun unbindAnchor() {
+    fun unbindAnchor() {
         withAnchor {
             removeCameraListener(this)
             removeMapSizeChangedListener(this)
@@ -80,6 +84,7 @@ class MapController(
         }
         anchor.value = null
         onUnbind?.invoke()
+        userLocationLayer = null
     }
 
     fun zoom(value: Float, animate: Boolean = false) {
@@ -104,23 +109,23 @@ class MapController(
     }
 
 
-    fun addPlacemark(position: Point, image: ImageProvider): Placemark? {
+    fun addPlacemark(position: Point, image: ImageProvider): PlacemarkMapObject? {
         return withAnchor {
             map.mapObjects.addPlacemark().apply {
-                geomety = position
+                geometry = position
                 setIcon(image)
             }
         }
     }
 
-    fun addCenterAlignedPin(image: ImageProvider): Placemark? {
+    fun addCenterAlignedPin(image: ImageProvider): PlacemarkMapObject? {
         return pin ?: withAnchor {
             val screenPoint = ScreenPoint(
                 width / 2f,
                 height / 2f,
             )
             map.mapObjects.addPlacemark().apply {
-                geomety = screenToWorld(screenPoint) ?: return null
+                geometry = convertScreenToWorld(screenPoint) ?: return null
                 setIcon(image)
                 pin = this
             }
@@ -128,13 +133,11 @@ class MapController(
     }
 
     fun setUserLocationObjectListener(userLocationObjectListener: UserLocationObjectListener) {
-        withAnchor {
-            setUserLocationObjectsListener(userLocationObjectListener)
-        }
+        userLocationLayer?.setObjectListener(userLocationObjectListener)
     }
 
     fun resetLocationManager() {
-        MapKit.resetLocationManager()
+        MapKit.getInstance().resetLocationManagerToDefault()
     }
 
     private var icon: ImageProvider? = null
@@ -146,23 +149,23 @@ class MapController(
         it.appearance.zIndex = 100f
     }
 
-    fun addClusterizedPlacemark(): ClusterizedPlacemark? {
+    fun addClusterizedPlacemark(): ClusterizedPlacemarkCollection? {
         this.icon = icon
         return withAnchor {
-            map.mapObjects.addClusterizedPlacemark(clusterListener)
+            map.mapObjects.addClusterizedPlacemarkCollection(clusterListener)
         }
     }
 
-    fun removePlacemarks(clusterizedPlacemark: ClusterizedPlacemark) {
+    fun removePlacemarks(clusterizedPlacemark: ClusterizedPlacemarkCollection) {
         withAnchor {
-            map.mapObjects.removePlacemarks(clusterizedPlacemark)
+            map.mapObjects.remove(clusterizedPlacemark)
         }
     }
 
     private fun setMapSizeChangedListener(
         anchor: MapWindow,
     ) {
-        anchor.addSizeChangedListener(sizeChangedListener)
+        anchor.addSizeChangeListener(sizeChangedListener)
     }
 
     private fun setCameraListener(
@@ -174,7 +177,7 @@ class MapController(
     private fun removeMapSizeChangedListener(
         anchor: MapWindow,
     ) {
-        anchor.addSizeChangedListener(sizeChangedListener)
+        anchor.addSizeChangeListener(sizeChangedListener)
     }
 
     private fun setTapListener(
@@ -201,12 +204,12 @@ class MapController(
             anchor.width / 2f,
             anchor.height / 2f,
         )
-        pin.geomety = anchor.screenToWorld(screenPoint) ?: return
+        pin.geometry = anchor.convertScreenToWorld(screenPoint) ?: return
     }
 
     private fun updatePinLocation(cameraPosition: CameraPosition) {
         val pin = pin ?: return
-        pin.geomety = cameraPosition.target
+        pin.geometry = cameraPosition.target
     }
 
     private fun updateCameraPosition(cameraPosition: CameraPosition) {
@@ -214,15 +217,15 @@ class MapController(
         this.currentTarget.value = cameraPosition.target
     }
 
-    fun visibleArea(cameraPosition: CameraPosition): VisibleArea? {
+    fun visibleArea(cameraPosition: CameraPosition): VisibleRegion? {
         return withAnchor {
-            map.visibleArea(cameraPosition)
+            map.calculateVisibleRegion(cameraPosition)
         }
     }
 
-    fun addCollection(): MapObjects? {
+    fun addCollection(): MapObjectCollection? {
         return withAnchor {
-            map.mapObjects.addMapObjects()
+            map.mapObjects.addCollection()
         }
     }
 
@@ -233,5 +236,13 @@ class MapController(
 
 }
 
-const val DEFAULT_ANIMATION_DURATION = 0.1f
-val defaultAnimation = MapAnimation(MapAnimation.Type.LINEAR, DEFAULT_ANIMATION_DURATION)
+private fun Map.move(cameraPosition: CameraPosition, animation: Animation?) {
+    if (animation != null) {
+        move(cameraPosition, animation)
+    } else {
+        move(cameraPosition)
+    }
+}
+
+val DEFAULT_ANIMATION_DURATION = 100.milliseconds
+val defaultAnimation = Animation(Animation.Type.LINEAR, DEFAULT_ANIMATION_DURATION)

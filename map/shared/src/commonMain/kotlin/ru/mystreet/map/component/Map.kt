@@ -18,7 +18,6 @@ interface Map {
 
     fun onZoomInPress(isStart: Boolean)
 
-
     fun onLocationPermissionGranted()
 
     fun setSelected(mapObjectId: Long?)

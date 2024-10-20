@@ -2,8 +2,6 @@ package ru.mystreet.map.data.converter
 
 import ru.mystreet.core.graphql.type.MapObjectsFrameInput
 import ru.mystreet.errors.domain.exception.UnknownCategoryException
-import ru.mystreet.map.LinearRing
-import ru.mystreet.map.Polygon
 import ru.mystreet.map.data.model.GetFramedMapObjectsPartQuery
 import ru.mystreet.map.data.model.fragment.LinearRingFragment
 import ru.mystreet.map.data.model.fragment.PointFragment
@@ -13,9 +11,11 @@ import ru.mystreet.map.domain.entity.MapArea
 import ru.mystreet.map.domain.entity.MapFrame
 import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.domain.entity.MapObjectPart
-import ru.mystreet.map.geomety.Latitude
-import ru.mystreet.map.geomety.Longitude
-import ru.mystreet.map.geomety.Point
+import ru.sulgik.mapkit.geometry.Latitude
+import ru.sulgik.mapkit.geometry.LinearRing
+import ru.sulgik.mapkit.geometry.Longitude
+import ru.sulgik.mapkit.geometry.Point
+import ru.sulgik.mapkit.geometry.Polygon
 
 class GraphqlFramedMapObjectsConverter {
 
@@ -67,7 +67,7 @@ private fun ru.mystreet.map.data.model.fragment.MapObjectPart.Area.convert(): Ma
 
 private fun PolygonFragment.convert(): Polygon {
     return Polygon(
-        innerRings = innerRings.map { it.linearRingFragment.convert() },
+        innerRing = innerRings.map { it.linearRingFragment.convert() },
         outerRing = outerRing.linearRingFragment.convert(),
     )
 }

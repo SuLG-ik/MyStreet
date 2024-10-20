@@ -1,7 +1,5 @@
 package ru.mystreet.map.map.component
 
-import androidx.collection.MutableScatterMap
-import androidx.collection.mutableScatterMapOf
 import com.arkivanov.essenty.lifecycle.coroutines.coroutineScope
 import com.arkivanov.essenty.lifecycle.doOnDestroy
 import com.arkivanov.mvikotlin.core.rx.Observer
@@ -14,21 +12,24 @@ import ru.mystreet.app.MapController
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.getStore
-import ru.mystreet.map.CameraPosition
-import ru.mystreet.map.ClusterListener
-import ru.mystreet.map.ClusterizedPlacemark
-import ru.mystreet.map.IconStyle
-import ru.mystreet.map.Placemark
 import ru.mystreet.map.component.MapObjects
 import ru.mystreet.map.domain.entity.FramedMapObjects
 import ru.mystreet.map.domain.entity.MapFrame
 import ru.mystreet.map.domain.entity.MapGeoObject
 import ru.mystreet.map.domain.entity.MapObjectCategory
 import ru.mystreet.map.domain.entity.MapObjectPart
-import ru.mystreet.map.geomety.VisibleArea
-import ru.mystreet.map.image.ImageProviderFactory
 import ru.mystreet.map.map.presentation.FramedMapObjectsStore
 import ru.mystreet.uikit.MR
+import ru.sulgik.mapkit.map.CameraPosition
+import ru.sulgik.mapkit.map.ClusterListener
+import ru.sulgik.mapkit.map.ClusterizedPlacemarkCollection
+import ru.sulgik.mapkit.map.IconStyle
+import ru.sulgik.mapkit.map.ImageProvider
+import ru.sulgik.mapkit.map.MapObjectCollection
+import ru.sulgik.mapkit.map.PlacemarkMapObject
+import ru.sulgik.mapkit.map.VisibleRegion
+import ru.sulgik.mapkit.map.getCastedUserData
+import ru.sulgik.mapkit.moko.MOKOImageLoader
 
 class MapObjectsComponent(
     componentContext: DIComponentContext,
@@ -38,10 +39,7 @@ class MapObjectsComponent(
     private var selectedCategories = listOf<MapObjectCategory>()
     private var selectedMapObjectId: Long? = null
 
-    private val images: ImageProviderFactory = get()
-
-    private val mapObjectsVisibilityVisitor =
-        MapObjectsVisibilityVisitor(isVisible = this::isVisible, isSelected = this::isSelected)
+    private val images: MOKOImageLoader = get()
 
     private fun isVisible(mapObject: MapGeoObject.MapObject): Boolean {
         return mapObject.category in selectedCategories
@@ -51,15 +49,15 @@ class MapObjectsComponent(
         return mapObject.id == selectedMapObjectId
     }
 
-    private val framedPlacemarks: MutableScatterMap<MapFrame, Pair<ClusterizedPlacemark, List<Placemark>>> =
-        mutableScatterMapOf()
+    private val framedPlacemarks: MutableMap<MapFrame, Pair<ClusterizedPlacemarkCollection, List<PlacemarkMapObject>>> =
+        mutableMapOf()
 
-    private var allMapObjects: ru.mystreet.map.MapObjects? = null
+    private var allMapObjects: MapObjectCollection? = null
 
     private val store: FramedMapObjectsStore = getStore()
 
     private val userLocationProvider =
-        UserLocationImage(images.forResource(MR.images.user_location))
+        UserLocationImage(images.fromResource(MR.images.user_location))
 
     override fun onBind() {
         setUserLocation()
@@ -80,9 +78,14 @@ class MapObjectsComponent(
     }
 
     private fun visitPlacemarks() {
-        framedPlacemarks.forEach { _, value ->
+        framedPlacemarks.forEach { (_, value) ->
             value.second.forEach {
-                mapObjectsVisibilityVisitor.onPlacemarkVisited(it)
+                val data = it.getCastedUserData<MapGeoObject.MapObject>() ?: return
+                val scale = if (isSelected(data)) 1.5f else 1f
+                it.setIcon(
+                    images.fromResource(data.category.image),
+                    IconStyle(isVisible = isVisible(data), scale = scale)
+                )
             }
         }
     }
@@ -111,20 +114,20 @@ class MapObjectsComponent(
     }
 
     private val clusterListener = ClusterListener {
-        it.appearance.setIcon(images.forResource(MR.images.user_location))
+        it.appearance.setIcon(images.fromResource(MR.images.user_location))
         it.appearance.zIndex = 100f
     }
 
     private fun addMapObjects(objects: FramedMapObjects) {
         val currentClusterizedPlacemark =
             framedPlacemarks.getOrPut(objects.frame) {
-                (allMapObjects?.addClusterizedPlacemark(clusterListener)
+                (allMapObjects?.addClusterizedPlacemarkCollection(clusterListener)
                     ?: return) to emptyList()
             }
         val ids = objects.objects.map(MapObjectPart::id)
         val alreadyCreatedPlacemarks =
             currentClusterizedPlacemark.second.mapNotNull { placemark ->
-                val data = placemark.data as? MapGeoObject.MapObject ?: run {
+                val data = placemark.getCastedUserData<MapGeoObject.MapObject>() ?: run {
                     currentClusterizedPlacemark.first.remove(placemark)
                     return@mapNotNull null
                 }
@@ -140,10 +143,10 @@ class MapObjectsComponent(
             .flatMap { (category, objects) ->
                 currentClusterizedPlacemark.first.addPlacemarks(
                     objects.map { it.point },
-                    images.forResource(category.image),
+                    images.fromResource(category.image),
                     IconStyle(isVisible = category in selectedCategories)
                 ).onEachIndexed { index, placemark ->
-                    placemark.data = MapGeoObject.MapObject(objects[index].id, category)
+                    placemark.userData = MapGeoObject.MapObject(objects[index].id, category)
                 }
             }
         currentClusterizedPlacemark.first.clusterPlacemarks(CLUSTER_RADIUS, CLUSTER_MIN_ZOOM)
@@ -173,7 +176,7 @@ class MapObjectsComponent(
     }
 
 
-    private fun onUpdateCameraPosition(visibleArea: VisibleArea, cameraPosition: CameraPosition) {
+    private fun onUpdateCameraPosition(visibleArea: VisibleRegion, cameraPosition: CameraPosition) {
         store.accept(FramedMapObjectsStore.Intent.UpdateCameraPosition(visibleArea, cameraPosition))
     }
 

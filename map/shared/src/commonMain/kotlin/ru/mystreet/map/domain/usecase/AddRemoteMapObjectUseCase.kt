@@ -3,6 +3,8 @@ package ru.mystreet.map.domain.usecase
 import ru.mystreet.map.domain.entity.AddMapObjectField
 import ru.mystreet.map.domain.entity.MapObject
 import ru.mystreet.map.domain.repository.MapObjectsRepository
+import ru.sulgik.mapkit.geometry.Latitude
+import ru.sulgik.mapkit.geometry.Longitude
 
 class AddRemoteMapObjectUseCase(
     private val repository: MapObjectsRepository,
@@ -12,8 +14,8 @@ class AddRemoteMapObjectUseCase(
             title = field.title.value,
             description = field.description.value,
             category = field.category,
-            latitude = field.point.latitude,
-            longitude = field.point.longitude,
+            latitude = Latitude(field.point.latitude.value),
+            longitude = Longitude(field.point.longitude.value),
             tags = field.tags.tags.tags,
         )
     }

@@ -63,7 +63,7 @@ buildkonfig {
         this.buildConfigField(
             FieldSpec.Type.STRING,
             "MYSTREET_GRAPHQL_URL",
-            System.getenv()["MYSTREET_GRAPHQL_URL"] ?: "",
+            configProperty("network.graphql", "http://api.mystreet.sulgik.ru/graphql"),
             const = true,
         )
     }

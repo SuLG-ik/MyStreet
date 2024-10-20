@@ -1,12 +1,11 @@
 package ru.mystreet.map.presentation.add
 
-import kotlinx.collections.immutable.PersistentList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.serialization.Serializable
 import ru.mystreet.core.component.SavedStateStore
 import ru.mystreet.map.domain.entity.AddMapObjectField
 import ru.mystreet.map.domain.entity.MapObjectCategory
-import ru.mystreet.map.geomety.Point
+import ru.mystreet.map.domain.entity.PointConfig
+import ru.sulgik.mapkit.geometry.Point
 
 interface EditMapNewObjectInfoStore :
     SavedStateStore<EditMapNewObjectInfoStore.Intent, EditMapNewObjectInfoStore.State, EditMapNewObjectInfoStore.Label, EditMapNewObjectInfoStore.SavedState> {
@@ -17,7 +16,7 @@ interface EditMapNewObjectInfoStore :
         val description: String = "",
         val tag: String = "",
         val tags: List<String> = listOf(),
-        val point: Point,
+        val point: PointConfig,
         val category: MapObjectCategory,
     )
 

@@ -4,10 +4,10 @@ import shared
 
 struct ComposeView: UIViewControllerRepresentable {
     
-    private let root: RootComponent
+    private let root: RootAppRoot
     
     
-    init(_ root: RootComponent) {
+    init(_ root: RootAppRoot) {
         self.root = root
     }
     

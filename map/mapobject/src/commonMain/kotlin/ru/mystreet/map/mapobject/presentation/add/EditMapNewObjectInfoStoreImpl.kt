@@ -14,14 +14,17 @@ import ru.mystreet.core.component.onIntentWithDebounce
 import ru.mystreet.map.domain.entity.AddMapObjectField
 import ru.mystreet.map.domain.entity.FieldError
 import ru.mystreet.map.domain.entity.FieldSuggestion
+import ru.mystreet.map.domain.entity.LatitudeConfig
+import ru.mystreet.map.domain.entity.LongitudeConfig
+import ru.mystreet.map.domain.entity.PointConfig
 import ru.mystreet.map.domain.entity.TagsField
 import ru.mystreet.map.domain.usecase.AddTagToFieldUseCase
 import ru.mystreet.map.domain.usecase.FormatAndValidateDescriptionUseCase
 import ru.mystreet.map.domain.usecase.FormatAndValidateTitleUseCase
 import ru.mystreet.map.domain.usecase.LoadMapObjectTagsWithTitleUseCase
 import ru.mystreet.map.domain.usecase.RemoveTagFromFieldUseCase
-import ru.mystreet.map.geomety.Point
 import ru.mystreet.uikit.ValidatedField
+import ru.sulgik.mapkit.geometry.Point
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMviKotlinApi::class)
@@ -44,7 +47,10 @@ class EditMapNewObjectInfoStoreImpl(
             when (it) {
                 is Message.SetDescription -> copy(field = field.copy(description = it.value))
                 is Message.SetTitle -> copy(field = field.copy(title = it.value))
-                is Message.SetPoint -> copy(field = field.copy(point = it.value))
+                is Message.SetPoint -> copy(field = field.copy(point = PointConfig(
+                    latitude = LatitudeConfig(it.value.latitude.value),
+                    longitude = LongitudeConfig(it.value.longitude.value),
+                ),))
                 is Message.SetTags -> copy(
                     field = field.copy(tags = it.field),
                 )

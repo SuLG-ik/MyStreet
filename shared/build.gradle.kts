@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.buildKonfig)
+    alias(libs.plugins.moko.resources)
 }
 
 kotlin {
@@ -37,8 +38,7 @@ kotlin {
             export(libs.decompose.core)
             export(libs.essenty.lifecycle)
             export(libs.moko.resources)
-            export(project(":mapkit-compose"))
-            export(project(":mapkit"))
+//            export(project(":root"))
         }
         pod("YandexMapsMobile", libs.versions.yandex.mapkit.get())
     }
@@ -105,7 +105,7 @@ buildkonfig {
         this.buildConfigField(
             FieldSpec.Type.STRING,
             "API_KEY",
-            System.getenv()["map_api_key"] ?: "",
+            configProperty("ymk.api-key", ""),
             const = true
         )
     }

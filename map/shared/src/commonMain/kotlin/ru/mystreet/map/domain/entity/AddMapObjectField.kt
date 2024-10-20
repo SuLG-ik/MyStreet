@@ -3,14 +3,13 @@ package ru.mystreet.map.domain.entity
 import kotlinx.collections.immutable.ImmutableCollection
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.serialization.Serializable
-import ru.mystreet.map.geomety.Point
 import ru.mystreet.uikit.ValidatedField
 
 @Serializable
 data class AddMapObjectField(
     val title: ValidatedField<FieldError>,
     val description: ValidatedField<FieldError>,
-    val point: Point,
+    val point: PointConfig,
     val tags: TagsField,
     val category: MapObjectCategory,
 )

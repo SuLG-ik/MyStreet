@@ -16,7 +16,7 @@ import ru.mystreet.errors.store.safeCoroutineExecutorFactory
 import ru.mystreet.map.domain.entity.FramedMapObjects
 import ru.mystreet.map.domain.usecase.QueueFramedMapObjectsUseCase
 import ru.mystreet.map.domain.usecase.SaveMapInitialCameraPositionUseCase
-import ru.mystreet.map.geomety.VisibleArea
+import ru.sulgik.mapkit.map.VisibleRegion
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMviKotlinApi::class)
@@ -74,7 +74,7 @@ class FramedMapObjectsStoreImpl(
 
     sealed interface Action {
         data class LoadMapObjects(
-            val visibleArea: VisibleArea,
+            val visibleArea: VisibleRegion,
         ) : Action
     }
 }

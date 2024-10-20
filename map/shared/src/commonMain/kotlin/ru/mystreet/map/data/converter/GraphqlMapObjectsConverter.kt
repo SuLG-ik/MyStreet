@@ -1,8 +1,5 @@
 package ru.mystreet.map.data.converter
 
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import ru.mystreet.errors.domain.exception.UnknownCategoryException
 import ru.mystreet.map.data.model.fragment.MapObjectFull
 import ru.mystreet.map.data.model.fragment.MapObjectReviewFull
@@ -12,9 +9,9 @@ import ru.mystreet.map.domain.entity.MapObjectReview
 import ru.mystreet.map.domain.entity.MapObjectTag
 import ru.mystreet.map.domain.entity.ReviewAuthor
 import ru.mystreet.map.domain.entity.UserMapObject
-import ru.mystreet.map.geomety.Latitude
-import ru.mystreet.map.geomety.Longitude
-import ru.mystreet.map.geomety.Point
+import ru.sulgik.mapkit.geometry.Latitude
+import ru.sulgik.mapkit.geometry.Longitude
+import ru.sulgik.mapkit.geometry.Point
 
 class GraphqlMapObjectsConverter {
 

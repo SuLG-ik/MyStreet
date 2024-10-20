@@ -52,4 +52,5 @@ sqldelight {
             packageName.set("ru.mystreet.core.db")
         }
     }
+    linkSqlite = true
 }

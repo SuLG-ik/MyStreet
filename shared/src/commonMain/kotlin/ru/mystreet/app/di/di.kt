@@ -1,6 +1,6 @@
 package ru.mystreet.app.di
 
-import org.koin.core.module.Module
+import org.koin.dsl.bind
 import org.koin.dsl.module
 import ru.mystreet.app.store.mviModule
 import ru.mystreet.core.auth.authModule
@@ -17,16 +17,12 @@ val appModule = module {
         graphqlModule,
         ktorModule,
         authModule,
-        platformYandexMapModule,
-        platformMokoAssetsStore,
         dataStoreModule,
         mviModule,
         coilModule,
         dbModule,
         dateTimeModule,
-
         rootModule,
+        platformImageModule,
     )
 }
-
-expect val platformYandexMapModule: Module

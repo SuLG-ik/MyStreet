@@ -43,15 +43,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.mohamedrejeb.calf.permissions.ExperimentalPermissionsApi
-import com.mohamedrejeb.calf.permissions.Permission
-import com.mohamedrejeb.calf.permissions.rememberPermissionState
-import com.mohamedrejeb.calf.permissions.shouldShowRationale
 import com.preat.peekaboo.image.picker.ResizeOptions
 import com.preat.peekaboo.image.picker.SelectionMode
 import com.preat.peekaboo.image.picker.rememberImagePickerLauncher
 import com.preat.peekaboo.ui.camera.PeekabooCamera
 import com.preat.peekaboo.ui.camera.rememberPeekabooCameraState
+import dev.icerock.moko.permissions.Permission
+import dev.icerock.moko.permissions.PermissionState
+import dev.icerock.moko.permissions.PermissionsController
+import dev.icerock.moko.permissions.compose.BindEffect
+import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
+import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.mystreet.imagepicker.domain.entity.ImageItem
@@ -426,7 +429,6 @@ fun NoCameraPermission(
     }
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraPermissionRequest(
     isContinueAvailable: Boolean,
@@ -435,7 +437,11 @@ fun CameraPermissionRequest(
     onContinue: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val permissionState = rememberPermissionState(Permission.Camera)
+    val factory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
+    val controller: PermissionsController =
+        remember(factory) { factory.createPermissionsController() }
+    val coroutineScope: CoroutineScope = rememberCoroutineScope()
+    BindEffect(controller)
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -461,10 +467,13 @@ fun CameraPermissionRequest(
             }
             OutlinedButton(
                 onClick = {
-                    if (permissionState.status.shouldShowRationale)
-                        permissionState.openAppSettings()
-                    else
-                        permissionState.launchPermissionRequest()
+                    coroutineScope.launch {
+                        if (controller.getPermissionState(Permission.CAMERA) == PermissionState.Denied) {
+                            controller.openAppSettings()
+                        } else {
+                            controller.providePermission(Permission.CAMERA)
+                        }
+                    }
                 },
                 modifier = Modifier.width(200.dp)
             ) {

@@ -14,6 +14,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,10 +24,15 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.mohamedrejeb.calf.permissions.ExperimentalPermissionsApi
-import com.mohamedrejeb.calf.permissions.Permission
-import com.mohamedrejeb.calf.permissions.rememberMultiplePermissionsState
-import com.mohamedrejeb.calf.permissions.rememberPermissionState
+import dev.icerock.moko.permissions.DeniedException
+import dev.icerock.moko.permissions.Permission
+import dev.icerock.moko.permissions.PermissionsController
+import dev.icerock.moko.permissions.RequestCanceledException
+import dev.icerock.moko.permissions.compose.BindEffect
+import dev.icerock.moko.permissions.compose.PermissionsControllerFactory
+import dev.icerock.moko.permissions.compose.rememberPermissionsControllerFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import ru.mystreet.uikit.DefaultMapAlpha
 import ru.mystreet.uikit.UIKitCombinedFilledTonalIconButton
 import ru.mystreet.uikit.UIKitFilledTonalIconButton
@@ -67,7 +74,11 @@ fun ZoomMapAlert(
         modifier = modifier,
         contentAlignment = Alignment.TopCenter,
     ) {
-        AnimatedVisibility(isNecessaryZoomAlert, enter = slideInVertically() + fadeIn(), exit = slideOutVertically() + fadeOut()) {
+        AnimatedVisibility(
+            isNecessaryZoomAlert,
+            enter = slideInVertically() + fadeIn(),
+            exit = slideOutVertically() + fadeOut()
+        ) {
             Text(
                 text = "Приблизьте, чтобы отобразить объекты",
                 textAlign = TextAlign.Center,
@@ -82,7 +93,6 @@ fun ZoomMapAlert(
     }
 }
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun MapControls(
     onFollowLocation: () -> Unit,
@@ -91,32 +101,28 @@ fun MapControls(
     onZoomOutPress: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val openSettings = rememberPermissionState(Permission.FineLocation) {
-        if (it)
-            onLocationPermissionGranted()
-    }
-    val permissionLauncher =
-        rememberMultiplePermissionsState(
-            listOf(
-                Permission.FineLocation,
-                Permission.CoarseLocation
-            )
-        ) {
-            if (it.any { it.value })
-                onLocationPermissionGranted()
-        }
+    val factory: PermissionsControllerFactory = rememberPermissionsControllerFactory()
+    val controller: PermissionsController =
+        remember(factory) { factory.createPermissionsController() }
+    val coroutineScope: CoroutineScope = rememberCoroutineScope()
+    BindEffect(controller)
     Column(
         verticalArrangement = Arrangement.spacedBy(5.dp),
         modifier = modifier,
     ) {
         UIKitFilledTonalIconButton(
             onClick = {
-                permissionLauncher.launchMultiplePermissionRequest()
-                if (!permissionLauncher.allPermissionsGranted) {
-                    if (permissionLauncher.shouldShowRationale)
-                        openSettings.openAppSettings()
-                } else {
-                    onFollowLocation()
+                coroutineScope.launch {
+                    try {
+                        controller.providePermission(Permission.LOCATION)
+                        controller.providePermission(Permission.COARSE_LOCATION)
+                        onLocationPermissionGranted()
+                        onFollowLocation()
+                    } catch (exception: DeniedException) {
+                        controller.openAppSettings()
+                    } catch (exception: RequestCanceledException) {
+                        controller.openAppSettings()
+                    }
                 }
             },
             color = MaterialTheme.colorScheme.primary,
