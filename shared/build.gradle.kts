@@ -1,30 +1,42 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.jetbrains.compose.ExperimentalComposeLibrary
+import org.jetbrains.kotlin.psi.stubs.impl.serialize
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.kotlinCocoapods)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.kotlinxSerialization)
-    alias(libs.plugins.buildKonfig)
-    alias(libs.plugins.moko.resources)
+    libraryUI()
+    buildKonfig()
+    cocoapods()
+    mokoResources()
+}
+
+namespaceSuffix = "app"
+
+deps {
+    compose(DependencyType.API)
+    decomposeUI(DependencyType.API)
+    essenty(DependencyType.API)
+    mvikotlin(DependencyType.API)
+    koin(DependencyType.API)
+    mokoPermissions(DependencyType.API)
+    mokoResources(DependencyType.API)
+    serialization(DependencyType.API)
+    coroutines(DependencyType.API)
+
+    projectCoreComponent(DependencyType.API)
+    projectCoreDatastore(DependencyType.API)
+    projectMapkitCompose(DependencyType.API)
+    projectRoot(DependencyType.API)
+    projectCoreCrashlytics(DependencyType.API)
+    projectCoreTime(DependencyType.API)
+    projectCoreDb(DependencyType.API)
+    projectCoreAuth(DependencyType.API)
+    projectCoreCoil(DependencyType.API)
+    projectCoreKtor(DependencyType.API)
+    projectCoreGraphql()
+    projectUIKit()
 }
 
 kotlin {
-    androidTarget()
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
-        }
-    }
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
-
     cocoapods {
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
@@ -34,65 +46,8 @@ kotlin {
         framework {
             baseName = "shared"
             isStatic = true
-
-            export(libs.decompose.core)
-            export(libs.essenty.lifecycle)
-            export(libs.moko.resources)
-//            export(project(":root"))
         }
-        pod("YandexMapsMobile", libs.versions.yandex.mapkit.get())
-    }
-
-    sourceSets {
-        androidMain.dependencies {
-            implementation(libs.koin.android)
-        }
-        commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-            @OptIn(ExperimentalComposeLibrary::class)
-            implementation(compose.components.resources)
-            api(libs.moko.permissions)
-            api(libs.mvikotlin.core)
-            api(libs.mvikotlin.main)
-            api(libs.mvikotlin.logging)
-            api(libs.mvikotlin.coroutines)
-            api(libs.decompose.core)
-            implementation(libs.decompose.ui)
-            api(libs.essenty.lifecycle)
-            implementation(libs.kotlinx.serialization)
-            implementation(libs.kotlinx.coroutines)
-            api(libs.datastore.preferences)
-            implementation(libs.moko.resources)
-            implementation(libs.moko.resources.compose)
-            api(libs.koin.core)
-            api(projects.mapkitCompose)
-
-            api(projects.core.datastore)
-
-            api(projects.root)
-            api(projects.uikit)
-            api(projects.core.graphql)
-            api(projects.core.ktor)
-            api(projects.core.coil)
-            api(projects.core.db)
-            api(projects.core.time)
-            api(projects.core.auth)
-            implementation(projects.core.crashlytics)
-        }
-        commonTest.dependencies {
-            implementation(libs.kotlin.test)
-            implementation(libs.koin.test)
-        }
-    }
-}
-
-android {
-    namespace = "ru.mystreet.app"
-    compileSdk = 34
-    defaultConfig {
-        minSdk = 24
+        pod("YandexMapsMobile", Versions.Mapkit.library)
     }
 }
 

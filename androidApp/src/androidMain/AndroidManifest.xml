@@ -15,7 +15,7 @@
         android:allowBackup="false"
         android:supportsRtl="true"
         android:theme="@style/Theme.App.Starting"
-        android:name=".android.MyStreetApplication"
+        android:name="ru.mystreet.app.android.MyStreetApplication"
         android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true"

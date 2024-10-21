@@ -1,6 +1,6 @@
 package ru.mystreet.account.data.repository
 
-import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo.ApolloClient
 import org.koin.core.annotation.Factory
 import ru.mystreet.account.data.converter.GraphQLAccountProfileConverter
 import ru.mystreet.account.domain.entity.AccountProfileFull
@@ -14,7 +14,11 @@ class KtorAccountProfileRepository(
     private val converter: GraphQLAccountProfileConverter,
 ) : AccountProfileRepository {
     override suspend fun info(): AccountProfileFull {
-        val response = client.query(GetAccountInfoQuery(pageable = PageableInput(0, 10)))
+        val response = client.query(GetAccountInfoQuery(pageable = PageableInput(
+            page = 0,
+            pageSize = 10
+        )
+        ))
             .execute()
         val result = response.data?.users?.info ?: throw Exception()
         return with(converter) { result.convert() }

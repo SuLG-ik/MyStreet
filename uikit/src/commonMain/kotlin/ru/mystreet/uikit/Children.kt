@@ -21,11 +21,11 @@ val DefaultChildAnimation =
 val LocalChildrenStackAnimator = staticCompositionLocalOf { DefaultChildAnimation }
 
 @Composable
-inline fun <C : Any, T : Any> UIKitChildren(
+fun <C : Any, T : Any> UIKitChildren(
     stack: ChildStack<C, T>,
     modifier: Modifier = Modifier,
     animation: StackAnimation<C, T> = stackAnimation(LocalChildrenStackAnimator.current),
-    noinline content: @Composable (child: Child.Created<C, T>) -> Unit,
+    content: @Composable (child: Child.Created<C, T>) -> Unit,
 ) {
     Children(
         stack = stack,
@@ -36,11 +36,11 @@ inline fun <C : Any, T : Any> UIKitChildren(
 }
 
 @Composable
-inline fun <C : Any, T : Any> UIKitChildren(
+fun <C : Any, T : Any> UIKitChildren(
     stack: Value<ChildStack<C, T>>,
     modifier: Modifier = Modifier,
     animation: StackAnimation<C, T> = stackAnimation(LocalChildrenStackAnimator.current),
-    noinline content: @Composable (child: Child.Created<C, T>) -> Unit,
+    content: @Composable (child: Child.Created<C, T>) -> Unit,
 ) {
     val state = stack.subscribeAsState()
 

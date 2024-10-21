@@ -1,7 +1,7 @@
 package ru.mystreet.map.data.repository
 
-import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.api.Optional
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.Optional
 import ru.mystreet.core.graphql.type.ReviewInput
 import ru.mystreet.map.data.converter.GraphqlMapObjectsConverter
 import ru.mystreet.map.data.model.AddMapObjectReviewMutation

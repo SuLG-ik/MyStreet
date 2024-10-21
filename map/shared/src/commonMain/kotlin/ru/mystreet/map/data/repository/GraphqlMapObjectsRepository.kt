@@ -1,13 +1,12 @@
 package ru.mystreet.map.data.repository
 
-import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.api.DefaultUpload
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.DefaultUpload
 import ru.mystreet.core.graphql.type.AddFavouriteMapObjectInput
 import ru.mystreet.core.graphql.type.AddMapObjectInput
 import ru.mystreet.core.graphql.type.MapObjectEditInput
 import ru.mystreet.core.graphql.type.PointInput
 import ru.mystreet.errors.data.resolver.throwDefaultErrors
-import ru.mystreet.errors.domain.exception.ObjectNotFoundException
 import ru.mystreet.map.data.converter.GraphqlMapObjectsConverter
 import ru.mystreet.map.data.model.AddMapObjectFavouriteMutation
 import ru.mystreet.map.data.model.AddMapObjectImagesMutation

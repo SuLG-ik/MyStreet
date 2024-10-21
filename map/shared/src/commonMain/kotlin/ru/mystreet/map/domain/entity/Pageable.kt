@@ -2,6 +2,7 @@ package ru.mystreet.map.domain.entity
 
 import ru.mystreet.core.graphql.type.PageableInput
 
+
 data class Pageable(
     val page: Int,
     val pageSize: Int

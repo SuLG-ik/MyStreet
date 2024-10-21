@@ -1,10 +1,10 @@
 package ru.mystreet.errors.data.resolver
 
-import com.apollographql.apollo3.api.ApolloResponse
-import com.apollographql.apollo3.exception.ApolloCompositeException
-import com.apollographql.apollo3.exception.ApolloException
-import com.apollographql.apollo3.exception.ApolloNetworkException
-import com.apollographql.apollo3.exception.NoDataException
+import com.apollographql.apollo.api.ApolloResponse
+import com.apollographql.apollo.exception.ApolloCompositeException
+import com.apollographql.apollo.exception.ApolloException
+import com.apollographql.apollo.exception.ApolloNetworkException
+import com.apollographql.apollo.exception.NoDataException
 import ru.mystreet.errors.domain.ErrorConfigResolver
 import ru.mystreet.errors.domain.ErrorInfo
 import ru.mystreet.errors.domain.ErrorLevel
