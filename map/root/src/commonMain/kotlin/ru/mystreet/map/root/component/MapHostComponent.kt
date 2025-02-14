@@ -17,7 +17,7 @@ import ru.mystreet.map.domain.entity.MapConfig
 import ru.mystreet.map.general.component.GeneralMapComponent
 import ru.mystreet.map.map.component.FramedMapComponent
 import ru.mystreet.map.parks.component.ParksMapComponent
-import ru.mystreet.map.root.component.external.MapExternalSheetHostComponent
+import ru.mystreet.map.root.component.external.DefaultMapExternalHostComponent
 
 class MapHostComponent(
     componentContext: DIComponentContext,
@@ -74,7 +74,7 @@ class MapHostComponent(
     }
 
     override val sheetHost =
-        MapExternalSheetHostComponent(diChildContext("map_external"), map = map)
+        DefaultMapExternalHostComponent(diChildContext("map_external"), map = map)
 
 
     private fun showExternalScreen(config: MapHost.Config): Boolean {

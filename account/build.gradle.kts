@@ -12,6 +12,7 @@ deps {
     projectCoreDatastore()
     projectCoreAuth()
     projectCoreGraphql()
+    projectFeatureDialogs()
 }
 
 

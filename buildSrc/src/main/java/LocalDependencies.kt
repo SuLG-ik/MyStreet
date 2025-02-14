@@ -97,6 +97,10 @@ fun KMPDependenciesScope.projectImagePicker(type: DependencyType = DependencyTyp
     project(":imagepicker", type)
 }
 
+fun KMPDependenciesScope.projectFeatureDialogs(type: DependencyType = DependencyType.IMPLEMENTATION) {
+    project(":feature:dialogs", type)
+}
+
 private fun KMPDependenciesScope.project(path: String, type: DependencyType) {
     common {
         when (type) {

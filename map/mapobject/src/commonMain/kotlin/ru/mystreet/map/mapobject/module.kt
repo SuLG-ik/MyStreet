@@ -25,7 +25,7 @@ import ru.mystreet.map.presentation.add.EditMapNewObjectLoadingStore
 import ru.mystreet.map.presentation.add.EditMapNewObjectLoadingStoreImpl
 import ru.mystreet.map.presentation.add.EditMapSelectCategoryStore
 import ru.mystreet.map.presentation.add.EditMapSelectCategoryStoreImpl
-import ru.mystreet.map.presentation.add.MapObjectImageLoaderStore
+import ru.mystreet.map.mapobject.presentation.add.MapObjectImageLoaderStore
 import ru.mystreet.map.mapobject.presentation.add.MapObjectImageLoaderStoreImpl
 import ru.mystreet.map.presentation.edit.EditMapStore
 import ru.mystreet.map.presentation.edit.EditMapStoreImpl

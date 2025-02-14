@@ -1,11 +1,8 @@
-package ru.mystreet.map.presentation.add
+package ru.mystreet.map.mapobject.presentation.add
 
 import ru.mystreet.imagepicker.presentation.ImagePickerImageLoadStore
 
 interface MapObjectImageLoaderStore : ImagePickerImageLoadStore {
 
-    data class Params(
-        val mapObjectId: Long,
-    )
 
 }

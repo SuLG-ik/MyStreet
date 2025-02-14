@@ -34,6 +34,7 @@ deps {
     projectCoreKtor(DependencyType.API)
     projectCoreGraphql()
     projectUIKit()
+    projectFeatureDialogs()
 }
 
 kotlin {
