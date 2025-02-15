@@ -4,8 +4,9 @@ import com.arkivanov.decompose.router.stack.ChildStack
 import com.arkivanov.decompose.value.Value
 import ru.mystreet.account.component.auth.AccountAuthHost
 import ru.mystreet.account.component.profile.AccountProfileHost
+import ru.mystreet.app.feature.dialogs.component.modal.ModalDialogComponent
 
-interface AccountHostComponent {
+interface AccountHostComponent: ModalDialogComponent {
 
     val childStack: Value<ChildStack<*, Child>>
 

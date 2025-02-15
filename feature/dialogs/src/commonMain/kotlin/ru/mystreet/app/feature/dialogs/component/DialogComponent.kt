@@ -4,7 +4,7 @@ import com.arkivanov.decompose.value.Value
 
 interface DialogComponent {
 
-    val state: Value<State>
+    val dialogState: Value<State>
 
     fun onDismiss()
 

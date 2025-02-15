@@ -48,7 +48,7 @@ fun ModalDialogUI(
     contentWindowInsets: @Composable () -> WindowInsets = { BottomSheetDefaults.windowInsets },
     content: @Composable () -> Unit,
 ) {
-    val state by component.state.subscribeAsState()
+    val state by component.dialogState.subscribeAsState()
     val sheetState =
         rememberModalBottomSheetState(skipPartiallyExpanded = state.skipPartiallyExpanded)
     CustomDialogUI(component) {

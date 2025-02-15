@@ -16,7 +16,7 @@ class DefaultCustomDialogComponent(
 
     private val store: DialogCustomStore = getStore()
 
-    override val state: Value<CustomDialogComponent.State> = store.values(this).map { it.toState() }
+    override val dialogState: Value<CustomDialogComponent.State> = store.values(this).map { it.toState() }
 
     override fun show() {
         store.accept(DialogCustomStore.Intent.Show)

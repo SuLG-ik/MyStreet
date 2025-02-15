@@ -19,4 +19,5 @@ interface MapObjectInfoHostComponent : ModalDialogComponent {
         data object Empty : Child
     }
 
+    fun onMapObject(id: Long)
 }

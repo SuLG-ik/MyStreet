@@ -5,7 +5,7 @@ import ru.mystreet.app.feature.dialogs.component.DialogComponent
 
 interface ModalDialogComponent : CustomDialogComponent {
 
-    override val state: Value<State>
+    override val dialogState: Value<State>
 
     interface State : DialogComponent.State {
         val skipPartiallyExpanded: Boolean

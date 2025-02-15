@@ -2,6 +2,7 @@ package ru.mystreet.app.di
 
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import ru.mystreet.app.feature.dialogs.featureDialogsModule
 import ru.mystreet.app.store.mviModule
 import ru.mystreet.core.auth.authModule
 import ru.mystreet.core.datastore.dataStoreModule
@@ -24,5 +25,6 @@ val appModule = module {
         dateTimeModule,
         rootModule,
         platformImageModule,
+        featureDialogsModule,
     )
 }

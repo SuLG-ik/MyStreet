@@ -10,7 +10,7 @@ fun CustomDialogUI(
     component: DialogComponent,
     content: @Composable () -> Unit,
 ) {
-    val state by component.state.subscribeAsState()
+    val state by component.dialogState.subscribeAsState()
     if (state.isVisible) {
         content()
     }

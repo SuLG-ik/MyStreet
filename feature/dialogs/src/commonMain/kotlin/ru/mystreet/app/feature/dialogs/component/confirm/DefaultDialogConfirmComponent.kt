@@ -33,7 +33,7 @@ class DefaultDialogConfirmComponent(
         }
     }
 
-    override val state: Value<DialogComponent.State> =
+    override val dialogState: Value<DialogComponent.State> =
         store.values(this).map { it.toState() }
 
     override fun show() {

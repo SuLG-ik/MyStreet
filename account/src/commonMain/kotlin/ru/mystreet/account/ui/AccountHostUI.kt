@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import ru.mystreet.account.component.AccountHostComponent
 import ru.mystreet.account.ui.profile.AccountProfileHostUI
+import ru.mystreet.app.feature.dialogs.ui.ModalDialogUI
 import ru.mystreet.uikit.UIKitChildren
 
 @Composable
@@ -11,8 +12,10 @@ fun AccountHostUI(
     component: AccountHostComponent,
     modifier: Modifier = Modifier,
 ) {
-    UIKitChildren(component.childStack) {
-        AccountHostNavHost(it.instance, modifier = modifier)
+    ModalDialogUI(component) {
+        UIKitChildren(component.childStack) {
+            AccountHostNavHost(it.instance, modifier = modifier)
+        }
     }
 }
 

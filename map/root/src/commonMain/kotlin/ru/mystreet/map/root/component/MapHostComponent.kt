@@ -65,7 +65,7 @@ class MapHostComponent(
     }
 
     private fun onMapObjectInfo(id: Long) {
-        sheetHost.onMapObjectInfo(id)
+        external.mapObject.onMapObject(id)
     }
 
     override fun onNavigate(config: MapHost.Config) {
@@ -73,14 +73,14 @@ class MapHostComponent(
             navigation.bringToFront(config)
     }
 
-    override val sheetHost =
+    override val external =
         DefaultMapExternalHostComponent(diChildContext("map_external"), map = map)
 
 
     private fun showExternalScreen(config: MapHost.Config): Boolean {
         return when (config) {
             MapHost.Config.Account -> {
-                sheetHost.onAccount()
+                external.accountHost.show()
                 true
             }
 

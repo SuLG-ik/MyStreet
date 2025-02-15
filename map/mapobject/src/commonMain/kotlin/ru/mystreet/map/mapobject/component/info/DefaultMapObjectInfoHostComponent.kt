@@ -79,7 +79,7 @@ class DefaultMapObjectInfoHostComponent(
                 )
             )
 
-            Config.Loading -> TODO()
+            Config.Loading -> MapObjectInfoHostComponent.Child.Empty
         }
     }
 
@@ -105,6 +105,11 @@ class DefaultMapObjectInfoHostComponent(
 
     private fun onAddReview(id: Long) {
         navigation.bringToFront(Config.AddReview(id))
+    }
+
+    override fun onMapObject(id: Long) {
+        onInfo(id)
+        show()
     }
 
     @Serializable

@@ -7,13 +7,17 @@ import com.arkivanov.decompose.value.Value
 import kotlinx.serialization.Serializable
 import ru.mystreet.account.component.auth.AccountAuthHostComponent
 import ru.mystreet.account.component.profile.AccountProfileHostComponent
+import ru.mystreet.app.feature.dialogs.component.modal.DefaultModalDialogComponent
+import ru.mystreet.app.feature.dialogs.component.modal.ModalDialogComponent
 import ru.mystreet.core.component.AppComponentContext
 import ru.mystreet.core.component.DIComponentContext
 import ru.mystreet.core.component.diChildStack
 
 class DefaultAccountHostComponent(
     componentContext: DIComponentContext,
-) : AppComponentContext(componentContext), AccountHostComponent {
+) : AppComponentContext(componentContext),
+    AccountHostComponent,
+    ModalDialogComponent by DefaultModalDialogComponent(componentContext) {
 
     private val navigation = StackNavigation<Config>()
 
@@ -66,5 +70,4 @@ class DefaultAccountHostComponent(
         @Serializable
         data object Profile : Config
     }
-
 }

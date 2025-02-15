@@ -26,7 +26,7 @@ class DefaultModalDialogComponent(
         customDialog.hide()
     }
 
-    override val state: Value<ModalDialogComponent.State> = customDialog.state.map {
+    override val dialogState: Value<ModalDialogComponent.State> = customDialog.dialogState.map {
         State(
             isVisible = it.isVisible,
             skipPartiallyExpanded = skipPartiallyExpanded

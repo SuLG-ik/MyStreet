@@ -6,6 +6,10 @@ import androidx.compose.ui.text.style.TextAlign
 import org.jetbrains.compose.resources.stringResource
 import ru.mystreet.app.feature.dialogs.component.confirm.DialogConfirmComponent
 import ru.mystreet.app.feature.dialogs.ui.AlertDialogUI
+import ru.mystreet.feature.dialogs.Res
+import ru.mystreet.feature.dialogs.dialog_confirm_cancel
+import ru.mystreet.feature.dialogs.dialog_confirm_confirm
+import ru.mystreet.feature.dialogs.dialog_confirm_title
 
 data class DialogConfirmResources(
     val title: String,
