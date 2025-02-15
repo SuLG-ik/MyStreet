@@ -15,12 +15,12 @@ object Versions {
     const val koin = "4.0.0" // https://github.com/InsertKoinIO/koin/releases/tag/4.0.0
     const val koinAnnotations = "1.3.1"
     const val essenty =
-        "2.2.0-beta01" // https://github.com/arkivanov/Essenty/releases/tag/2.2.0-beta01
+        "2.2.1" // https://github.com/arkivanov/Essenty/releases/tag/2.2.0-beta01
     const val detekt = "1.23.6"
     const val activity = "1.9.1"
     const val mvikotlin = "4.2.0"
     const val decompose =
-        "3.2.0-beta01" // https://github.com/arkivanov/Decompose/releases/tag/3.2.0-beta01
+        "3.2.1" // https://github.com/arkivanov/Decompose/releases/tag/3.2.0-beta01
     const val touchlabCrashlytocs = "0.8.6"
     const val firebaseKmp = "1.13.0"
     const val logging = "7.0.0"

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_confirm_title">Подтвердить операцию</string>
+    <string name="dialog_confirm_cancel">Отмена</string>
+    <string name="dialog_confirm_confirm">Ок</string>
+</resources>

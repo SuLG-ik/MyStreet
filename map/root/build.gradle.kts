@@ -13,6 +13,6 @@ deps {
     projectMapMapObject()
     projectCoreCrashlytics()
     projectErrorsUI()
-    projectSheet()
+    projectFeatureDialogs()
     projectAccount()
 }

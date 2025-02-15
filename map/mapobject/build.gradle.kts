@@ -13,6 +13,7 @@ deps {
     projectImagePicker()
     mokoResources()
     projectErrorsShared()
+    projectFeatureDialogs()
     pagingUI()
 }
 
